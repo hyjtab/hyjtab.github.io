@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="https://hyjtab.github.io/sitemap/0.9">
   
   <url>
-    <loc>http://example.com/202101200934/</loc>
+    <loc>https://hyjtab.github.io/202101200934/</loc>
     
     <lastmod>2021-01-20</lastmod>
     
   </url>
   
   <url>
-    <loc>http://example.com/202101201017/</loc>
+    <loc>https://hyjtab.github.io/202101201017/</loc>
     
     <lastmod>2021-01-20</lastmod>
     
   </url>
   
   <url>
-    <loc>http://example.com/categories/index.html</loc>
+    <loc>https://hyjtab.github.io/categories/index.html</loc>
     
     <lastmod>2021-01-18</lastmod>
     
@@ -24,7 +24,7 @@
   
 
   <url>
-    <loc>http://example.com/</loc>
+    <loc>https://hyjtab.github.io/</loc>
     <lastmod>2021-01-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
@@ -34,14 +34,14 @@
 
   
   <url>
-    <loc>http://example.com/categories/study/</loc>
+    <loc>https://hyjtab.github.io/</loc>
     <lastmod>2021-01-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>http://example.com/categories/daily/</loc>
+    <loc>http://example.com/categories/study/</loc>
     <lastmod>2021-01-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
