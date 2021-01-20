@@ -6,15 +6,17 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>Archives | 竭的博客</title>
+  <title>寒假1 C++primer 第一章 | 竭的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="c++学习">
-<meta property="og:type" content="website">
-<meta property="og:title" content="竭的博客">
-<meta property="og:url" content="http://example.com/archives/index.html">
+  <meta name="description" content="寒假1 C++primer 第一章在跨度还算比较大的这样一个寒假里，我选择了阅读这本《C++ primer》，来巩固，再次复习巩固本学期水过去学到的C++编程知识。♪(^∇^*) 本章重要术语罗列：1.程序块：零条或多条语句的序列，用花括号包围。 2.缓冲区：一个存储区域用于保存数据。IO设施通常将输入（或输出）数据保存在一个缓冲区中，*读写缓冲区的动作与程序的动作是无关的*。我们可以显式地刷新输">
+<meta property="og:type" content="article">
+<meta property="og:title" content="寒假1 C++primer 第一章">
+<meta property="og:url" content="http://example.com/202101201024/index.html">
 <meta property="og:site_name" content="竭的博客">
-<meta property="og:description" content="c++学习">
+<meta property="og:description" content="寒假1 C++primer 第一章在跨度还算比较大的这样一个寒假里，我选择了阅读这本《C++ primer》，来巩固，再次复习巩固本学期水过去学到的C++编程知识。♪(^∇^*) 本章重要术语罗列：1.程序块：零条或多条语句的序列，用花括号包围。 2.缓冲区：一个存储区域用于保存数据。IO设施通常将输入（或输出）数据保存在一个缓冲区中，*读写缓冲区的动作与程序的动作是无关的*。我们可以显式地刷新输">
 <meta property="og:locale">
+<meta property="article:published_time" content="2021-01-20T02:24:00.000Z">
+<meta property="article:modified_time" content="2021-01-20T02:12:55.381Z">
 <meta property="article:author" content="竭">
 <meta property="article:tag" content="新手学习编程">
 <meta name="twitter:card" content="summary">
@@ -153,37 +155,107 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-寒假1-c-primer-第一章" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2021" class="archive-year">2021</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/202101201024/" class="archive-article-date">
-  	<time datetime="2021-01-20T02:24:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-01-20</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/202101201024/">寒假1 C++primer 第一章</a>
+    <h1 class="article-title" itemprop="name">
+      寒假1 C++primer 第一章
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
+        
+        <a href="/202101201024/" class="archive-article-date">
+  	<time datetime="2021-01-20T02:24:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-01-20</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="寒假1-C-primer-第一章"><a href="#寒假1-C-primer-第一章" class="headerlink" title="寒假1 C++primer 第一章"></a>寒假1 C++primer 第一章</h1><p>在跨度还算比较大的这样一个寒假里，我选择了阅读这本《C++ primer》，来巩固，<del>再次复习</del>巩固本学期<del>水过去</del>学到的C++编程知识。♪(^∇^*)</p>
+<h3 id="本章重要术语罗列："><a href="#本章重要术语罗列：" class="headerlink" title="本章重要术语罗列："></a>本章重要术语罗列：</h3><p><strong>1.程序块：</strong><u><font color="#dd0000">零条</font></u>或多条语句的序列，用花括号包围。</p>
+<p><strong>2.缓冲区：</strong>一个存储区域用于保存数据。IO设施通常将输入（或输出）数据保存在一个缓冲区中，*<u>读写缓冲区的动作与程序的动作是无关的</u>*。我们可以显式地刷新输出缓冲，以便强制将缓冲区中的数据写入输出设备。默认情况下，读<code>cin</code>会刷新<code>cout</code>；程序非正常终止时也会刷新<code>cout</code>。</p>
+<p><font color="#CCCCCC"><em>//最后一句话可能有点难以理解，在此给出初步解释：<code>ios::tie()</code>函数。</em></font></p>
+<p><strong>3.编辑-编译-调试（<u>edit-compile-debug</u>）：</strong>使程序能正确执行的开发过程。</p>
+<p><strong>4.EOF：</strong>end of file ，系统特定的标识，指出文件中无更多数据了；</p>
+<p><strong>5.条件：</strong>求值结果为真或假的表达式。通常用值0表示假，用非零值表示真。</p>
+<p><font color="#CCCCCC"><em>//特别地，当<code>cin</code>读取到EOF时，与读取到无效输入时一样，返回的<code>&amp;istream</code>对象作为条件时，其效果是检测流的状态，为无效<code>&amp;istream</code>对象，此对象会使条件变为假。</em></font></p>
+<p><strong>6.类：</strong>一种用于定义自己的数据结构及相关操作的机制。类是C++中最基本的特性之一。标准库类型中，如<code>istream</code>和<code>ostream</code>都是类。</p>
+<p><strong>7.类类型：</strong>类定义的类型。类名即为类型名。</p>
+<p><strong>8.库类型：</strong>标准库定义的类型，如<code>istream</code>。</p>
+<p><strong>9.成员函数：</strong>类定义的操作。通常通过调用成员函数来操作特定对象。</p>
+<p><strong>10.方法：</strong>成员函数的同义术语。</p>
+<p><strong>11.数据结构：</strong>数据及其上所允许的操作的一种逻辑组合。</p>
+<p><strong>12.变量：</strong>具名对象。</p>
+<p><font color="#CCCCCC"><em>//以上几个术语可以捆绑理解，如<code>class A&#123;/**/&#125;；</code>这行代码中，A为类，对于{}内内容则为A类的数据结构，内含成员函数与具名对象，在使用A时，如<code>A a</code>，则a被称为A类类型的变量</em></font></p>
+<p><strong>13.内置类型：</strong>由语言定义的类型，如<code>int</code>。</p>
+<p><strong>14.未初始化的变量：</strong>未赋予初值的变量。类类型的变量如果指定初值，则按类指定的方式进行初始化。<font color="#dd0000">定义在函数内部的内置类型默认是不初始化的，除非有显式的初始化语句。试图使用一个未初始化变量的值是错误的。</font>未初始化变量是bug的常见成因。</p>
+<p><strong>15.命名空间：</strong>将库定义的名字放在一个单一位置的机制。命名空间可以帮助避免不经意的名字冲突。C++标准库定义的名字在标准库所使用的命名空间<code>std</code>中。</p>
+<p><strong>16.::运算符：</strong>作用域运算符。其用处之一是访问命名空间中的名字。例如，<code>std::out</code>表示命名空间<code>std</code>中的名字<code>cout</code>。</p>
+<p><strong>17.cin：</strong>一个<code>istream</code>对象，用来从标准输入读取数据。</p>
+<p><strong>18.标准输入：</strong>输入流，通常与程序执行所在窗口相关联。</p>
+<p><strong>19.&gt;&gt;运算符：</strong>输入运算符。从左侧运算对象所指定的输入流读取数据，存入右侧运算对象中：<code>cin&gt;&gt;i</code>表示从标准输入读取下一个值，存入i中。输入运算符可以连接：<code>cin&gt;&gt;i&gt;&gt;j</code>表示先读取一个值存入 i ,再读取一个值存入 j 。</p>
+<p>**20.istream:**提供了面向流的输入的库类型。</p>
+<p><font color="#CCCCCC">*//<code>cout</code>与之大体相似：<code>ostream</code>对象，将数据写入标准输出。通常用于程序的正常输出内容。标准输出与标准输入定义基本形式一致。&lt;&lt;运算符则负责将右侧值读到流对象后，写到标准输出，亦可连接使用。<code>ostream</code>亦如<code>istream</code>。*</font></p>
+<p><strong>21.标准库：</strong>一个类型和函数的集合，每个C++编译器都必须支持。标准库提供了支持IO操作的类型。C++程序员倾向于用“库”指代整个标准库，还倾向于用库类型表示标准库的特定部分，例如用“iostream库”来表示标准库中定义IO类的部分。</p>
+<p><strong>22.()运算符：</strong>调用运算符。跟随在函数名之后的一对括号”()”，起到调用函数的效果。传递给函数的实参放置在括号内。</p>
+<p><font color="#CCCCCC"><em>//在定义函数时括号内的实参称作形参列表，指出调用函数时可以使用什么样的实参，形参列表可能为空。</em></font></p>
+<p><strong>23.#include：</strong>头文件包含指令，使头文件中代码可被程序使用。</p>
+<p>**24.iostream:**头文件，提供了面向流的输入输出的标准库类型。</p>
+<p><strong>25.头文件：</strong>使类或其它名字的定义可被多个程序所使用的一种机制。程序通过#include指令使用头文件。</p>
+<p><strong>26.源文件：</strong>包含C++程序的文件。</p>
+<p><strong>27.操纵符：</strong>对象，如<code>std::endl</code>，在读写流的时候用来“操纵”流本身。(在流中写入<code>endl</code>的效果是结束当行，并将于设备关联的缓冲区中的内容刷到设备中。)</p>
+<p><em>//疑难不常用术语</em></p>
+<p><strong>28.clog：</strong>一个<code>ostream</code>对象，关联到标准错误。默认情况下，写到clog的数据是被缓冲的。clog通常用于报告程序的执行信息，存入一个日志文件中。</p>
+<p><strong>29.cerr：</strong>一个<code>ostream</code>对象，关联到标准错误，通常写入到与标注输出相同的设备。默认情况下，写入<code>cerr</code>的数据使不缓冲的。<code>cerr</code>通常用于输出错误信息或其它不俗与程序正常逻辑的输出内容。</p>
+<p><strong>30.标准错误：</strong>输出流，用与报告错误，标准输出和标准错误通常关联到程序执行所在的窗口。</p>
+<p><em><u>重点中的重点：↓↓↓</u></em></p>
+<p><strong>31.流：它想要表达的是，随着时间的推移，字符是顺序生成或消耗的。</strong></p>
+<h3 id="启发性内容："><a href="#启发性内容：" class="headerlink" title="启发性内容："></a>启发性内容：</h3><p>**1.**C++语言并未定义任何输入输出语句，取而代之，包含了一个全面的标准库，来提供IO机制。</p>
+<p>**2.**系统通常将程序所运行的窗口与这些对象关联起来，因此当我们读取cin，数据将从程序正在运行的窗口读入，当我们向cout、cerr和clog写入数据时，将会写到同一个窗口。</p>
+<p>**3.**程序员常常在调试时添加打印语句。这类语句应该保证“一直”刷新流。否则，如果程序崩溃，输出可能还留在缓冲区中，从而导致关于程序崩溃位置的错误推断。</p>
+<p>**4.**输入运算符与输出运算符类似，它接受一个istream作为其左侧运算对象，接受一个对象作为其右侧运算对象。它从给定的istream读入数据，并存入给定对象中。</p>
+<p><strong>5.</strong><code>“/*”</code>中后面的“不会被看作注释，说明，优先级<code>”“</code>大于<code>/*</code>注释符。</p>
+<p>**6.**在定义函数时，函数体语法要求为程序块，<code>&#123;&#125;</code>非写不可，在某些情况下，语法要求此地应为语句，则可利用程序块代替语句。</p>
+<p>**7.**程序员常常在调试时添加打印语句。这类语句应该保证“一直”刷新流。否则，如果程序崩溃，输出可能还留在缓冲区中，从而导致关于程序崩溃位置的错误推断。</p>
+<p>**8.**IDE，集成开发环境，将编译器与其他程序创建和分析工具包装在一起。在开发大型程序时这类集成环境可能是非常有用的工具，但需要一些时间来学习如何高效地使用它们。</p>
+<p>**9.**从键盘输入文件结束符，Windows：敲Ctrl+Z然后按Enter或Return键。Unix：输入Ctrl+D。</p>
+<p>**10.**编译器一般不关心头文件名的形式，但有的IDE对此有特定要求。</p>
+<p>本章作为总领篇，知识结构复杂多样，理解难度大，查到了很多漏洞，笔者手敲，文本量也很大，但在记录中收获了很多很多，常看常新。希望这是寒假阅读系列的一个好的开头。</p>
+<p>​                                                                                                                                                                                                2021/1/20-09点28分</p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
@@ -196,55 +268,104 @@
 	</div>
 
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/202101201024/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/202101200934/" class="archive-article-date">
-  	<time datetime="2021-01-20T01:34:05.253Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-01-20</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/202101200934/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">你好呀！</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/202101200934/">你好呀！</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/daily//" class="article-tag-list-link color1">daily</a>
-        		</li>
-      		
-		</ul>
-	</div>
+        
+        
+    </div>
+</aside>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
+
   
   
-    </div></section>
   
 
-    
+  
+
+  
+
+  
 
 
           </div>
@@ -267,8 +388,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
