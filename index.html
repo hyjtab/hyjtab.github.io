@@ -231,6 +231,336 @@
 
 
   
+    <article id="post-寒假2—c-primer第二章（第一部分）" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/202102091936/">寒假2—c++primer第二章（第一部分）</a>
+    </h1>
+  
+
+        
+        <a href="/202102091936/" class="archive-article-date">
+  	<time datetime="2021-02-09T11:36:46.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-02-09</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="寒假2-C-primer-第二章-第一部分"><a href="#寒假2-C-primer-第二章-第一部分" class="headerlink" title="寒假2 C++primer 第二章 (第一部分)"></a>寒假2 C++primer 第二章 (第一部分)</h1><p>小伙伴们好久不见！哈哈，距离上次发文已经过去半个月了，可能有人会想：这站长到底还打不打算发文章了，这博客就是他的三分钟热度吧……</p>
+<p>其实不是的啦！这两周以来，我学习了两章内容，寒假计划本来一天学一章的进度，被这后来两章的难度给彻底干碎   （；´д｀）ゞ</p>
+<p>至于这几天我的有趣经历，我会像写随笔一样，把它们分享给参观本站的大家的！不过不是这篇文章哦~那么现在我们就闲言少叙，开始进入第二章的学习吧！</p>
+<hr>
+<h2 id="part-0-写在前面"><a href="#part-0-写在前面" class="headerlink" title="part 0.写在前面"></a>part 0.写在前面</h2><p>鉴于第一章的总结内容有些晦涩，甚至写成了没有书就没有办法读懂的‘字典’，所以我将尝试在第二章的叙述中加以改进。</p>
+<p>特殊符号解释：</p>
+<ul>
+<li>※标内容为拓展内容，会在有星标内容部分以及结尾部分提供相关链接以供有兴趣的小伙伴研究。（内容多半超前很多~ _ ~）</li>
+<li>*标内容为当前未点明，但在本章中可以找到相应解释的重要内容。</li>
+</ul>
+<p>ps:如果小伙伴真的有一些想法或者好的建议，站长的邮箱是可以发送信息的哦！欢迎通过邮箱方式与我取得联系！ヾ(≧▽≦*)o</p>
+<h2 id="part-1-摘要"><a href="#part-1-摘要" class="headerlink" title="part 1.摘要"></a>part 1.摘要</h2><p>这一章中包含的知识点是有关于变量与基本类型的。什么是变量？书中有严格的定义：</p>
+<blockquote>
+<p>变量，具名对象。</p>
+</blockquote>
+<p>而在本章的开头也强调了这样一件事：很多人把变量与对象分开使用，认为二者有一定的区别；但在实际区分中，往往不能形成统一的标准来进行区别对待。</p>
+<p>一些人眼中，对象是始终与<del>男女关系(ಥ _ ಥ)</del>，不是，类，绑定在一起。认为在类内定义的变量是对象。还有人认为命名与否是变量与对象的区别方式……</p>
+<p>其实这些说法都是公说公有理，婆说婆有理的习惯问题，在此处我沿用书中的介绍方式，不进行刻意区分。</p>
+<p>那对于变量，你有什么印象呢？就拿<code>int a</code>这段最简单的代码来说吧！我们通常会说这段代码<strong>定义</strong>并<strong>声明</strong>了一个<strong>基本类型</strong>——整型变量，这个变量的名字是<code>a</code>；</p>
+<p>这样一来，就出现了三个重要知识点，也就是黑体加粗的这三个关键词。在后面的部分里会进行详细的介绍的。</p>
+<p>变量类型又不止这一种！那在实际应用中，会出现很多类似于：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">double hyj &#x3D; 1.2;</span><br><span class="line">int tab &#x3D; 3;</span><br><span class="line">std :: cout &lt;&lt; hyj + tab &lt;&lt; std :: endl;</span><br></pre></td></tr></table></figure>
+<p>这样的代码，输出的结果会是整型还是浮点型的呢？其中就涉及到了<strong>类型转换</strong>这个知识点。</p>
+<p>然后对于爱好学习的同学，可能已经在网上阅读过不少代码，会发现老师所写的代码和网上大牛分享的代码中有一个明显的区别：<code>const</code>这个东东，网上的代码好像用得特别多！</p>
+<p>还有一些切入进计算机内存地址的“高级变量”，<strong>指针</strong>与<strong>引用</strong>，这些变量类型，也会在本章讲到，当然最痛苦的，莫过于俄罗斯套娃了！指针的指针，指针的引用，指针的<code>const</code>……</p>
+<p>那么内置基本类型就有这么多的情况下，我要是突然失忆了，忘记这变量是什么类型了，难道要一点点的去推理吗？<del>我选择狗带X_X</del>，当然有办法了！那就是让我们的编译器小盆友进行推算的<strong>处理类型</strong>啦！</p>
+<p>还有一些小伙伴想要在“大数据时代”里体验一把私人定制的快感，想要给这些基本类型起一个<strong>类型别名</strong>，想要自己定制一个属于自己的<strong>自定义数据结构</strong>，我想说，这，也是本章的重要内容哦！</p>
+<p>当然，起名并不是随便起的，在C++中对于<strong>标识符</strong>，也就是自定义的名字有一定的限制。我们也要意识到，对于每个变量来说，都有它自己的出生与消亡的生命周期，有它发挥作用限制的地盘———<strong>作用域</strong>。</p>
+<p>以上就是本章的知识点内容总结啦！这些如果都写进一篇文章会很长，所以我将分开上传，希望能对大家有一定帮助！（如果读完还是有问题，可以私信我哦！)</p>
+<p>tips:这边建议收藏本站的呢，亲!  (/▽＼)</p>
+<hr>
+<h2 id="part-2-主要知识点总结"><a href="#part-2-主要知识点总结" class="headerlink" title="part 2.主要知识点总结"></a>part 2.主要知识点总结</h2><h3 id="Q1：内置基本类型有哪些？"><a href="#Q1：内置基本类型有哪些？" class="headerlink" title="Q1：内置基本类型有哪些？"></a>Q1：内置基本类型有哪些？</h3><p>C++定义了包括<strong>算术类型</strong>与*<em>空类型 * (void)*</em>在内的基本数据类型。</p>
+<p>算数类型包含很多种，详见下表（未包含*<em>无符号类型 * (unsigned)*</em>，但无符号类型是内置类型）：</p>
+<table>
+<thead>
+<tr>
+<th>类型含义</th>
+<th>类型说明符 *</th>
+<th>最小尺寸 *</th>
+<th>特    性    与    常    用    场 合</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>布尔类型</td>
+<td>bool</td>
+<td>未定义</td>
+<td>在程序中常作为条件判断语句，只有<code>ture</code>和<code>false</code>两个值</td>
+</tr>
+<tr>
+<td>字符</td>
+<td>char</td>
+<td>8位</td>
+<td>就，很常见的字符型变量 (oﾟvﾟ)ノ</td>
+</tr>
+<tr>
+<td>宽字符</td>
+<td>wchar_t</td>
+<td>16位</td>
+<td>用于 <strong>※</strong> 扩展字符集</td>
+</tr>
+<tr>
+<td>Unicode类</td>
+<td>char16_t</td>
+<td>16位</td>
+<td>同wchar_t</td>
+</tr>
+<tr>
+<td>Unicode类</td>
+<td>char32_t</td>
+<td>32位</td>
+<td>同wchar_t</td>
+</tr>
+<tr>
+<td>短整型</td>
+<td>short</td>
+<td>16位</td>
+<td>一种可表示范围较小的,占内存较少的整数类型</td>
+</tr>
+<tr>
+<td>整型</td>
+<td>int</td>
+<td>16位</td>
+<td>只是一个四平八稳，平平无奇的小int罢了(+_+)</td>
+</tr>
+<tr>
+<td>长整型</td>
+<td>long</td>
+<td>32位</td>
+<td>一种可表示范围与占据内存空间两方面都比int大的整数类型</td>
+</tr>
+<tr>
+<td>长整型</td>
+<td>long long</td>
+<td>64位</td>
+<td>没错，比long还长 (oﾟvﾟ)ノ</td>
+</tr>
+<tr>
+<td>单精度浮点型</td>
+<td>float</td>
+<td>6位 <strong>※</strong> 有效数字</td>
+<td>一种精度低内存小的浮点类型</td>
+</tr>
+<tr>
+<td>双精度浮点型</td>
+<td>double</td>
+<td>10位有效数字</td>
+<td>一种精度较高内存较大的浮点类型，非常常见</td>
+</tr>
+<tr>
+<td>扩展精度浮点型</td>
+<td>long double</td>
+<td>10位有效数字</td>
+<td>一种比double还精度高，内存大的浮点类型</td>
+</tr>
+</tbody></table>
+<ul>
+<li><strong>空类型：</strong>不对应具体的值，仅用于特殊的场合。最常见的应用就是在函数没有返回值的时候使用空类型作为返回类型。</li>
+<li><strong>尺寸：</strong>比特(bit)——&gt;字节(Byte)——&gt;字(word)，一般地，有8 bit = 1 Byte ; 2 Byte = 1 word ;</li>
+<li><strong>比特：</strong>bit为最小信息单位，每位为0或1。</li>
+<li><strong>字节：</strong>最小寻址内存块，指针只能最小以字节为单位来进行间接调用数据内容。一般1字节等于8比特的原因，是因为要求1个字节至少要容纳机器基本字符集中的字符。而(signed) char的大小，之所以最小为8位比特，是因为这种大小去除负数无效部分，正好有128个有效值，可以对应ascll码表中的128个字符，其中，33个为不可显字符，95个为可显字符。</li>
+<li><strong>※ 字：</strong>计算机一次运算的单元。也是在申请地址时的基本单位。</li>
+</ul>
+<p>对于unsigned类型，会零散在各部分介绍，在此只用知道两件小事：</p>
+<ol>
+<li>unsigned类型就是把原类型表达范围内负数部分删去，然后将原来类型所能表达的最大数之后的正数部分，填充到表达范围中。（如：signed char可表示-128~ 127，而unsigned char则可表示0~ 255）</li>
+<li>char类型与其它类型不同，被分成了unsigned char, char，signed char三种类型，而对于一般的int类型，就是指带符号类型。而一般的char类型的状态，则带不带符号皆有可能，具体由编译器决定。</li>
+</ol>
+<h3 id="Q2：类型转换的规则？"><a href="#Q2：类型转换的规则？" class="headerlink" title="Q2：类型转换的规则？"></a>Q2：类型转换的规则？</h3><h4 id="首先，类型转换常发生在赋值语句情况中："><a href="#首先，类型转换常发生在赋值语句情况中：" class="headerlink" title="首先，类型转换常发生在赋值语句情况中："></a>首先，类型转换常发生在赋值语句情况中：</h4><p><strong>对于bool类型，</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">#include&lt;iostream&gt;</span><br><span class="line">int main() &#123;</span><br><span class="line">bool a &#x3D; 0;</span><br><span class="line">  if(a) &#123;</span><br><span class="line">    std :: cout &lt;&lt; &quot;hyjtab 1&quot; &lt;&lt; std :: endl;</span><br><span class="line">  &#125;</span><br><span class="line">a &#x3D; -1;</span><br><span class="line">  if(a) &#123;</span><br><span class="line">    std :: cout &lt;&lt; &quot;hyjtab 2&quot; &lt;&lt; std :: endl;</span><br><span class="line">  &#125;</span><br><span class="line">return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>代码运行之后，屏幕上只会显示“hyjtab2”的字样，说明，对于bool类型来说，只有赋值为0时，才会转化为false，其余情况，全都是true。</p>
+<p>而当我们把一个bool类型赋给非bool类型时，true对应1，false对应0。</p>
+<p><strong>对于浮点类型，</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">#include&lt;iostream&gt;</span><br><span class="line">int main() &#123;</span><br><span class="line">int hyj &#x3D; 12;</span><br><span class="line">double tab &#x3D;1.2;</span><br><span class="line">int a &#x3D; 0;</span><br><span class="line">a &#x3D; tab;</span><br><span class="line">std :: cout &lt;&lt; a &lt;&lt; std :: endl;</span><br><span class="line">a &#x3D; hyj + tab;</span><br><span class="line">std :: cout &lt;&lt; a &lt;&lt; std ::endl;</span><br><span class="line">std :: cout &lt;&lt; hyj + tab &lt;&lt; std :: endl;</span><br><span class="line">return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>代码运行结果为“1，13，13.2”，说明，当我们把一个浮点数赋给一个整数类型时，我们进行了近似处理，结果只保留小数点前的部分。</p>
+<p>与整型数进行运算时，会将整型数转化为浮点数，得到的转化值小数点后位全为零，然后运算，得出浮点型结果。</p>
+<p><strong>对于无符号类型（unsigned），</strong></p>
+<p><code>（代码省略）</code></p>
+<ul>
+<li>除非有符号类型的容量大于无符号类型，在进行运算时，总是将有符号类型转换为无符号类型。</li>
+</ul>
+<p><strong>对于赋值超过了本身的最大范围（或容量）的情况，</strong></p>
+<p>如果在<strong>整型值赋给浮点型</strong>时，整数所占空间超过了浮点型的容量，可能损失部分精度。</p>
+<p>对于<strong>无符号类型（unsigned）</strong>结果是初始值对无符号类型容量取模后的值。</p>
+<p>对于<strong>有符号类型</strong>，则结果为<strong>未定义的</strong>，程序可能崩溃，可能产生垃圾数据，也可能继续运行。</p>
+<h4 id="类型转换的其它发生条件："><a href="#类型转换的其它发生条件：" class="headerlink" title="类型转换的其它发生条件："></a>类型转换的其它发生条件：</h4><p><strong>条件语句：</strong></p>
+<p>当表达式作为条件时，会发生其它类型转化为bool型的隐性操作。</p>
+<p><em>注意：</em>我们在实际操作中，极有可能以后一不注意，就将负数赋值给了无符号对象，会引发意想不到的错误。还有在计算中，很多情况下，我们会将无符号类型与带符号类型混合计算，这时就要根据无符号类型类型转化规则进行提前推测，得出结果。</p>
+<p><em>小零食：空类型（void）之所以不能访问是因为它只指明了访问的起始地址，而未指明起点向后读取多少内存，以及如何解析二进制数据的问题。而其它数据类型这三个问题的答案都是确切的。</em></p>
+<h3 id="Q3-字面值常量的类型到底是？"><a href="#Q3-字面值常量的类型到底是？" class="headerlink" title="Q3: 字面值常量的类型到底是？"></a>Q3: 字面值常量的类型到底是？</h3><h4 id="对于整型与浮点型："><a href="#对于整型与浮点型：" class="headerlink" title="对于整型与浮点型："></a>对于整型与浮点型：</h4><p><strong>整型字面值：</strong></p>
+<p>对于整型字面值常量，其类型由符号与值决定，而是否有符号，与进制有一定关系。对于一般的十进制数，默认都是有符号数。而十六进制与八进制数既可能是有符号类也可能是无符号类型。</p>
+<p><strong>区分进制方法</strong>就是看前缀，十进制数无前缀，而八进制数前缀为0，十六进制数以0x为前缀。</p>
+<p><em>一般的，对于-123这样的数，在内存中的储存形式会认为是42，这里的 - 被认为是一种取负运算。</em></p>
+<p>对于浮点型字面值常量，主要在于精度，识别精度的难度往往在表示方法上，如：1e2,3.14e-1……这里的e，就是一种科学计数法。它们的具体值分别为100，0.314；</p>
+<p>然后就到了重点，他们的类型是啥？</p>
+<p>对于浮点型字面值，一般都是double类型。</p>
+<table>
+<thead>
+<tr>
+<th>字面类型</th>
+<th>可能类型</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>整型（10进制）</td>
+<td>int , long , long long</td>
+</tr>
+<tr>
+<td>整型（16进制与8进制）</td>
+<td>int , unsigned int , long , unsigned long , long long , unsigned long long</td>
+</tr>
+</tbody></table>
+<p><strong>具体类型为可能类型中能容纳下该字面值的占内存最小的那一种。</strong></p>
+<h4 id="布尔字面值与指针字面值"><a href="#布尔字面值与指针字面值" class="headerlink" title="布尔字面值与指针字面值"></a>布尔字面值与指针字面值</h4><p><strong>布尔:</strong><code>true</code>与<code>false</code>;</p>
+<p><strong>指针：</strong><code>nullptr</code>*;</p>
+<p><strong>字符与字符串字面值</strong></p>
+<p>单引号引起的单字符为字符字面值常量，而双引号中的内容为字符串字面值常量。</p>
+<h4 id="转义序列："><a href="#转义序列：" class="headerlink" title="转义序列："></a>转义序列：</h4><p>有两类字符程序员不能直接使用：一类是不可视字符，如退格以及其它控制字符。两一类是在C++中有特别含义的字符。在这些情况下需要用到转义序列。转义序列均以反斜线作为开始。如：\n(换行符),\a(响铃符),\t(制表符)……（详见网络）</p>
+<p><strong>转义序列与十六进制和八进制数的对应关系：</strong></p>
+<p>又称<strong>泛化的转义序列</strong>，其形式是\x后紧跟1个或多个<strong>十六进制数字</strong>，或者\后紧跟1~3个<strong>八进制数字</strong>，其中，数字部分为字符对应的数值。</p>
+<p>我们可以像使用普通字符那样使用转义序列。</p>
+<h4 id="指定字面值的类型"><a href="#指定字面值的类型" class="headerlink" title="指定字面值的类型"></a>指定字面值的类型</h4><p><strong>字符/字符串</strong></p>
+<table>
+<thead>
+<tr>
+<th>前缀</th>
+<th>含义</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>u</td>
+<td>Unicode 16字符</td>
+<td>char16_t</td>
+</tr>
+<tr>
+<td>U</td>
+<td>Unicode 32字符</td>
+<td>char32_t</td>
+</tr>
+<tr>
+<td>L</td>
+<td>宽字符</td>
+<td>wchar_t</td>
+</tr>
+<tr>
+<td>u8</td>
+<td>UTF-8(仅用于字符串字面值常量)</td>
+<td>char</td>
+</tr>
+</tbody></table>
+<p><strong>整型</strong></p>
+<table>
+<thead>
+<tr>
+<th>后缀</th>
+<th>最小匹配类型</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>u/U</td>
+<td>unsigned</td>
+</tr>
+<tr>
+<td>l/L</td>
+<td>long</td>
+</tr>
+<tr>
+<td>ll/LL</td>
+<td>long long</td>
+</tr>
+</tbody></table>
+<p><strong>浮点型</strong></p>
+<table>
+<thead>
+<tr>
+<th>后缀</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>f/F</td>
+<td>float</td>
+</tr>
+<tr>
+<td>l/L</td>
+<td>long double</td>
+</tr>
+</tbody></table>
+<hr>
+<p>一个下午，终于写在这里，准备结束了，这只是第二章的第一小节，之后更新的部分将会进入第二章的第二小节。期望不会让你们等太久~</p>
+<p><strong>※部分的链接：</strong></p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/29510356/why-do-compilers-fix-the-digits-of-floating-point-number-to-6">6位 ※ 有效数字</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/24346126/answer/27486632">※ 字</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_42068856/article/details/83792174">用于 ※ 扩展字符集</a></li>
+</ul>
+<p>千万记得收藏一下哦 ~ (^_^)</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/study//" class="article-tag-list-link color1">study</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/202102091936/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-寒假1-c-primer第一章" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
