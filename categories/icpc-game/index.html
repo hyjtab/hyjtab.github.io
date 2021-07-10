@@ -6,17 +6,15 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>图（二）最短路径——Dijkstra算法以及一些小的碎碎念 | 竭的博客</title>
+  <title>Category: icpc_game | 竭的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="图论（二）实际上按顺序应该先讲深搜和广搜，不过深搜广搜应该都掌握的还可以：这里就用两句经验之谈来进行总结： 深搜：递归遍历当前连通，且未被遍历的结点。一个函数遍历一个节点，到空为止。 广搜：嵌套式遍历当前结点连通的所有未被遍历的结点。一个函数遍历所有结点，每次嵌套遍历到空为止。">
-<meta property="og:type" content="article">
-<meta property="og:title" content="图（二）最短路径——Dijkstra算法以及一些小的碎碎念">
-<meta property="og:url" content="http://example.com/202106291914/index.html">
+  <meta name="description" content="c++学习">
+<meta property="og:type" content="website">
+<meta property="og:title" content="竭的博客">
+<meta property="og:url" content="http://example.com/categories/icpc-game/index.html">
 <meta property="og:site_name" content="竭的博客">
-<meta property="og:description" content="图论（二）实际上按顺序应该先讲深搜和广搜，不过深搜广搜应该都掌握的还可以：这里就用两句经验之谈来进行总结： 深搜：递归遍历当前连通，且未被遍历的结点。一个函数遍历一个节点，到空为止。 广搜：嵌套式遍历当前结点连通的所有未被遍历的结点。一个函数遍历所有结点，每次嵌套遍历到空为止。">
+<meta property="og:description" content="c++学习">
 <meta property="og:locale">
-<meta property="article:published_time" content="2021-06-29T11:14:24.000Z">
-<meta property="article:modified_time" content="2021-07-09T18:03:10.376Z">
 <meta property="article:author" content="竭">
 <meta property="article:tag" content="新手学习编程">
 <meta name="twitter:card" content="summary">
@@ -145,225 +143,61 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-图（二）最短路径——Dijkstra算法" class="article article-type-post " itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
+            
   
-    <h1 class="article-title" itemprop="name">
-      图（二）最短路径——Dijkstra算法以及一些小的碎碎念
+  
+    
+    
+      
+      
+      <section class="archives-wrap">
+        <div class="archive-year-wrap">
+          <a href="/archives/2021" class="archive-year">2021</a>
+        </div>
+        <div class="archives">
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      	<div class="article-meta">
+	      	<a href="/202107102323/" class="archive-article-date">
+  	<time datetime="2021-07-10T15:23:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-07-10</time>
+</a>
+        </div>
+    	 
+  
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/202107102323/">复健刷题日记——1</a>
     </h1>
   
 
-        
-        <a href="/202106291914/" class="archive-article-date">
-  	<time datetime="2021-06-29T11:14:24.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-06-29</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="图论（二）"><a href="#图论（二）" class="headerlink" title="图论（二）"></a>图论（二）</h1><p>实际上按顺序应该先讲深搜和广搜，不过深搜广搜应该都掌握的还可以：这里就用两句经验之谈来进行总结：</p>
-<p>深搜：递归遍历当前连通，且未被遍历的结点。一个函数遍历一个节点，到空为止。</p>
-<p>广搜：嵌套式遍历当前结点连通的所有未被遍历的结点。一个函数遍历所有结点，每次嵌套遍历到空为止。</p>
-<a id="more"></a>
-<p>本篇将作为考试复习最短路径的第一篇（应该也是最后一篇）文章，主角是能够实现以下功能的算法：</p>
-<p>对于邻接矩阵图：初始设无穷为0XFFFFFF的情况下，寻找起点到终点的最短路径长度与最短路径。</p>
-<p>没错，Dijkstra算法。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//核心，dijkstra.</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">dijstra</span><span class="params">(<span class="keyword">int</span> v0)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">memset</span>(dist, <span class="number">0xffffff</span>, n);</span><br><span class="line">        <span class="keyword">int</span> count = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (ljb[v0][i] != <span class="number">0xffffff</span>) &#123;</span><br><span class="line">                dist[i] = ljb[v0][i];</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> &#123;</span><br><span class="line">                dist[i] = <span class="number">0xffffff</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;<span class="comment">//起点初始化。</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) &#123;</span><br><span class="line">            solved[i] = <span class="literal">false</span>;</span><br><span class="line">            path[i] = <span class="number">-1</span>;</span><br><span class="line">        &#125;                                   <span class="comment">//solve初始化。</span></span><br><span class="line">        solved[v0] = <span class="literal">true</span>;                  <span class="comment">//起点已经解决。</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) &#123;      <span class="comment">//进行n次。</span></span><br><span class="line">            <span class="keyword">int</span> mind = <span class="number">0xffffff</span>;   <span class="comment">//找最小距离</span></span><br><span class="line">            <span class="keyword">int</span> j = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">int</span> p = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">for</span> (j = <span class="number">1</span>; j &lt;= n; j++) &#123; <span class="comment">//找新赋值的里最小的一个</span></span><br><span class="line">                <span class="keyword">if</span> (!solved[j] &amp;&amp; dist[j] &lt; mind) &#123;</span><br><span class="line">                    mind = dist[j];</span><br><span class="line">                    p = j;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (count == <span class="number">1</span>) &#123;</span><br><span class="line">                path[j - <span class="number">1</span>] = v0;</span><br><span class="line">                count++;</span><br><span class="line">            &#125;</span><br><span class="line">            solved[p] = <span class="literal">true</span>; <span class="comment">//找到则完成任务，以j为起点开始。</span></span><br><span class="line">            <span class="keyword">if</span> (p == <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">int</span> w = firstadj(p);    <span class="comment">//修改直接后继点</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">while</span> (w != <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="keyword">if</span> (dist[w] &gt; dist[p] + ljb[p][w]) &#123;<span class="comment">//小了就改。</span></span><br><span class="line">                    dist[w] = dist[p] + ljb[p][w];</span><br><span class="line">                    path[w] = p;</span><br><span class="line">                &#125;</span><br><span class="line">                w = nextadj(p, w);</span><br><span class="line">            &#125;<span class="comment">//执行完成后，结束。</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//路径</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">print_path</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;遍历起点是？&quot;</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">int</span> v0 = <span class="number">0</span>;</span><br><span class="line">    <span class="built_in">cin</span> &gt;&gt; v0;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;遍历终点是？&quot;</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">int</span> ed = <span class="number">0</span>;</span><br><span class="line">    <span class="built_in">cin</span> &gt;&gt; ed;</span><br><span class="line">    dijstra(v0);</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; dist[ed] &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">int</span> p = ed;</span><br><span class="line">    <span class="keyword">while</span> (p != v0 &amp;&amp; p &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; p &lt;&lt; <span class="string">&quot;-&gt;&quot;</span>;</span><br><span class="line">        p = path[p];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt;v0 &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//邻接矩阵建图</span></span><br><span class="line">graph() &#123;</span><br><span class="line">       <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">100</span>; i++) &#123;</span><br><span class="line">           <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt;= <span class="number">100</span>; j++) &#123;</span><br><span class="line">               ljb[i][j] = <span class="number">0xffffff</span>;</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;请输入图的边数n：&quot;</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">       <span class="built_in">cin</span> &gt;&gt; n;</span><br><span class="line">       <span class="built_in">memset</span>(visited, <span class="literal">false</span>, n + <span class="number">1</span>);</span><br><span class="line">       <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;请输入对应的边,及对应权值：&quot;</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">       <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) &#123;</span><br><span class="line">           <span class="keyword">int</span> m = <span class="number">0</span>, n1 = <span class="number">0</span>, v = <span class="number">0</span>;</span><br><span class="line">           <span class="built_in">cin</span> &gt;&gt; m &gt;&gt; n1 &gt;&gt; v;</span><br><span class="line">           ljb[m][n1] = v;</span><br><span class="line">           ljb[n1][m] = v;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
-<p>首先，我想说明的是，Dijkstra算法是算连通图两点之间最短路径的，确定的是起点，到各个点的长度，而非任意两点，本质上是一种高级贪心（区别于永远选当前最短的那种低级贪心。）其中利用了广度优先搜索，遍历图的路径，每遍历一次，进行一次筛选，确定出最短路的一个顶点。</p>
-<p>那么，接下来是重中之重：Dijkstra算法如何理解，记忆？其实分为四个点：</p>
-<ol>
-<li>函数组成，哪些变量？</li>
-<li>功能实现，哪些模块？</li>
-<li>具体记忆，如何进行初始化？</li>
-<li>具体记忆，如何对数据进行修改？</li>
-</ol>
-<p>首先，Dijkstra算法由一个Visted数组（在本篇给的案例中为Solved数组）一个Dist数组，一个图，结点数变量，总起点变量，循环起点变量，中间变量，求邻接点的两个函数，最小变量这些“零件”组成。</p>
-<p>模块有初始化数组模块，赋值Dist模块。Dist模块中又分为寻求当前起点模块，广搜模块。而此模块重要的特征是本身基于一个n重循环。</p>
-<p>初始化，对于用邻接矩阵表示图的情况来讲，不连通点的初值必须为无限大：0XFFFFFF，否则，会出现混乱，同样，在寻求当前起点模块，最小值初值最好也与邻接表中不连通的点一致。至于Visted数组，自然除起点外全设为false。</p>
-<p>最后对数据进行修改，主要记忆，在广搜模块，当存在邻接点时，一直持续筛选，将邻接点的现有距离（该点Dist数组中数据）与当前确定最小距离（本轮起点的Dist）加上邻接路径长度作比，取小的对Dist数组进行修改。选取当前起点时，则注意，应选择未被访问且当前Dist距离最短的点。</p>
-<p>本算法对于路径的存储，选择了拉火车式存储，主要利用了数组的性质a[1]=2,a[2]=3,可以用：&lt;1,&lt;2&gt;,3&gt;来表示，意为先走1结点，再来2结点，最后再到3结点。</p>
-<p>Dijkstra算法总结到此结束，可能这篇稿子将会成为科普向文章的最后一篇。一个时代结束了吧~</p>
-<p>以后将会用高级算法，兴时随笔来填充我的博客，当然如果必要，会回归这种文风，不过几率渺茫，总之，感谢这段时间的陪伴与阅读，下一篇博客我们再见~。</p>
-
-      
-
-      
-        <div class="page-reward">
-          <a href="javascript:;" class="page-reward-btn tooltip-top">
-            <div class="tooltip tooltip-east">
-            <span class="tooltip-item">
-              赏
-            </span>
-            <span class="tooltip-content">
-              <span class="tooltip-text">
-                <span class="tooltip-inner">
-                  <p class="reward-p"><i class="icon icon-quo-left"></i>啊啊啊，你要请我吃糖吗？<i class="icon icon-quo-right"></i></p>
-                  <div class="reward-box">
-                    
-                    <div class="reward-box-item">
-                      <img class="reward-img" src="/assets/alipay.jpg">
-                      <span class="reward-type">支付宝</span>
-                    </div>
-                    
-                    
-                    <div class="reward-box-item">
-                      <img class="reward-img" src="/assets/weixin.jpg">
-                      <span class="reward-type">微信</span>
-                    </div>
-                    
-                  </div>
-                </span>
-              </span>
-            </span>
-          </div>
-          </a>
-        </div>
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
+        <div class="article-info info-on-right">
+          
+          
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/study//" class="article-tag-list-link color1">study</a>
+        			<a href="/categories/icpc-game//" class="article-tag-list-link color5">icpc_game</a>
         		</li>
       		
 		</ul>
 	</div>
 
 
-      
-
-      
-        
-<div class="share-btn share-icons tooltip-left">
-  <div class="tooltip tooltip-east">
-    <span class="tooltip-item">
-      <a href="javascript:;" class="share-sns share-outer">
-        <i class="icon icon-share"></i>
-      </a>
-    </span>
-    <span class="tooltip-content">
-      <div class="share-wrap">
-        <div class="share-icons">
-          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
-            <i class="icon icon-weibo"></i>
-          </a>
-          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
-            <i class="icon icon-weixin"></i>
-          </a>
-          <a class="qq share-sns" href="javascript:;" data-type="qq">
-            <i class="icon icon-qq"></i>
-          </a>
-          <a class="douban share-sns" href="javascript:;" data-type="douban">
-            <i class="icon icon-douban"></i>
-          </a>
-          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
-            <i class="icon icon-qzone"></i>
-          </a>
-          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
-            <i class="icon icon-facebook"></i>
-          </a>
-          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
-            <i class="icon icon-twitter"></i>
-          </a>
-          <a class="google share-sns" href="javascript:;" data-type="google">
-            <i class="icon icon-google"></i>
-          </a>
         </div>
-      </div>
-    </span>
-  </div>
-</div>
-
-<div class="page-modal wx-share js-wx-box">
-    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
-    <p>扫一扫，分享到微信</p>
-    <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/202106291914/" alt="微信分享二维码">
-    </div>
-</div>
-
-<div class="mask js-mask"></div>
-      
-      <div class="clearfix"></div>
-    </div>
+        <div class="clearfix"></div>
+    </header>
   </div>
 </article>
-
-  
-<nav id="article-nav">
-  
-    <a href="/202107102323/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          复健刷题日记——1
-        
-      </div>
-    </a>
   
   
-    <a href="/202106160117/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">稀疏矩阵的csr存储方式及其基本运算</div>
-      <i class="icon-circle-right"></i>
-    </a>
-  
-</nav>
-
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-  
-  
+    </div></section>
   
 
-  
-  <!--PC和WAP自适应版-->
-<div id="SOHUCS" sid="请将此处替换为配置SourceID的语句" ></div> 
-<script type="text/javascript"> 
-(function(){ 
-var appid = 'cyvy0kEyY'; 
-var conf = 'prod_c7747a5cd73c28307ba82bfa6df60860'; 
-var width = window.innerWidth || document.documentElement.clientWidth; 
-if (width < 1000) {
-var head = document.getElementsByTagName('head')[0]||document.head||document.documentElement;
-var script = document.createElement('script');
-script.type = 'text/javascript';
-script.charset = 'utf-8';
-script.id = 'changyan_mobile_js';
-script.src = 'https://cy-cdn.kuaizhan.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf;
-head.appendChild(script);
-} else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://cy-cdn.kuaizhan.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})}); } })(); </script>
-  
+    
 
-  
-
-  
 
           </div>
         </div>
@@ -388,10 +222,10 @@ head.appendChild(script);
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: true,
+		isPost: false,
 		isArchive: false,
 		isTag: false,
-		isCategory: false,
+		isCategory: true,
 		open_in_new: true,
 		toc_hide_index: true,
 		root: "/",
