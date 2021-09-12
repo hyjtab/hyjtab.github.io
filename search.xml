@@ -26,6 +26,22 @@
       </categories>
   </entry>
   <entry>
+    <title>大创开发日志1</title>
+    <url>//202109121607/</url>
+    <content><![CDATA[<h1 id="HTML语言学习记录"><a href="#HTML语言学习记录" class="headerlink" title="HTML语言学习记录"></a>HTML语言学习记录</h1><hr>
+<p>html,与其说它是一种语言，我感觉它更像是类似于markdown的一种风格编码器。能让文本，图片，以相应的格式出现在对应的地方。</p>
+<h2 id="html语法介绍"><a href="#html语法介绍" class="headerlink" title="html语法介绍"></a>html语法介绍</h2><p>很简单，首先，所有元素与结构的表示要被&lt;&gt;包住，&lt;&gt;与&lt;/&gt;符号要一一对应。然后，对应c++语言的头文件，html由于不存在运算操作，没有html语言写成的函数，只用强调文件类型与版本信息即可，在HTML5中，需要写的则是<code>&lt;!DOCTYPE html&gt;</code>（虽然大部分情况下会自动补齐。）区分于c++语言，html语句结束不需写分号，仅在在标签内设置多个属性时要用分号进行区分。在HTML4中，尚未删除的<code>&lt;html&gt;&lt;/html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;/body&gt;</code>的结构,在HTML5中被省略。同时，有部分元素甚至不允许写结束符号例如换行元素  br  ，只有<code>&lt;br/&gt;</code>这种写法。还有常用的<code>&lt;img/&gt;&lt;meta/&gt;&lt;link/&gt;</code>(注意，尖括号br/在markdown中也起换行效果)</p>
+<h2 id="html常用元素"><a href="#html常用元素" class="headerlink" title="html常用元素"></a>html常用元素</h2><p>对于html元素，元素即标签，元素具有属性。属性从属于元素。<code>&lt;h1&gt;~&lt;h6&gt;</code>用来定义不同级别的标题，<code>&lt;p&gt;</code>用来定义段落结构，<code>&lt;a&gt;</code>是超链接，总之，可以将元素视为html语言内部内置的一套元素名称，其具有的元素类型能够完成或是将内容显现出来的功能，亦或是实现与其它文件连接的功能，或者能够将内容修改成某种内置格式的功能。然后各种标签（元素）可分为结构元素，内容元素，修饰元素。结构元素是最基本的元素。内容元素则嵌套在结构元素中，形成网页文件主体，修饰元素则嵌套于内容元素中，起修饰作用。常用属性请访问&lt;这个<a href="https://www.w3school.com.cn/tags/index.asp">网址</a>进行查询。</p>
+<h2 id="html常用属性"><a href="#html常用属性" class="headerlink" title="html常用属性"></a>html常用属性</h2><p>属性更像是一些可编辑性接口名。分为核心属性，语言属性，内容属性，其他属性五类。其中核心属性大部分元素均有。为class属性，id属性，style属性，class,id都属于一种标识性的属性（标识器）其中id优先级高，每个元素不可重名。style则是一种特殊的属性，它可以被拿出来写在尖括号内，其中夹带css代码达到写在标签内同样的效果。语言属性，定义语言类型，lang与dir是常用属性，dir是行文方向。<code>&lt;meta charset=&quot;&quot;&gt;</code>是设置内容编码格式的。键盘属性则类似于java中的监听器，实现一部分的交互功能。内容属性则对内容元素起补充作用。常用alt（替换文本）与title（提示文本）。</p>
+<h2 id="html杂碎"><a href="#html杂碎" class="headerlink" title="html杂碎"></a>html杂碎</h2><p>一些GUI的元素。主要者为：<a href="https://www.w3school.com.cn/tags/tag_input.asp">input</a>，还有textarea，button等标签元素。</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>近期工作总结</title>
+    <url>//202108071359/</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
     <title>科幻——《日暮》</title>
     <url>//202107121458/</url>
     <content><![CDATA[<h1 id="日暮"><a href="#日暮" class="headerlink" title="日暮"></a>日暮</h1><h2 id="阿西莫夫"><a href="#阿西莫夫" class="headerlink" title="阿西莫夫"></a><strong>阿西莫夫</strong></h2><p>“如果繁星每隔千年才出现一晚，人类将会如何景仰与崇拜，并世代保留上帝之城的回忆。”——爱默生</p>
