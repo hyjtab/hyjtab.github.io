@@ -6,15 +6,17 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>Archives: 2021 | 竭的博客</title>
+  <title>CTF使人变傻——1 | 竭的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="c++学习">
-<meta property="og:type" content="website">
-<meta property="og:title" content="竭的博客">
-<meta property="og:url" content="http://example.com/archives/2021/page/2/index.html">
+  <meta name="description" content="CTF竞赛权威指南读书笔记第二章：二进制文件编译原理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CTF使人变傻——1">
+<meta property="og:url" content="http://example.com/202110041706/index.html">
 <meta property="og:site_name" content="竭的博客">
-<meta property="og:description" content="c++学习">
+<meta property="og:description" content="CTF竞赛权威指南读书笔记第二章：二进制文件编译原理">
 <meta property="og:locale">
+<meta property="article:published_time" content="2021-10-04T09:06:05.000Z">
+<meta property="article:modified_time" content="2021-10-04T18:27:48.179Z">
 <meta property="article:author" content="竭">
 <meta property="article:tag" content="新手学习编程">
 <meta name="twitter:card" content="summary">
@@ -143,141 +145,344 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-CTF使人变傻——1" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      CTF使人变傻——1
+    </h1>
+  
+
+        
+        <a href="/202110041706/" class="archive-article-date">
+  	<time datetime="2021-10-04T09:06:05.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-10-04</time>
+</a>
+        
+      </header>
     
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="CTF竞赛权威指南读书笔记"><a href="#CTF竞赛权威指南读书笔记" class="headerlink" title="CTF竞赛权威指南读书笔记"></a>CTF竞赛权威指南读书笔记</h1><h2 id="第二章：二进制文件"><a href="#第二章：二进制文件" class="headerlink" title="第二章：二进制文件"></a>第二章：二进制文件</h2><h3 id="编译原理"><a href="#编译原理" class="headerlink" title="编译原理"></a>编译原理</h3><a id="more"></a>
+
+<p>首先是编译器的概念：从源语言到目标语言的转换器。编译器执行阶段大致分为五个步骤：</p>
+<p><strong>（1）词法分析</strong> 读入源程序的字符流，输出为有意义的词素。</p>
+<p><strong>（2）语法分析</strong> 根据各个词法单元的第一个分量来创建树型的中间表示形式，通常是语法树。</p>
+<p><strong>（3）语义分析</strong> 使用语法树和符号表中的信息，检测源程序是否满足语言定义的语义约束，同时收集类型信息，用于代码生成，类型检查和类型转换。</p>
+<p><strong>（4）中间代码生成和优化</strong> 生成类机器语言的中间表示，如三地址码（TAC）。</p>
+<p>在GCC下<code>printf(&quot;%s\n&quot;,str);</code>被优化为<code>puts(&quot;%s&quot;);</code></p>
+<p><strong>（5）代码生成和优化</strong> 把中间表示形式映射到目标机器语言。</p>
+<h3 id="实验步骤"><a href="#实验步骤" class="headerlink" title="实验步骤"></a>实验步骤</h3><p><strong>1.hello.c的编写</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;hello,world\n&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>2.命令行的调用</strong></p>
+<p>总览编译过程：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc hello.c -o hello -save-temps --verbose</span><br></pre></td></tr></table></figure>
+<p>gcc指明编译器名称，hello.c为编译对象，-o hello为编译目标输出。-sava-temps则为保留编译生成中间项。–verbose为gcc编译具体流程的展示。</p>
+<p><strong>3.小结</strong></p>
+<p>从verbose指令给出的具体流程来看，GCC编译共分为四个阶段：预处理，编译，汇编，链接。中间启用了编译器ccl，汇编器as，链接器collect2三个工具。ccl进行了前两个阶段，as进行了汇编处理，collect2则进行了ld命令封装（将动态链接库与CRT中的目标文件连接到可执行文件hello）。</p>
+<blockquote>
+<p><em>运行时库（Runtime library）通俗的说就是我们的程序运行的时候所依赖的库文件，在Windows平台这些库由微软提供，并且是以2种形式提供：静态库(lib)、动态库(lib+dll)。每个库还都提供debug、release 2个版本。</em></p>
+<p><em>C/C++运行时库从形式上来讲和我们自己开发的静态库、动态库没什么两样，只是它们由微软开发和维护，并提供了一些常用的功能支持（如malloc,free, printf等等），如果我们的程序需要使用这些功能（事实上，只要是C/C++程序就一定会用到运行时库提供的功能），就要链接C/C++运行时库。我们可以自主选择是链接“静态库”还是“动态库”，是链接“debug版本”的还是“release版本”的。</em></p>
+</blockquote>
+<p>而从生成的文件与其内容来开，一共有三个中间文件：hello.i，hello.s，hello.o。</p>
+<p>hello.i是预处理过程留下的文件。其中将#include,#define,#if等宏定义以及预处理指令递归性的复制到当前位置。并且将所有注释删除，添加上行号和文件名标识。</p>
+<p>获取hello.i文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -E hello.c -o hello.i</span><br></pre></td></tr></table></figure>
+<p>hello.s是编译阶段留下的文件。编译到中间语言（汇编语言）的过程基本完成。</p>
+<p>hello.s文件的获取与查看</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -S hello.c -o hello.s -masm&#x3D;intel -fno-asynchronous-unwind-tables</span><br></pre></td></tr></table></figure>
+<p><em>注意，fno那一串是一种缩写排除措施</em></p>
+<p>hello.o是汇编阶段留下的文件。所得的文件是一个可重定位文件，文件内各指令地址均为虚拟地址，等待链接后分配。</p>
+<p>hello.o文件的获取与查看。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gcc -c hello.c -o hello.o</span><br><span class="line">objdump -sd hello.o -M intel</span><br></pre></td></tr></table></figure>
+<p>最后的链接阶段：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc hello.o -o hello -static</span><br></pre></td></tr></table></figure>
+<p>若 -static 去掉，则默认调用动态链接</p>
+<p>此步主要包括地址与空间分配，符号绑定，重定位等操作。链接操作由连接器ld.so完成，结果就得到了hello文件。链接操作后对象文件中无法确定的符号地址已经被修正为实际的符号地址，程序也就可以被加载到内存中正常执行了。</p>
+<h3 id="ELF文件格式"><a href="#ELF文件格式" class="headerlink" title="ELF文件格式"></a>ELF文件格式</h3><p><strong>名词解释:</strong> ELF（Executable and Linkable Format）”可执行可链接格式”最初由UNIX系统实验室作为应用程序二进制接口(ABI)的一部分而制定和发布，是COFF(Common file format)格式的变种。Linux系统上所运行的就是ELF格式的文件。</p>
+<h4 id="ELF文件类型"><a href="#ELF文件类型" class="headerlink" title="ELF文件类型"></a>ELF文件类型</h4><h4 id="实验步骤-1"><a href="#实验步骤-1" class="headerlink" title="实验步骤"></a>实验步骤</h4><p><strong>1.**首先对以下</strong>程序进行编译**处理：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> global_init_var = <span class="number">10</span>;</span><br><span class="line"><span class="keyword">int</span> global_uninit_var;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">(<span class="keyword">int</span> sum)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, sum);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">static</span> <span class="keyword">int</span> local_static_init_var = <span class="number">20</span>;</span><br><span class="line">	<span class="keyword">static</span> <span class="keyword">int</span> local_static_uninit_var;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">int</span> local_init_val = <span class="number">30</span>;</span><br><span class="line">	<span class="keyword">int</span> local_uninit_var;</span><br><span class="line"></span><br><span class="line">	func(global_init_var + local_init_val + local_static_init_var);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>2.编译命令</strong>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">gcc elfDemo.c -o elfDemo.exec</span><br><span class="line">gcc -static elfDemo.c -o elfDemo_static.exec</span><br><span class="line">gcc -c elfDemo.c -o elfDemo.rel</span><br><span class="line">gcc -c -fPIC elfDemo.c -o elfDemo_pic.rel</span><br><span class="line">gcc -shared elfDemo_pic.rel -o elfDemo.dyn</span><br></pre></td></tr></table></figure>
+<p>对gcc部分指令的官方解释。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">-g 可执行程序包含调试信息：加个-g 是为了gdb 用，不然gdb用不到。</span><br><span class="line"></span><br><span class="line">-o 指定输出文件名（o：output）-o output_filename，确定输出文件的名称为output_filename，同时这个名称不能和源文件同名。如果不给出这个选项，gcc就给出预设的可执行文件a.out。</span><br><span class="line"></span><br><span class="line">-c 只编译不链接：产生.o文件，就是obj文件，不产生执行文件（c : compile）</span><br><span class="line"></span><br><span class="line">-static 使用静态库进行链接操作。</span><br><span class="line"></span><br><span class="line">-fPIC 位置独立的代码（Position Independent Code,PIC）</span><br><span class="line"></span><br><span class="line">position-independent code (PIC)，用于生成位置无关代码。位置无关代码，可以理解为代码无绝对跳转，跳转都为相对跳转。生成动态库时，需要加上 -fPIC 选项。</span><br><span class="line"></span><br><span class="line">在 Linux 系统中，动态链接文件称为动态共享对象 (Dynamic Shared Objects，DSO)，一般是以 .so 为扩展名的文件。在 Windows 系统中，动态链接文件称为动态链接库 (Dynamic Linking Library)，一般是以 .dll 为扩展名。</span><br><span class="line"></span><br><span class="line">添加 -fPIC 选项生成的动态库，是位置无关的。这样的代码本身就能被放到线性地址空间的任意位置，无需修改就能正确执行。通常的方法是获取指令指针的值，加上一个偏移得到全局变量&#x2F;函数的地址。</span><br><span class="line"></span><br><span class="line">添加 -fPIC 选项实现真正意义上的多个进程共享 .so 库。多个进程引用同一个 -fPIC 动态库时，可以共用内存。这一个库在不同进程中的虚拟地址不同，操作系统会把它们映射到同一块物理内存上。</span><br><span class="line"></span><br><span class="line">不添加 -fPIC 选项，加载 .so 库时，需要对代码段引用的数据对象重定位，重定位会修改代码段的内容，造成每个使用这个 .so 文件代码段的进程在内核里都会生成这个 .so 文件代码段的 copy，每个 copy 都不一样，取决于这个 .so 文件代码段和数据段内存映射的位置。不添加 -fPIC 选项，消耗内存，编译的 .so 文件的优点是加载速度快。</span><br></pre></td></tr></table></figure>
+<p><strong>3.结果分析</strong></p>
+<p>ELF文件分为三种类型，可执行文件（.exec）、可重定位文件（.rel）、和共享目标文件（.dyn）：</p>
+<ul>
+<li>可执行文件：经过链接的、可执行的目标文件，通常也被称为程序。</li>
+<li>可重定位文件：由源文件编译而成且尚未链接的目标文件，通常以.o作为扩展名。用于与其它目标文件进行链接以构成可执行文件或动态链接库，通常是一段位置独立的代码。（其实位置独立可理解为位置无关）</li>
+<li>共享目标文件：动态链接库文件。用于在链接过程中与其它动态链接库或可重定位文件一起构成新的目标文件，或者在可执行文件加载时，链接到进程中作为运行代码的一部分。</li>
+<li>核心转储文件（书上附加）：作为进程意外终止时进程地址空间的转储，也是ELF文件的一种。（转储名词：dump）在程序奔溃时，用gdb读取这些文件可以辅助我们调试和查找程序崩溃的原因。</li>
+</ul>
+<h4 id="ELF文件结构"><a href="#ELF文件结构" class="headerlink" title="ELF文件结构"></a>ELF文件结构</h4><p><em>在ELF文件格式规范时，ELF文件被统称为Object file，这与我们通常理解的“.o”文件是两个概念</em></p>
+<h5 id="链接视角划分：（以节作为基本单位）"><a href="#链接视角划分：（以节作为基本单位）" class="headerlink" title="链接视角划分：（以节作为基本单位）"></a>链接视角划分：（以节作为基本单位）</h5><p>ELF header|.text section（代码节）|.data section（数据节）|.bss section（BSS节）</p>
+<h6 id="ELF头"><a href="#ELF头" class="headerlink" title="ELF头"></a>ELF头</h6><p>ELF文件头位于目标文件最开始的地方。包含描述整个文件的一些基本信息，例如ELF文件类型、版本/ABI（应用程序二进制接口）版本、目标机器、程序入口、段表和节表的位置和长度等。文件头部存在魔术字符（7F,45,4C,46）即字符串“\177ELF“</p>
+<p>​    最开始的4个字节是所有ELF文件都必须相同的标识码，分别为0x7F、0x45、0x4c、0x46，第一个字节对应ASCII字符里面的DEL控制符，后面3个字节刚好是ELF这3个字母的ASCII码。这4个字节又被称为ELF文件的魔数，几乎所有的可执行文件格式的最开始的几个字节都是魔数：</p>
+<ul>
+<li><p>a.out格式最开始两个字节为  0x01、0x07;</p>
+</li>
+<li><p>PE/COFF文件最开始两个个字节为0x4d、0x5a，即ASCII字符MZ。</p>
+</li>
+</ul>
+<p><em>这种魔数用来确认文件的类型，操作系统在加载可执行文件的时候会确认魔数是否正确，如果不正确会拒绝加载。</em></p>
+<p>  　接下来的一个字节是用来标识ELF的文件类的，0x01表示是32位的，0x02表示是64位的;第6个字是字节序，规定该ELF文件是大端的还是小端的(见附录：字节序)。第7个字节规定ELF文件的主版本号，一般是1，因为ELF标准自1.2版以后就再也没有更新了。后面的9个字节ELF标准没有定义，一般填0，有些平台会使用这9个字节作为扩展标志。</p>
+<p>另外，当文件被映射到内存时，可以通过搜索该字符确定映射地址，这在dump内存时非常有用。（转储）</p>
+<blockquote>
+<p><strong>1、为什么要dump（dump的目的）？</strong></p>
+<p>因为程序在计算机中运行时，在内存、CPU、I/O等设备上的数据都是动态的（或者说是易失的），也就是说数据使用完或者发生异常就会丢掉。如果我想得到某些时刻的数据（有可能是调试程序Bug或者收集某些信息），就要把他转储（dump）为静态（如文件）的形式。否则，这些数据你永远都拿不到。</p>
+<p><strong>2、dump转储的是什么内容（dump的对象）？</strong></p>
+<p>其实上边已经提到了，就是将动态（易失）的数据，保存为静态的数据（持久数据）。像程序这种本来就保存在存储介质（如硬盘）中的数据，也就没有必要dump。</p>
+<p>现在，dump作为<strong>名词</strong>也很好理解了，一般就是指dump(动词)的结果文件。</p>
+<p>常出现dump的场景：Unix/Linux中的coredump，Java中的headdump和threaddump，还有就是tcpdump工具。</p>
+</blockquote>
+<p>查看命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">readelf -h (ELF_file_name.Extend)</span><br></pre></td></tr></table></figure>
+<p>Elf64_Ehdr结构体</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> e_ident[EI_NIDENT];     <span class="comment">/* Magic number and other info */</span></span><br><span class="line">    Elf64_Half    e_type;                 <span class="comment">/* Object file type */</span></span><br><span class="line">    Elf64_Half    e_machine;              <span class="comment">/* Architecture */</span></span><br><span class="line">    Elf64_Word    e_version;              <span class="comment">/* Object file version */</span></span><br><span class="line">    Elf64_Addr    e_entry;                <span class="comment">/* Entry point virtual address */</span></span><br><span class="line">    Elf64_Off     e_phoff;                <span class="comment">/* Program header table file offset */</span></span><br><span class="line">    Elf64_Off     e_shoff;                <span class="comment">/* Section header table file offset */</span></span><br><span class="line">    Elf64_Word    e_flags;                <span class="comment">/* Processor-specific flags */</span></span><br><span class="line">    Elf64_Half    e_ehsize;               <span class="comment">/* ELF header size in bytes */</span></span><br><span class="line">    Elf64_Half    e_phentsize;            <span class="comment">/* Program header table entry size */</span></span><br><span class="line">    Elf64_Half    e_phnum;                <span class="comment">/* Program header table entry count */</span></span><br><span class="line">    Elf64_Half    e_shentsize;            <span class="comment">/* Section header table entry size */</span></span><br><span class="line">    Elf64_Half    e_shnum;                <span class="comment">/* Section header table entry count */</span></span><br><span class="line">    Elf64_Half    e_shstrndx;             <span class="comment">/* Section header string table index */</span></span><br><span class="line">&#125; Elf64_Ehdr;</span><br></pre></td></tr></table></figure>
+<h6 id="节头表"><a href="#节头表" class="headerlink" title="节头表"></a>节头表</h6><p>（非必须，常有些情况去除节头表，增加反编译器的分析难度。）</p>
+<p>记录着节的名字，长度，偏移量，读写权限等信息。节头表的位置记录在文件头的e_shoff域中。</p>
+<p>查看命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">readelf -S  (ELF_file_name.Extend)</span><br></pre></td></tr></table></figure>
+<p>Elf64_Shdr结构体</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    Elf64_Word   sh_name;      <span class="comment">/* Section name (string tbl index) */</span></span><br><span class="line">    Elf64_Word   sh_type;      <span class="comment">/* Section type */</span></span><br><span class="line">    Elf64_Xword  sh_flags;     <span class="comment">/* Section flags */</span></span><br><span class="line">    Elf64_Addr   sh_addr;      <span class="comment">/* Section virtual addr at execution */</span></span><br><span class="line">    Elf64_Off    sh_offset;    <span class="comment">/* Section file offset */</span></span><br><span class="line">    Elf64_Xword  sh_size;      <span class="comment">/* Section size in bytes */</span></span><br><span class="line">    Elf64_Word   sh_link;      <span class="comment">/* Link to another section */</span></span><br><span class="line">    Elf64_Word   sh_info;      <span class="comment">/* Additional section information */</span></span><br><span class="line">    Elf64_Xword  sh_addralign; <span class="comment">/* Section alignment */</span></span><br><span class="line">    Elf64_Xword  sh_entsize;   <span class="comment">/* Entry size if section holds table */</span></span><br><span class="line">&#125;Elf64_Shdr;</span><br></pre></td></tr></table></figure>
+<h6 id="SECTIONS"><a href="#SECTIONS" class="headerlink" title="SECTIONS"></a>SECTIONS</h6><p>查看指令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">objdump -x -s -d elfDemo.rel</span><br></pre></td></tr></table></figure>
+<p>1  .text section（代码节）</p>
+<p>在kali中很轻易就可以看到反汇编的结果。由反汇编的分块可知，在.text节中，代码以函数为块存储。</p>
+<p>2 .data section（数据节）</p>
+<p>由结果得知：.data节保存已经初始化的全局变量和局部静态变量。</p>
+<p><em>除.data节以外，还有.rodata节保存只读数据，包括只读变量和字符串常量。在例程中，我们的源代码里<code>printf(&quot;%d\n&quot;)</code>中就包含了 <strong>%d\n</strong>   这一只读字符串，故其藏于.rodata中。</em></p>
+<p><em>非静态局部变量值不被记录在节中！局部变量temp分配在栈中，不会在过程外被引用，因此不是符号定义</em></p>
+<p>3 .bss section  （BSS节）</p>
+<p>BSS节用于保存未初始化的全局变量和局部静态变量。其没有COTENTS属性，说明该节在文件中并不存在。因此该节的sh_offset域也就没有意义了。</p>
+<p>4.其它节</p>
+<p>（1）.dynsym与.symtab</p>
+<p>查看：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">readelf -s elfDemo.rel</span><br></pre></td></tr></table></figure>
+<p>前者保存了引用自外部文件的符号，只能在运行时被解析，而后者保存了本地的符号，用于调试和链接。</p>
+<p>ELF文件通过一个符号在表中的索引值来使用该符号。索引值从零开始计数，但值为0的表项不具有实际意义，它表示未定义的符号。每个符号都有一个符号值，对于变量和函数，该值就是符号的地址。</p>
+<blockquote>
+<p>符号、符号表</p>
+<p>符号：通俗地说，就是前面跟着类型（如int/void等）的函数名，或变量名。</p>
+<pre><code>      注意：这里的变量必须是除了非静态局部变量之外的其它变量。</code></pre>
+<p>所有符号载入史册——符号表。</p>
+<p>分类：</p>
+<p>①Global symbols（模块内部定义的全局符号，又称全局符号） – 由模块m定义并能被其他模块引用的全局符号。</p>
+<p>例如，非static函数和非static的全局变量（指不带static的全局变量）<br>如，main.c 中的全局变量名buf</p>
+<p>②External symbols（外部定义的全局符号，又称外部符号） – 由其他模块定义并被模块m引用的全局符号（标志是extern，extern用来修饰全局变量，即声明在“最外层”）（要体现引用，否则不会进入符号表）<br>如，main.c 中的函数名swap是一个外部符号。</p>
+<p>i.它是一个声明，但是也仅仅是告诉链接器，这个swap实际上来自外部。</p>
+<p>ii.还必须在模块m中引用，该符号才能出现在符号表里。对swap的引用，则体现在main函数中的swap();中。</p>
+</blockquote>
+<p>（2）.strtab与.shstrtab</p>
+<p>查看：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">readelf -x .strtab elfDemo.rel</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>.strtab是字符串表（STRING TABLE）<br>.shstrtab是段表字符串表(Section Header String Table)，针对段表<br>.symtab是符号表，一般是变量、函数</p>
+<p>shstrtab及symtab经常引用strtab中的字符串。</p>
+</blockquote>
+<p>（3）.comment</p>
+<p>存放编译器版本。</p>
+<p>（4）.rela.dyn</p>
+<p>重定位是连接符号定义与符号引用的过程。可重定位文件在构建可执行文件或共享目标文件时，需要把节中的符号引用换成这些符号在进程空间中的虚拟地址。包含这些转换信息的数据就是重定位项。</p>
+<h5 id="杂项"><a href="#杂项" class="headerlink" title="杂项"></a>杂项</h5><p>有时为了方便程序调试，我们在编译时会使用“-g”选项，此时GCC就会在目标文件中添加许多调试信息，采用DWARF格式的形式保存在.debug_info段中。</p>
+<p>查看方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">readelf -wi text.o</span><br></pre></td></tr></table></figure>
+<p>.o文件使用–savetemp可以留存，也可以通过之前介绍的-c,-o方式获得。（.o，可重定位文件）</p>
+<h3 id="可执行文件的装载"><a href="#可执行文件的装载" class="headerlink" title="可执行文件的装载"></a>可执行文件的装载</h3><h5 id="从运行视角审视ELF文件结构（段视角）"><a href="#从运行视角审视ELF文件结构（段视角）" class="headerlink" title="从运行视角审视ELF文件结构（段视角）"></a>从运行视角审视ELF文件结构（段视角）</h5><p>当执行一个可执行文件时，首先要将该文件与动态链接库装载到进程空间中，形成一个进程镜像。每个进程都拥有独立的虚拟地址空间，这个空间是由段头表中的程序头决定的。ELF文件头的e_phoff域给出了段头表的位置。</p>
+<p>查看段头表：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">readelf -l elfDemo.exec</span><br></pre></td></tr></table></figure>
+<p>可以看到，每个段都包含了一个或多个节，相当于是对这些节进行分组，段的出现也正是出于这个目的。随着节的数量增多，在进行内存映射时，就产生空间和资源浪费的问题。所以系统并不在乎每个节的具体内容，而只是将相同权限的节放于同一段中，从而节省资源。</p>
+<h5 id="常见段"><a href="#常见段" class="headerlink" title="常见段"></a>常见段</h5><p>1.PT_LOAD，用于描述可装载的节，而动态链接的可执行文件则包含两个，将.data和.text分开存放。</p>
+<p>2.动态段PT_DYNAMIC包含了一些动态链接器所必需的信息，如共享库列表、GOT表和重定位表等。</p>
+<p>3.PT_NONE类型的段保存了系统相关的附加信息。</p>
+<p>4.PT_INTER段将位置和大小信息存放在一个字符串中，是对程序解释器位置的描述。</p>
+<p>5.PT_PHDR段保存了程序头表本身的位置和大小。</p>
+<h3 id="补充："><a href="#补充：" class="headerlink" title="补充："></a>补充：</h3><p>在进程镜像中不光有段，还需要栈、堆、vDSO等空间，这些空间同样通过权限来进行访问控制，从而保证程序运行时的安全。</p>
+<h3 id="静态链接"><a href="#静态链接" class="headerlink" title="静态链接"></a>静态链接</h3><p>两个或多个不同的目标文件通过链接组成一个可执行文件。链接由链接器完成，根据时间发生的不同。分为三类：编译时链接，加载时链接和运行时链接。</p>
+<p><strong>段的装载地址和空间以页为单位对其，不足一页的代码或数据节也要占用一节</strong></p>
+<blockquote>
+<p><strong>什么是页</strong></p>
+<p>将一个用户进程的地址空间（逻辑）划分成若干个大小相等的区域，称为<strong>页或页面</strong>,页面大小<strong>由地址结构（逻辑）决定 ，</strong>并为各页从0开始编号。</p>
+</blockquote>
+<p>当前的链接器使用的时相似节合并的策略。</p>
+<p>首先先对各个节的长度、属性、偏移量进行分析，</p>
+<p>然后将输入目标文件中符号表的符号定义与符号引用统一生成全局符号表，</p>
+<p>最后读取输入文件的各类信息对符号进行解析、重定位等操作。</p>
+<p>相似节的合并就发生在重定位时。</p>
+<p>完成后，程序中的每条指令和全局变量就都有唯一的运行时内存地址了。</p>
+<p><strong>重定位表：告诉链接器如何修改节的内容。</strong>每一个重定位表对应一个需要被重定位的节，例如名为.rel.text的节用于保存.text节的重定位表。</p>
+<p>rel.text包含两个重定位入口：shared的类型R_X86_64_32用于绝对寻址。func的类型R_X86_64_PC32用于相对寻址。前者直接使用在指令编码的32位值作为有效地址，后者则使用编码的32位值加上PC（program counter）(程序指针) 的值得到有效地址。</p>
+<h3 id="动态链接"><a href="#动态链接" class="headerlink" title="动态链接"></a>动态链接</h3><p>在程序运行或加载时，在内存中完成链接的过程叫做动态链接。</p>
+<p>GCC默认使用动态链接编译，用<code>-shared</code>表示生成共享库，<code>-fpic</code>表示生成与位置无关的代码。</p>
+<p><strong>位置无关代码：</strong>可以加载而无需重定位的代码叫做位置无关代码（PIC），通过PIC，一个共享库的代码可以被无限多个进程所共享，从而节约内存资源。</p>
+<p>由于一个程序（共享库）的数据段与代码段的相对距离总是保持不变的，因此，指令和变量之间的距离是一个运行时常量，与绝对内存地址无关。于是就有了全局偏移量表。</p>
+<p>GOT被拆分成.got节和.got.plt节两个部分，后者需要延迟绑定，有读写权限。</p>
+<p><strong>延迟绑定</strong></p>
+<p>由于动态链接会造成链接过程变得冗长，为了加快启动速度，采用了延迟绑定技术。引入了PLT（过程链链表），配合GOT来实现延迟绑定。</p>
+<p>对于每一个.o程序中反汇编后的&lt; func@plt &gt;部分，其实都蕴含着两条语句：jmp <a href="mailto:&#x66;&#117;&#x6e;&#99;&#64;&#x67;&#x6f;&#116;&#x2e;&#x70;&#108;&#116;">&#x66;&#117;&#x6e;&#99;&#64;&#x67;&#x6f;&#116;&#x2e;&#x70;&#108;&#116;</a>, push n.若<a href="mailto:&#102;&#117;&#x6e;&#x63;&#64;&#103;&#x6f;&#x74;&#46;&#112;&#108;&#x74;">&#102;&#117;&#x6e;&#x63;&#64;&#103;&#x6f;&#x74;&#46;&#112;&#108;&#x74;</a>为空，则执行下一条语句push n(将func在rel.plt中的下标压入栈中)，不为空则不执行下一条。若执行了压栈，则程序会接着运行，找到链接器中的_dl_runtime_reslove()函数，然后将本身块位置与函数名提供给它，寻找func()的真实地址。</p>
+<h2 id="总结与提升"><a href="#总结与提升" class="headerlink" title="总结与提升"></a>总结与提升</h2><p>1.动态链接与延迟绑定详情：《程序员的自我修养：链接、装载与库》</p>
+<p>2.ELF文件结构详情：<a target="_blank" rel="noopener" href="https://blog.csdn.net/u011298001/category_8506924.html">点此进入</a></p>
+<p>3.总结：</p>
+<p>​    首先编译原理告诉我们，一个高级语言段是如何转化为机器码的。然后针对这个过程的关键部分，进行了探究：从生成的中间文件到中间文件组合链接成为可执行文件的全过程都有介绍。期间我们尤其注意每个操作的权限与每个文件的组成结构。</p>
+<p>​    展开来讲，编译大致分五个过程，gcc编译会形成三个中间文件，四个过程，我们对其中的.o文件特别感兴趣，并且将其纳入一个新的大文件类中：ELF，随后介绍了勘探ELF文件的方法，并对其组成结构进行了介绍，最后我们研究了ELF文件并不齐全的信息是如何变齐全的这一过程进行了探究，分别讲到，静态链接，动态链接，延迟绑定，延迟绑定是空间与时间性能双收的当前的最大公约数。</p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>啊啊啊，你要请我吃糖吗？<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/assets/alipay.jpg">
+                      <span class="reward-type">支付宝</span>
+                    </div>
+                    
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/assets/weixin.jpg">
+                      <span class="reward-type">微信</span>
+                    </div>
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
       
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2021" class="archive-year">2021</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/202102091936/" class="archive-article-date">
-  	<time datetime="2021-02-09T11:36:46.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-02-09</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/202102091936/">寒假2—c++primer第二章（第一部分）</a>
-    </h1>
-  
+      
 
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/study//" class="article-tag-list-link color1">study</a>
-        		</li>
-      		
-		</ul>
-	</div>
+      
 
-
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/202110041706/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/202101201017/" class="archive-article-date">
-  	<time datetime="2021-01-20T02:17:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-01-20</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/202109170004/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">大创开发日志2 CSS部分其一</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/202101201017/">寒假1 c++primer第一章</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/study//" class="article-tag-list-link color1">study</a>
-        		</li>
-      		
-		</ul>
-	</div>
+        
+        
+    </div>
+</aside>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/202101200934/" class="archive-article-date">
-  	<time datetime="2021-01-20T01:34:05.253Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-01-20</time>
-</a>
-        </div>
-    	 
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/202101200934/">诗</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/daily//" class="article-tag-list-link color1">daily</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
   
-  
-    </div></section>
+  <!--PC和WAP自适应版-->
+<div id="SOHUCS" sid="请将此处替换为配置SourceID的语句" ></div> 
+<script type="text/javascript"> 
+(function(){ 
+var appid = 'cyvy0kEyY'; 
+var conf = 'prod_c7747a5cd73c28307ba82bfa6df60860'; 
+var width = window.innerWidth || document.documentElement.clientWidth; 
+if (width < 1000) {
+var head = document.getElementsByTagName('head')[0]||document.head||document.documentElement;
+var script = document.createElement('script');
+script.type = 'text/javascript';
+script.charset = 'utf-8';
+script.id = 'changyan_mobile_js';
+script.src = 'https://cy-cdn.kuaizhan.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf;
+head.appendChild(script);
+} else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://cy-cdn.kuaizhan.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})}); } })(); </script>
   
 
-    
-    <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/archives/2021/">&amp;laquo; Prev</a><a class="page-number" href="/archives/2021/">1</a><span class="page-number current">2</span>
-    </nav>
   
 
+  
 
           </div>
         </div>
@@ -302,8 +507,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: true,
