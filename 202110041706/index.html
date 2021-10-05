@@ -47,11 +47,11 @@
 <div class="overlay" style="background: #4d4d4d"></div>
 <div class="intrude-less">
 	<header id="header" class="inner">
-		<a href="" class="profilepic">
+		<a href="/" class="profilepic">
 			<img src="/assets/头像.jpg" class="js-avatar">
 		</a>
 		<hgroup>
-		  <h1 class="header-author"><a href=""></a></h1>
+		  <h1 class="header-author"><a href="/"></a></h1>
 		</hgroup>
 		
 
@@ -321,7 +321,7 @@
 <p>GOT被拆分成.got节和.got.plt节两个部分，后者需要延迟绑定，有读写权限。</p>
 <p><strong>延迟绑定</strong></p>
 <p>由于动态链接会造成链接过程变得冗长，为了加快启动速度，采用了延迟绑定技术。引入了PLT（过程链链表），配合GOT来实现延迟绑定。</p>
-<p>对于每一个.o程序中反汇编后的&lt; func@plt &gt;部分，其实都蕴含着两条语句：jmp <a href="mailto:&#102;&#117;&#x6e;&#x63;&#x40;&#103;&#111;&#x74;&#x2e;&#112;&#108;&#116;">&#102;&#117;&#x6e;&#x63;&#x40;&#103;&#111;&#x74;&#x2e;&#112;&#108;&#116;</a>, push n.若<a href="mailto:&#102;&#117;&#110;&#x63;&#64;&#103;&#111;&#x74;&#46;&#x70;&#108;&#116;">&#102;&#117;&#110;&#x63;&#64;&#103;&#111;&#x74;&#46;&#x70;&#108;&#116;</a>为空，则执行下一条语句push n(将func在rel.plt中的下标压入栈中)，不为空则不执行下一条。若执行了压栈，则程序会接着运行，找到链接器中的_dl_runtime_reslove()函数，然后将本身块位置与函数名提供给它，寻找func()的真实地址。</p>
+<p>对于每一个.o程序中反汇编后的&lt; func@plt &gt;部分，其实都蕴含着两条语句：jmp <a href="mailto:&#x66;&#117;&#110;&#99;&#x40;&#103;&#x6f;&#x74;&#x2e;&#112;&#108;&#x74;">&#x66;&#117;&#110;&#99;&#x40;&#103;&#x6f;&#x74;&#x2e;&#112;&#108;&#x74;</a>, push n.若<a href="mailto:&#x66;&#x75;&#110;&#99;&#64;&#x67;&#x6f;&#116;&#x2e;&#x70;&#108;&#x74;">&#x66;&#x75;&#110;&#99;&#64;&#x67;&#x6f;&#116;&#x2e;&#x70;&#108;&#x74;</a>为空，则执行下一条语句push n(将func在rel.plt中的下标压入栈中)，不为空则不执行下一条。若执行了压栈，则程序会接着运行，找到链接器中的_dl_runtime_reslove()函数，然后将本身块位置与函数名提供给它，寻找func()的真实地址。</p>
 <h2 id="总结与提升"><a href="#总结与提升" class="headerlink" title="总结与提升"></a>总结与提升</h2><p>1.动态链接与延迟绑定详情：《程序员的自我修养：链接、装载与库》</p>
 <p>2.ELF文件结构详情：<a target="_blank" rel="noopener" href="https://blog.csdn.net/u011298001/category_8506924.html">点此进入</a></p>
 <p>3.总结：</p>
@@ -430,6 +430,15 @@
   
 <nav id="article-nav">
   
+    <a href="/202110052026/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          程序员的自我修养
+        
+      </div>
+    </a>
+  
   
     <a href="/202109170004/" id="article-nav-older" class="article-nav-link-wrap">
       <div class="article-nav-title">大创开发日志2 CSS部分其一</div>
@@ -451,6 +460,19 @@
             </div>
         </div>
         
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#CTF%E7%AB%9E%E8%B5%9B%E6%9D%83%E5%A8%81%E6%8C%87%E5%8D%97%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0"><span class="toc-number">1.</span> <span class="toc-text">CTF竞赛权威指南读书笔记</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E7%AB%A0%EF%BC%9A%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%96%87%E4%BB%B6"><span class="toc-number">1.1.</span> <span class="toc-text">第二章：二进制文件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86"><span class="toc-number">1.1.1.</span> <span class="toc-text">编译原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E6%AD%A5%E9%AA%A4"><span class="toc-number">1.1.2.</span> <span class="toc-text">实验步骤</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ELF%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F"><span class="toc-number">1.1.3.</span> <span class="toc-text">ELF文件格式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#ELF%E6%96%87%E4%BB%B6%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.1.3.1.</span> <span class="toc-text">ELF文件类型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E6%AD%A5%E9%AA%A4-1"><span class="toc-number">1.1.3.2.</span> <span class="toc-text">实验步骤</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ELF%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84"><span class="toc-number">1.1.3.3.</span> <span class="toc-text">ELF文件结构</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E9%93%BE%E6%8E%A5%E8%A7%86%E8%A7%92%E5%88%92%E5%88%86%EF%BC%9A%EF%BC%88%E4%BB%A5%E8%8A%82%E4%BD%9C%E4%B8%BA%E5%9F%BA%E6%9C%AC%E5%8D%95%E4%BD%8D%EF%BC%89"><span class="toc-number">1.1.3.3.1.</span> <span class="toc-text">链接视角划分：（以节作为基本单位）</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#ELF%E5%A4%B4"><span class="toc-number">1.1.3.3.1.1.</span> <span class="toc-text">ELF头</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E8%8A%82%E5%A4%B4%E8%A1%A8"><span class="toc-number">1.1.3.3.1.2.</span> <span class="toc-text">节头表</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#SECTIONS"><span class="toc-number">1.1.3.3.1.3.</span> <span class="toc-text">SECTIONS</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%9D%82%E9%A1%B9"><span class="toc-number">1.1.3.3.2.</span> <span class="toc-text">杂项</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E7%9A%84%E8%A3%85%E8%BD%BD"><span class="toc-number">1.1.4.</span> <span class="toc-text">可执行文件的装载</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%BB%8E%E8%BF%90%E8%A1%8C%E8%A7%86%E8%A7%92%E5%AE%A1%E8%A7%86ELF%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%EF%BC%88%E6%AE%B5%E8%A7%86%E8%A7%92%EF%BC%89"><span class="toc-number">1.1.4.0.1.</span> <span class="toc-text">从运行视角审视ELF文件结构（段视角）</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E6%AE%B5"><span class="toc-number">1.1.4.0.2.</span> <span class="toc-text">常见段</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A1%A5%E5%85%85%EF%BC%9A"><span class="toc-number">1.1.5.</span> <span class="toc-text">补充：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9D%99%E6%80%81%E9%93%BE%E6%8E%A5"><span class="toc-number">1.1.6.</span> <span class="toc-text">静态链接</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5"><span class="toc-number">1.1.7.</span> <span class="toc-text">动态链接</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93%E4%B8%8E%E6%8F%90%E5%8D%87"><span class="toc-number">1.2.</span> <span class="toc-text">总结与提升</span></a></li></ol></li></ol>
+                    </div>
+                </span>
+            </div>
+        </div>
         
     </div>
 </aside>
