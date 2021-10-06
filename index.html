@@ -259,7 +259,60 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        
+        <h1 id="CTF竞赛权威指南读书笔记"><a href="#CTF竞赛权威指南读书笔记" class="headerlink" title="CTF竞赛权威指南读书笔记"></a>CTF竞赛权威指南读书笔记</h1><h2 id="第4章，Linux安全机制"><a href="#第4章，Linux安全机制" class="headerlink" title="第4章，Linux安全机制"></a>第4章，Linux安全机制</h2><h3 id="Linux基础"><a href="#Linux基础" class="headerlink" title="Linux基础"></a>Linux基础</h3><h4 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h4><p>shell是一个用户与Linux进行交互的接口程序。bash是当前Linux标准的默认shell，我们也可以选用其它的shell脚本语言，如zsh，fish等。</p>
+<p>命令使用格式：<br>命令名称 [命令参数] [命令对象]<br>其中，命令参数有长和短两种模式，分别用”–”和”-“做前缀。如–help和-h</p>
+<p>以下死记硬背内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">ls——列出文件信息</span><br><span class="line">cd——切换工作目录</span><br><span class="line">pwd——显示当前工作目录</span><br><span class="line">uname——打印系统信息</span><br><span class="line">whoami——打印用户名</span><br><span class="line">man——查询帮助信息</span><br><span class="line">find——查找文件</span><br><span class="line">echo——打印文本，参数-e可激活转义字符</span><br><span class="line">cat——打印到标准输出</span><br><span class="line">head&#x2F;tail——打印文本的前&#x2F;后几行</span><br><span class="line">mv——移动或重命名文件</span><br><span class="line">cp——复制文件</span><br><span class="line">rm——删除文件</span><br><span class="line">ps——查看进程状态</span><br><span class="line">top——实时查看系统运行状态</span><br><span class="line">kill——杀死进程</span><br><span class="line">ifconfig——查看或设置网络设备</span><br><span class="line">grep——匹配文本模式</span><br><span class="line">nc——建立TCP&#x2F;UDP并监听</span><br><span class="line">netstat——查看网络，路由器，接口等信息。</span><br><span class="line">ping——判断网络主机是否响应</span><br><span class="line">su——切换到超级用户</span><br><span class="line">diff——比较文本差异</span><br><span class="line">cut——通过列提取文本</span><br><span class="line">history——查看bash_history中的历史命令</span><br><span class="line">exit——退出shell</span><br><span class="line">chmod——变更文件或目录权限</span><br></pre></td></tr></table></figure>
+<h4 id="流、管道、重定向"><a href="#流、管道、重定向" class="headerlink" title="流、管道、重定向"></a>流、管道、重定向</h4><ol>
+<li>流是一个非常重要的概念，简单理解成一串连续的，可边读边操作的数据。标准流分为：标入，标出，标错文件描述符是内核为管理已打开文件所创建的索引，使用一个非负整数来指代被打开的文件。<strong>Linux中一切都可以被看作文件</strong></li>
+<li>管道是指一系列进程通过标准流连接在了一起，前一个进程的输出直接作为后一个进程的输入。管道符号为“|”如：“ps -aux|grep bash” 指令</li>
+<li>重定向：&gt;,&gt;&gt;,&lt;,&lt;&lt;，这是比较显然的，重定向方向即为箭头方向。双重表追加，单个表覆盖，当单个符号时，有时会在前者附加一2，表示流为标准错误流。cmd &lt; file1 &gt; file2指令表示把1作为cmd的输入，再将cmd的输出重定向到2。<h4 id="根目录结构"><a href="#根目录结构" class="headerlink" title="根目录结构"></a>根目录结构</h4>文件成树状排布。</li>
+</ol>
+<p>LINIX系统中，有三种基本文件类型：</p>
+<ul>
+<li>普通文件：文本文件和二进制文件</li>
+<li>目录：包含一组链接的文本，且中每个链接都将一文件名映射到一个文件</li>
+<li>特殊文件：包含块文件、符号链接、管道、套接字等</li>
+</ul>
+<h4 id="用户组及文件权限"><a href="#用户组及文件权限" class="headerlink" title="用户组及文件权限"></a>用户组及文件权限</h4><p>Linux支持多用户操作，每个用户都有UID和GID，其中UID是对一个用户的单一身份标识，而GID则对应多个UID。一些程序可能需要UID/GID才可运行。ID可以通过<code>id</code>指令进行查看。</p>
+<p>UID为0的root用户类似于系统管理员（Administrator）拥有系统的完全访问权。</p>
+<p>su指令可以让我们从普通成员转为系统管理员。</p>
+<p>文件的访问权限可以通过<code>ls -l [file]</code>来查看。第一个字符表类型，相关细节可以参考：(细节)[<a target="_blank" rel="noopener" href="https://blog.csdn.net/weiwangchao_/article/details/46549605]%E3%80%82%E7%AC%AC2~4%E4%B8%AA%E5%AD%97%E7%AC%A6%E6%98%AF%E6%96%87%E4%BB%B6%E6%89%80%E6%9C%89%E8%80%85%E6%9D%83%E9%99%90%EF%BC%8C%E7%AC%AC5~7%E4%B8%BA%E7%BB%84%E6%9D%83%E9%99%90%EF%BC%8C%E5%89%A9%E4%B8%8B%E4%B8%89%E4%BD%8D%E4%B8%BA%E5%85%B6%E4%BB%96%E4%BA%BA%E6%9D%83%E9%99%90%E3%80%82r%EF%BC%8Cw%EF%BC%8Cx%E5%AF%B9%E5%BA%94%E8%AF%BB%EF%BC%8C%E5%86%99%EF%BC%8C%E6%89%A7%E8%A1%8C%E3%80%82%E6%B2%A1%E6%9C%89%E5%BD%93%E5%89%8D%E6%9D%83%E9%99%90%E5%88%99%E7%94%A8_%E5%8D%A0%E4%BD%8D%E3%80%82">https://blog.csdn.net/weiwangchao_/article/details/46549605]。第2~4个字符是文件所有者权限，第5~7为组权限，剩下三位为其他人权限。r，w，x对应读，写，执行。没有当前权限则用_占位。</a></p>
+<p>可以通过chmod指令变更文件权限。用法可参看：(用法)[<a target="_blank" rel="noopener" href="https://www.runoob.com/linux/linux-comm-chmod.html]%E3%80%82">https://www.runoob.com/linux/linux-comm-chmod.html]。</a></p>
+<h4 id="环境变量"><a href="#环境变量" class="headerlink" title="环境变量"></a>环境变量</h4><p>环境变量这一概念与win中的基本一致。<br>Linux中的环境变量有两种划分方式：按生命周期分有永久与临时之分，按作用域分有系统变量与用户变量之分。用<code>env</code>指令可以查看所有环境变量。</p>
+<p>几个特殊的环境变量</p>
+<ol>
+<li>LD——PRELOAD环境变量可以定义程序运行时优先加载的动态链接库，这就允许预加载库中的函数与符号能够覆盖掉后加载的库中的函数和符号。我们可以通过修改改该环境变量来实现加载特定libc的操作。</li>
+<li>environ，libc中定义，指向环境变量表，该表就在栈上，所以通过泄露environ指针的地址，就可以获得栈地址。</li>
+</ol>
+<h4 id="procfs文件系统"><a href="#procfs文件系统" class="headerlink" title="procfs文件系统"></a>procfs文件系统</h4><p>这是一种由Linux内核提供的虚拟文件系统，为访问内核数据提供接口，只占用内存而不占用存储。每个正在运行的进程都对应/proc下的一个目录，目录名就是进程的PID。而每个线程也有其对应的TID。</p>
+<p>auxv的每一项都是由一个unsigned long的id加上一个unsigned long的值构成，每个值具体的用途可以通过设置环境变量LD_SHOW_AUXV=1显示出来辅助向量存放在栈上，附带了传递给动态连接器的程序相关的特定信息。</p>
+<p>syscall第一个值是系统调用号，后跟六个参数，最后两个分别是堆栈指针和指令计数器。</p>
+<h4 id="字节序"><a href="#字节序" class="headerlink" title="字节序"></a>字节序</h4><p>大端序和小端序。大端序直观，为arm所独有，小端序符合常识，为i386所采用。（小端序为低位存于低址的存放方式）</p>
+<h4 id="（函数参数）调用约定"><a href="#（函数参数）调用约定" class="headerlink" title="（函数参数）调用约定"></a>（函数参数）调用约定</h4><p>内核接口：</p>
+<ul>
+<li>32位：eax为sycall_number，ebx，ecx，edx，esi和ebp用于将6个参数传递给系统调用。返回值保存在eax中，所有其他寄存器保存在int 0x80中。</li>
+<li>64位：系统调用通过syscall完成，除rcx,r11,rax外所有其他的寄存器都会被保存。系统调用的编号必须即存在rax中，不直接从堆栈上传递任何参数，且参数传递上限为6个。返回时rax保存了结果，只有MEMORY或者INTEGER类型的值才会被传给内核。</li>
+</ul>
+<p>用户接口：</p>
+<ul>
+<li>32位：cdecl约定（见上章）</li>
+<li>64位：通过寄存器传参，纸样比通过栈具有更高的效率。如果参数的类型是MEMORY，则在栈上传递参数，如果类型是UNTEGER则属需使用rdi,rsu,rdx,rcx,r8和r9。若参数多于六个，剩下的参数在栈上传递。</li>
+</ul>
+<h4 id="核心转储"><a href="#核心转储" class="headerlink" title="核心转储"></a>核心转储</h4><p>dump（转储）当程序运行的过程中出现异常或崩溃，程序就会将程序崩溃时的内存、寄存器状态、堆栈、指针、内存管理信息等记录下来，保存到一个文件中，叫做核心转储。</p>
+<h4 id="系统调用"><a href="#系统调用" class="headerlink" title="系统调用"></a>系统调用</h4><p>这是用户空间访问内核的唯一手段。</p>
+<p>int 0x80中断与系统调用。大概是此中断能使整个系统进入或退出底层状态，借以进行处理。（是相当经典的调用方式）</p>
+<p>现在则多用&lt; syscall &gt;&lt; sysret &gt;(64位) &lt; sysenter &gt;&lt; sysexit &gt;(32位)。</p>
+<p>直接调用系统调用的程序并不多见，更多的是通过高层接口来进行间接调用。printf函数即是如此。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">printf()——&gt;c库中的printf()——&gt;c库中的write()——&gt;系统调用中的write()。</span><br></pre></td></tr></table></figure>
+<h2 id="Stack-Canaries"><a href="#Stack-Canaries" class="headerlink" title="Stack Canaries"></a>Stack Canaries</h2><p>在<code>pwn checksec file</code>指令使用后，若出现：stack: canary found.则说明采用了这种方式来保护堆栈。</p>
+<p>一般分为三类：</p>
+<p>T canary:低位赋为0x00.<br>R canary:全随机数,或关于时间的哈希.<br>X canary:全随机数，增加攻破难度。</p>
+<p>作用：检测栈溢出错误。</p>
+<p>开启与关闭操作：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">编译时：gcc -fno-stack-protector file.c -o f.out</span><br><span class="line">测试：python -c &#39;print(&quot;A&quot;*20)&#39;| .&#x2F;f.out</span><br><span class="line">（关闭）</span><br><span class="line"></span><br><span class="line">编译时：gcc -fstack-protector file.c -o f.out</span><br><span class="line">测试：python -c &#39;print(&quot;A&quot;*20)&#39;| .&#x2F;f.out</span><br><span class="line">（开启）</span><br></pre></td></tr></table></figure>
+<p>开启时出现“段溢出”提示。<br>关闭时发生崩溃。</p>
+<h3 id="体察生成过程"><a href="#体察生成过程" class="headerlink" title="体察生成过程"></a>体察生成过程</h3><h3 id="hackit"><a href="#hackit" class="headerlink" title="hackit"></a>hackit</h3>
       
 
       
