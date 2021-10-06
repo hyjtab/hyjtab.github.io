@@ -320,61 +320,10 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="CTF竞赛权威指南读书笔记"><a href="#CTF竞赛权威指南读书笔记" class="headerlink" title="CTF竞赛权威指南读书笔记"></a>CTF竞赛权威指南读书笔记</h1><h2 id="第三章：汇编基础"><a href="#第三章：汇编基础" class="headerlink" title="第三章：汇编基础"></a>第三章：汇编基础</h2><!---more--->
-<h3 id="CPU架构与指令集"><a href="#CPU架构与指令集" class="headerlink" title="CPU架构与指令集"></a>CPU架构与指令集</h3><p>CPU即中央处理单元（central processing unit），有时也简称为处理器。作用是从内存中<strong>读取指令</strong>，然后<strong>解码</strong>和<strong>执行</strong>。</p>
-<p>CPU架构就是CPU的内部设计和结构。</p>
-<p>指令集架构（Instrucion Set Architecture,ISA）简称指令集，包含了一系列的操作码（opcode），以及由特定CPU执行的基本命令。指令集在CPU中的实现称为微架构，要想设计CPU，首先得决定使用什么样的指令集，然后才是设计硬件电路。</p>
-<p>由于指令集是一堆二进制数据，非常不利于阅读和理解，于是就有人发明了汇编语言，用近似人类语言的方式堆指令集进行了描述，每条汇编指令都有对应的指令。</p>
-<h4 id="指令集架构"><a href="#指令集架构" class="headerlink" title="指令集架构"></a>指令集架构</h4><p>第一个指令集架构称为：<strong>CISC（复杂指令集计算机）</strong>，典型代表就是x86处理器。32位处理器8086，8088，80286都属于x86处理器。后来AMD又将x86架构阔充到了64位，称为AMD64。（Linux发行版分别称i386与amd64）</p>
-<p>IBM则又有一套成体系的架构，称为：<strong>RISC（精简指令集计算机）</strong>，它减少了指令的数量，和简化指令的格式来优化和提高CPU的指令执行效率。典型代表就是ARM处理器，其64位版本指令集称为AArch32。（Linux发行版中分别称为aarch64和arm）其具有较高的执行效率与较低的资源消耗，IOS，Android，更多的移动操作系统与嵌入式操作系统都运行在这类处理器上。</p>
-<h4 id="CISC与RISC对比"><a href="#CISC与RISC对比" class="headerlink" title="CISC与RISC对比"></a>CISC与RISC对比</h4><p>CISC的指令代码不等长，不利于解码与优化操作。<br>RISC等长的操作指令，会使得平均代码长度更大，占用更多的存储空间。<br>CISC的操作指令更为复杂，精细，便捷，<br>RISC则指令数较少，往往一个CIRS指令能够解决的问题，需要使用很多条RISC指令。<br>CISC的寻址方式多样，RISC只支持寄存器寻址与立即数寻址。<br>CISC的通用寄存器只有8~16个，RISC的通用寄存器数量高达31个。后者可以完全只利用寄存器传参。</p>
-<h3 id="x86-x64汇编基础"><a href="#x86-x64汇编基础" class="headerlink" title="x86/x64汇编基础"></a>x86/x64汇编基础</h3><h4 id="CPU操作模式"><a href="#CPU操作模式" class="headerlink" title="CPU操作模式"></a>CPU操作模式</h4><p>对于x86系统而言，有三个操作模式：保护模式（子模式8086模式），实地址模式，系统管理模式。<br>保护模式下所有的指令和特性都是有效的，此特性限制在程序所分配的独立内存区域（内存段）内。超过内存段的部分会被CPU阻止。<br>实地址模式下，程序可以直接访问硬件，而不必经过虚拟地址的映射。<br>系统管理模式则为操作系统提供了许多底层管理与安全保护的操作权限。<br>x86-64系统下，引入了一种新的模式，叫做IA-32e,分为兼容模式与64位模式，兼容模式先32位程序与16位程序无需重新编译，64位模式则会导致处理器在64位的地址空间下运行程序。</p>
-<h4 id="语法风格"><a href="#语法风格" class="headerlink" title="语法风格"></a>语法风格</h4><p>AT&amp;T风格与Intel风格，更为常用的是Intel风格。</p>
-<ol>
-<li>16进制数用H作为后缀。</li>
-<li>间接寻址用[ ]表示</li>
-<li>操作位数为指令+dword ptr等（如QWORD PTR[RAX]）</li>
-</ol>
-<h4 id="寄存器与数据类型"><a href="#寄存器与数据类型" class="headerlink" title="寄存器与数据类型"></a>寄存器与数据类型</h4><p>具体通用寄存器名称<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/lygl35/article/details/119776084">16位寄存器</a><br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/daryl-blog/p/11369588.html">32位寄存器</a>)<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_30687811/article/details/99816725">64位寄存器</a></p>
-<p>注意，在64位模式下，需要在每条汇编指令增加REX的前缀后，操作数才会变成64位，增加8个通用寄存器。</p>
-<p>此外，64位模式下与32位模式有着相同的标志位状态；64位模式不能访问通用寄存器的高位字节（AH等）</p>
-<p>数据类型有：整型常量，浮点型常量，字符串常量。</p>
-<h5 id="常用汇编指令："><a href="#常用汇编指令：" class="headerlink" title="常用汇编指令："></a>常用汇编指令：</h5><p><strong>数据传送指令：</strong></p>
-<p>MOV</p>
-<p>tips：数组表示法：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">.data</span><br><span class="line">数组名 数据成员大小 数据1，数据2……</span><br></pre></td></tr></table></figure>
-<p><strong>数据运算指令：</strong></p>
-<p>SUB,ADD,INC,DEC，NEG（减，加，+1，-1，求补）</p>
-<p>此处运算皆有溢出可能性，会改变FLAGS寄存器标志位。</p>
-<p><strong>跳转与循环指令：</strong></p>
-<p>JMP：无条件跳转指令，在编写汇编时，需要一个标号来标识。一般情况下该标号必须和JMP指令位于同一函数中，但使用全局标号则不受影响。(标号象征着CPU中的虚拟地址)</p>
-<p>LOOP，ECX寄存器存放LOOP的次数，每次调用LOOP前，ECX中存放的数字先减一，再判断是否等于零，然后再执行。</p>
-<p><strong>栈操作指令：</strong><br>PUSH &amp; POP</p>
-<p>查看栈内存大小指令</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ulimit -a</span><br></pre></td></tr></table></figure>
-<p><strong>栈相关操作指令：</strong></p>
-<p>栈寄存器：（E/R）SP，</p>
-<p>栈的作用：</p>
-<ol>
-<li>存储局部变量；</li>
-<li>执行CALL指令调用函数时，保存函数地址以便函数结束时正确返回。</li>
-<li>传递函数参数</li>
-</ol>
-<p>CALL指令在调用某个子函数时，下一条指令地址会被PUSH入栈，等到函数结束时，程序将执行RET指令跳转到这个返回地址，将控制权交还给调用函数。等价于先POP再JMP到这个地址。</p>
-<p>调用子函数这一行为需要使用PROC与ENDP伪指令来定义，且需要分配一个有效标识符，所有的x86汇编程序中都包含标识符为main的函数，而mian函数不需要RET指令。</p>
-<p>栈传递函数参数时，最常见的调用约定为cdecl，<br>其格式为：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">push arg3</span><br><span class="line">push arg2</span><br><span class="line">push arg1</span><br><span class="line">call func</span><br></pre></td></tr></table></figure>
-<p>被调用函数是不知道调用函数向其传递了多少参数的。所以对于参数数量可变的函数来说，就需要说明符标示格式化说明，明确参数信息。</p>
-<h4 id="实验："><a href="#实验：" class="headerlink" title="实验："></a>实验：</h4><p>例程：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> a = <span class="number">12</span>, b = <span class="number">13</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d,%d,%d&quot;</span>, <span class="number">9988</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>执行结果：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">9988,1984768,0</span><br></pre></td></tr></table></figure>
-<p>1984768，0，一般来讲这两个数是printf内部的局部变量。</p>
-<p>PUSHFD&amp;POPFD</p>
-<p>由于MOV指令不能修改FLAGS寄存器内容，因此使用PUSHF就是保存FLAGS的最佳方式。</p>
-<hr>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>指令集——&gt;架构——&gt;CPU实体——&gt;汇编语言出现——&gt;指令集（汇编语言）两种——&gt;操作模式——&gt;编写风格——&gt;常用汇编指令——&gt;重点讲述栈</p>
-
+        <h1 id="CTF竞赛权威指南读书笔记"><a href="#CTF竞赛权威指南读书笔记" class="headerlink" title="CTF竞赛权威指南读书笔记"></a>CTF竞赛权威指南读书笔记</h1><h2 id="第三章：汇编基础"><a href="#第三章：汇编基础" class="headerlink" title="第三章：汇编基础"></a>第三章：汇编基础</h2>
+        
+          <a class="article-more-a" href="/202110061325/#more">more >></a>
+        
       
 
       
@@ -387,67 +336,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/202110061325/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-  
-    <article id="post-程序员的自我修养" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/202110052034/">程序员的自我修养</a>
-    </h1>
-  
-
-        
-        <a href="/202110052034/" class="archive-article-date">
-  	<time datetime="2021-10-05T12:34:51.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-10-05</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/202110052034/">展开全文 >></a>
         </p>
       
 
@@ -867,6 +755,71 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/202106291914/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+  
+    <article id="post-稀疏矩阵的csr存储方式及其基本运算" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/202106160117/">稀疏矩阵的csr存储方式及其基本运算</a>
+    </h1>
+  
+
+        
+        <a href="/202106160117/" class="archive-article-date">
+  	<time datetime="2021-06-15T17:17:08.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-06-16</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="csr矩阵的多样化构建以及加法与乘法运算"><a href="#csr矩阵的多样化构建以及加法与乘法运算" class="headerlink" title="csr矩阵的多样化构建以及加法与乘法运算"></a>csr矩阵的多样化构建以及加法与乘法运算</h1><p>写了两天……自己整的活终于算是有了个善终！！！</p>
+<p>csr矩阵是比三元组效率还要高的矩阵存储方式，但实际上我用vector库并不能很好的体现出这一点。在python中，csr矩阵经常作为基本单元运算。</p>
+        
+          <a class="article-more-a" href="/202106160117/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/202106160117/">展开全文 >></a>
         </p>
       
 

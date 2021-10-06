@@ -33,7 +33,7 @@
   <entry>
     <title>CTF使人变傻——2</title>
     <url>//202110061325/</url>
-    <content><![CDATA[<h1 id="CTF竞赛权威指南读书笔记"><a href="#CTF竞赛权威指南读书笔记" class="headerlink" title="CTF竞赛权威指南读书笔记"></a>CTF竞赛权威指南读书笔记</h1><h2 id="第三章：汇编基础"><a href="#第三章：汇编基础" class="headerlink" title="第三章：汇编基础"></a>第三章：汇编基础</h2><!---more--->
+    <content><![CDATA[<h1 id="CTF竞赛权威指南读书笔记"><a href="#CTF竞赛权威指南读书笔记" class="headerlink" title="CTF竞赛权威指南读书笔记"></a>CTF竞赛权威指南读书笔记</h1><h2 id="第三章：汇编基础"><a href="#第三章：汇编基础" class="headerlink" title="第三章：汇编基础"></a>第三章：汇编基础</h2><a id="more"></a>
 <h3 id="CPU架构与指令集"><a href="#CPU架构与指令集" class="headerlink" title="CPU架构与指令集"></a>CPU架构与指令集</h3><p>CPU即中央处理单元（central processing unit），有时也简称为处理器。作用是从内存中<strong>读取指令</strong>，然后<strong>解码</strong>和<strong>执行</strong>。</p>
 <p>CPU架构就是CPU的内部设计和结构。</p>
 <p>指令集架构（Instrucion Set Architecture,ISA）简称指令集，包含了一系列的操作码（opcode），以及由特定CPU执行的基本命令。指令集在CPU中的实现称为微架构，要想设计CPU，首先得决定使用什么样的指令集，然后才是设计硬件电路。</p>
@@ -88,11 +88,6 @@
 <hr>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>指令集——&gt;架构——&gt;CPU实体——&gt;汇编语言出现——&gt;指令集（汇编语言）两种——&gt;操作模式——&gt;编写风格——&gt;常用汇编指令——&gt;重点讲述栈</p>
 ]]></content>
-  </entry>
-  <entry>
-    <title>程序员的自我修养</title>
-    <url>//202110052034/</url>
-    <content><![CDATA[]]></content>
   </entry>
   <entry>
     <title>CTF使人变傻——1</title>
