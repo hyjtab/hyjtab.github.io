@@ -6,17 +6,17 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>复健刷题日记——1 | 竭的博客</title>
+  <title>CSAPP读书笔记其一 | 竭的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="关于快排的回忆与思索首先，复健是一个比较紧张（当前来讲）的事情，但不能耽搁。题目简单，但该总结还是要总结，顺便复习数据结构的基本知识，一举好几得！（试图安慰自己）">
+  <meta name="description" content="深入理解计算机系统：一至三章读书笔记">
 <meta property="og:type" content="article">
-<meta property="og:title" content="复健刷题日记——1">
-<meta property="og:url" content="http://example.com/202107102323/index.html">
+<meta property="og:title" content="CSAPP读书笔记其一">
+<meta property="og:url" content="http://example.com/202110262350/index.html">
 <meta property="og:site_name" content="竭的博客">
-<meta property="og:description" content="关于快排的回忆与思索首先，复健是一个比较紧张（当前来讲）的事情，但不能耽搁。题目简单，但该总结还是要总结，顺便复习数据结构的基本知识，一举好几得！（试图安慰自己）">
+<meta property="og:description" content="深入理解计算机系统：一至三章读书笔记">
 <meta property="og:locale">
-<meta property="article:published_time" content="2021-07-10T15:23:50.000Z">
-<meta property="article:modified_time" content="2021-07-10T17:15:02.673Z">
+<meta property="article:published_time" content="2021-10-26T15:50:08.000Z">
+<meta property="article:modified_time" content="2021-10-29T11:05:18.444Z">
 <meta property="article:author" content="竭">
 <meta property="article:tag" content="新手学习编程">
 <meta name="twitter:card" content="summary">
@@ -145,48 +145,28 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-复健刷题日记——1" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-CSAPP读书笔记其一" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      复健刷题日记——1
+      CSAPP读书笔记其一
     </h1>
   
 
         
-        <a href="/202107102323/" class="archive-article-date">
-  	<time datetime="2021-07-10T15:23:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-07-10</time>
+        <a href="/202110262350/" class="archive-article-date">
+  	<time datetime="2021-10-26T15:50:08.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-10-26</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="关于快排的回忆与思索"><a href="#关于快排的回忆与思索" class="headerlink" title="关于快排的回忆与思索"></a>关于快排的回忆与思索</h1><p>首先，复健是一个比较紧张（当前来讲）的事情，但不能耽搁。题目简单，但该总结还是要总结，顺便复习数据结构的基本知识，一举好几得！（试图安慰自己）</p>
-<a id="more"></a>
-
-<p>首先来看书上的快排代码：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">int</span> ele[<span class="number">2000002</span>] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">Divide</span><span class="params">(<span class="keyword">int</span> x,<span class="keyword">int</span> s,<span class="keyword">int</span> t)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> temp = ele[x];</span><br><span class="line">    <span class="keyword">int</span> i = s;</span><br><span class="line">    <span class="keyword">int</span> j = t;</span><br><span class="line">    <span class="keyword">while</span>(i&lt;j)&#123;</span><br><span class="line">        <span class="keyword">while</span>(ele[j]&gt;=temp)</span><br><span class="line">            j--;</span><br><span class="line">        <span class="keyword">if</span>(i&lt;j)&#123;</span><br><span class="line">            ele[x] = ele[j];</span><br><span class="line">            x = j;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span>(ele[i]&lt;=temp)</span><br><span class="line">            i++;</span><br><span class="line">        <span class="keyword">if</span>(i&lt;j)&#123;</span><br><span class="line">            ele[x] = ele[i];</span><br><span class="line">            x = i;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    ele[x] = temp;</span><br><span class="line">    <span class="keyword">return</span> x;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Quick_sort</span><span class="params">(<span class="keyword">int</span> s,<span class="keyword">int</span> t)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(s&lt;t)&#123;</span><br><span class="line">        <span class="keyword">int</span> x = s;</span><br><span class="line">        <span class="keyword">int</span> cut = Divide(x, s, t);</span><br><span class="line">        Quick_sort(s, cut - <span class="number">1</span>);</span><br><span class="line">        Quick_sort(cut + <span class="number">1</span>, t);</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n = <span class="number">0</span>, m = <span class="number">0</span>;</span><br><span class="line">    <span class="built_in">cin</span> &gt;&gt; n;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n;i++)&#123;</span><br><span class="line">        <span class="built_in">cin</span> &gt;&gt; ele[i];</span><br><span class="line">    &#125;</span><br><span class="line">    Quick_sort(<span class="number">0</span>, n<span class="number">-1</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n;i++)&#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; ele[i] &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这是和书上一模一样的快排，用两个函数嵌套式递归，文法正确。但是，很可惜，在模板样例中，只能过两个点。</p>
-<p>为什么呢？我进行测试后，发现，当数据规模上万后，两函数的嵌套递归索要空间过大，导致出现栈溢出。</p>
-<p>所以进行第一步优化：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">int</span> ele[<span class="number">100002</span>] = &#123; <span class="number">0</span> &#125;;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Quick_sort</span><span class="params">(<span class="keyword">int</span> s, <span class="keyword">int</span> t)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> x = s;</span><br><span class="line">        <span class="keyword">int</span> temp = ele[x];</span><br><span class="line">        <span class="keyword">int</span> i = s;</span><br><span class="line">        <span class="keyword">int</span> j = t;</span><br><span class="line">        <span class="keyword">if</span> (s &gt;= t)</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        <span class="keyword">while</span> (i &lt; j) &#123;</span><br><span class="line">            <span class="keyword">while</span> (ele[j] &gt;= temp &amp;&amp; j &gt; i)</span><br><span class="line">                j--;</span><br><span class="line">            <span class="keyword">if</span> (i &lt; j) &#123;</span><br><span class="line">                ele[i] = ele[j];</span><br><span class="line">                i++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">while</span> (ele[i] &lt;= temp &amp;&amp; i &lt; j)</span><br><span class="line">                i++;</span><br><span class="line">            <span class="keyword">if</span> (i &lt; j) &#123;</span><br><span class="line">                ele[j] = ele[i];</span><br><span class="line">                j--;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        ele[i] = temp;</span><br><span class="line">        <span class="keyword">int</span> cut=i;</span><br><span class="line">        Quick_sort(s, cut - <span class="number">1</span>);</span><br><span class="line">        Quick_sort(cut + <span class="number">1</span>, t);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n = <span class="number">0</span>, m = <span class="number">0</span>;</span><br><span class="line">    <span class="built_in">cin</span> &gt;&gt; n;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">        <span class="built_in">cin</span> &gt;&gt; ele[i];</span><br><span class="line">    &#125;</span><br><span class="line">    Quick_sort(<span class="number">0</span>, n - <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%d &quot;</span>,ele[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>没错，我将两个函数合并成了一个。这下空间不会爆了吧？没错，严谨的测试后发现，10w+的数据量也没有问题了。</p>
-<p>但是，这个代码交到模板题上，依然有一个点超时。为什么呢？</p>
-<p>函数不可能不递归，所以关键在于剪枝上，了解到最后一点为全部相同的数据，其实只要对其应用桶排序应该就能过。不过，要求是快排，为什么要用桶呢？所以我百思不得其解，最终在题解里找到了答案。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">int</span> n,a[<span class="number">1000001</span>];</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">qsort</span><span class="params">(<span class="keyword">int</span> l,<span class="keyword">int</span> r)</span><span class="comment">//应用二分思想</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> mid=a[(l+r)/<span class="number">2</span>];<span class="comment">//中间数</span></span><br><span class="line">    <span class="keyword">int</span> i=l,j=r;</span><br><span class="line">    <span class="keyword">do</span>&#123;</span><br><span class="line">        <span class="keyword">while</span>(a[i]&lt;mid) i++;<span class="comment">//查找左半部分比中间数大的数</span></span><br><span class="line">        <span class="keyword">while</span>(a[j]&gt;mid) j--;<span class="comment">//查找右半部分比中间数小的数</span></span><br><span class="line">        <span class="keyword">if</span>(i&lt;=j)<span class="comment">//如果有一组不满足排序条件（左小右大）的数</span></span><br><span class="line">        &#123;</span><br><span class="line">            swap(a[i],a[j]);<span class="comment">//交换</span></span><br><span class="line">            i++;</span><br><span class="line">            j--;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;<span class="keyword">while</span>(i&lt;=j);<span class="comment">//这里注意要有=</span></span><br><span class="line">    <span class="keyword">if</span>(l&lt;j) qsort(l,j);<span class="comment">//递归搜索左半部分</span></span><br><span class="line">    <span class="keyword">if</span>(i&lt;r) qsort(i,r);<span class="comment">//递归搜索右半部分</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">cin</span>&gt;&gt;n;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=n;i++) <span class="built_in">cin</span>&gt;&gt;a[i];</span><br><span class="line">    qsort(<span class="number">1</span>,n);</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=n;i++) <span class="built_in">cout</span>&lt;&lt;a[i]&lt;&lt;<span class="string">&quot; &quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>代码量少的同时，运行效率高，你说气(fu)不(bu)气(fu)？</p>
-<p>这正是之前我们教练要求的做法。所以就又到了背代码时间：</p>
-<p>先看函数组成：函数是起点，终点变量，中间数，一个含有两个while循环和一次条件交换的do while循环，以及两个尾递归组成的。</p>
-<p>具体的操作：首先确定flag值；然后在首尾不相遇（重叠）的情况下，一直循环下去，将本节维护完整。每节只维护一件事情：左右两边，左边小于flag，右边大于flag，<br>每次交换完成后，两个指针分别向中间凑近（减少多余判断）然后最后的递归拓空间前，判断起终点大小来决定是否执行递归。</p>
-<p>那么有几个疑问需要理解：首先，这个算法是如何剪枝的呢？第一处明显的就是尾递归处的调用剪枝，然后，一个明显区别于课本与我的代码的一点，就是每轮循环只执行一次交换，而且，细看，他并没有所谓的空位记录点！最好效果是4*1000000以上的计算次数就被这几个小操作给屏蔽掉了!</p>
-<p>第二个问题，在循环中不判断i和j的大小，就这样一直i++，i不会加出界吗？答案是不会。我们假设mid取到了最大值。这样i就会一直加下去吗？并不会。为什么？因为每个flag自己的位置，都会使得while循环停止！所以，注意，do while循环的条件才会加等号。包着的不能加！</p>
-<p>那do while循环为什么要加等号呢？其实答案也已经呼之欲出了。因为每次循环，都至少会在flag值处停顿一次，如果此时，正好是我所说的mid最大值情况，去掉等于，就会造成数组越界！</p>
-<p>最后，看区别：这个快排，其实并不是传统快排，是一种二分法和快排的结合体，总体时间性能优于传统快排。但是，在这种快排中，flag值必须取中间值，也就是a[(l+r)/2]。不能取开头和结尾。取开头，那第一个while循环形同虚设，取到结尾，最后一个没用了，达不到二分法的目的，到最后也无法分段。稍微偏移呢？会有溢出风险。因为每次交换是对称交换。同时也是每次交换操作时是防范爆栈风险的唯一环节。flag取在在三分之一处时，若flag是最大值，则判断到flag位置时，发现flag大于六分之四出的另一个值，flag便参与了交换——已经脱离快排了。所以，这种优化，也只有这一种写法。</p>
-<p>那么简单分析一下我们的代码，就会发现，我们的flag值是可以随便取的，甚至有一种剪枝是利用随机数来取flag值！这种玄学剪枝，我不想分析——一般只有逼急了才会用吧。然后看while循环的条件，我们的等号要不要加？答案是大循环，小循环都是可加可不加。只不过小循环上加了之后，便不再稳定了。所以记忆的容错性较高。不过，有了洋枪，谁还耍剑？背高级的吧~</p>
+        <h1 id="深入理解计算机系统：一至三章读书笔记"><a href="#深入理解计算机系统：一至三章读书笔记" class="headerlink" title="深入理解计算机系统：一至三章读书笔记"></a>深入理解计算机系统：一至三章读书笔记</h1><a id="more"></a>
+<h2 id="Chap1-漫游"><a href="#Chap1-漫游" class="headerlink" title="Chap1.漫游"></a>Chap1.漫游</h2><p>本章实际上没有什么内容，只是粗浅的谈及了CPU的硬件组成，首先指出了计算机的主要处理对象——信息的本质，位+上下文，一个c语言编写的helloworld程序文件，与他编译生成的可执行文件所包含的信息是不同的，区别不仅仅是某个具体的位不一样，还有上下文不同，两个因素导致了他们的执行效果也不同。<br>然后介绍编译细节，首先是编译器进行预处理和转换语言的工作（生成.i与.s文件），然后是汇编器翻译汇编码为二进制文件（生成.o文件）最后由链接器生成可执行文件（PE或ELF）<br>本章还介绍了本过程数据在硬件中的大致流动情况，在那之前稍微的介绍了一些有关计算机组成相关的知识：CPU是人人都知道的，伸出的I/O总线连接着计算机的各个I/O设备，总线的条数决定了机器的“字长”，最重要的DRAM（主存）是在执行程序时，用来存放程序和处理程序的部分，后面会提到的栈也在这里存放。接着就是CPU的细节了，分为总线接口，PC（程序计数器），ALU（算术逻辑单元），寄存器文件，在任何开机的时刻，PC都指向主存中的某条机器语言指令。ALU与寄存器文件共同执行一些简单的操作，执行完成后更新PC，而所谓寄存器文件就是一个小的存储设备，由一些单个字长的寄存器组成，每个寄存器都有唯一的名字，程序员通过名字访问他们。<br>流动情况是：首先当我们运行helloworld程序时，提供给shell一个指令，之后shell程序将字符逐一读入寄存器</p>
 
       
 
@@ -227,17 +207,6 @@
       
       
       
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/icpc-game//" class="article-tag-list-link color5">icpc_game</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
 
       
 
@@ -287,7 +256,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/202107102323/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/202110262350/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -301,18 +270,9 @@
   
 <nav id="article-nav">
   
-    <a href="/202107121458/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          科幻——《日暮》
-        
-      </div>
-    </a>
   
-  
-    <a href="/202106291914/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">图（二）最短路径——Dijkstra算法以及一些小的碎碎念</div>
+    <a href="/202110061546/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">CTF使人变傻——3</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -339,7 +299,7 @@
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E5%BF%AB%E6%8E%92%E7%9A%84%E5%9B%9E%E5%BF%86%E4%B8%8E%E6%80%9D%E7%B4%A2"><span class="toc-number">1.</span> <span class="toc-text">关于快排的回忆与思索</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%EF%BC%9A%E4%B8%80%E8%87%B3%E4%B8%89%E7%AB%A0%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0"><span class="toc-number">1.</span> <span class="toc-text">深入理解计算机系统：一至三章读书笔记</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Chap1-%E6%BC%AB%E6%B8%B8"><span class="toc-number">1.1.</span> <span class="toc-text">Chap1.漫游</span></a></li></ol></li></ol>
                     </div>
                 </span>
             </div>
