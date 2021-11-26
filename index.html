@@ -239,6 +239,74 @@
 
 
   
+    <article id="post-CSAPP读书笔记其二——函数栈帧" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/202111261921/">CSAPP读书笔记其二——函数栈帧</a>
+    </h1>
+  
+
+        
+        <a href="/202111261921/" class="archive-article-date">
+  	<time datetime="2021-11-26T11:21:36.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-11-26</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="运行时栈的奥秘"><a href="#运行时栈的奥秘" class="headerlink" title="运行时栈的奥秘"></a>运行时栈的奥秘</h1><p>首先，从抽象角度来看，运行时栈是进程抽象的一部分。它的作用是，为每个进程的局部变量提供空间以及为函数调用和返回提供环境。<br>同时我们注意到，运行时栈并不是每个程序运行时都有的，但系统对于每个程序运行时产生的进程抽象，确实都分配了空间。<br>而关于运行时栈的概念主要有以下几个难点：<br>１.运行时栈在内存中如何访问。<br>２.运行时栈对进程起什么具体的作用。<br>３.运行时栈的安全漏洞及其防护。<br>４.堆栈上的对齐概念。</p>
+<p>第一个问题涉及到汇编语言，一般来讲，<code>push</code>指令的操作对象就是SS:SP；所以，我们通过SS:SP的操作，进行访问栈顶。对于进栈出栈，只要通过设定SP以及SP指向的值即可。</p>
+<p>第二个问题在开篇时就有介绍。首先，在变量数太多，寄存器被占满之后的情况下，部分的局部变量会被放置在堆栈上进行存储。然后，在进行函数调用时，call指令和return指令都是利用了SS:SP来进行堆栈操作，保存或取出CS:IP来。除了这些，对于特定的寄存器，分为了调用者保护与被调用者保护。对于调用者保护寄存器，在进入函数前，编译器会自动地将其置入堆栈，对于被调用者保护寄存器，则系统会避免使用它，如确实需要使用，在函数头部进行入栈操作，函数尾部逆序出栈。<br>对于数组，我们会用栈上的空间进行存储。关于结构体与联合体，我们在第四个问题时一并介绍。<br>对于有返回值的函数来讲，默认为rax寄存器进行传值操作。剩余的寄存器，特殊的是BP寄存器——他总是藏在调用栈的返回地址之后——每次调用函数后，都会进行一个神奇的操作：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">……</span><br><span class="line">push bp;</span><br><span class="line">mov bp, sp;</span><br><span class="line">push ……</span><br><span class="line">……</span><br><span class="line">mov sp, bp;</span><br><span class="line">pop bp;</span><br><span class="line">ret;</span><br></pre></td></tr></table></figure>
+<p>这是为什么呢？其实考验的是指针的熟悉程度。在push bp这一操作后，bp原来的值被存在了现在的sp指向的地方。然后将sp赋给bp，这就实现了新指针指向原来旧值的操作。在恢复现场阶段，对于alloca函数造成的栈帧变长问题，变长数组的栈布局问题造成的编译器无法确定空间大小问题，做出了解决。在CSAPP原书上，指出了，在非变长栈帧上，rbp帧指针的使用不是必须的，只需要保证rbp寄存器是被调用者保护寄存器即可。<br>注意，最后三行代码中的前两行，一般用一个特殊指令解决：leave。<br>同时注意运行时栈的创建过程：在执行新的过程调用时生成，在进入新的栈帧时，旧的栈帧会被挂起。但注意，过程是一个比线程还要小的概念，是一个函数，一个方法，一个子例程……它帮助我们实现了控制的传递，数据的传递，内存的释放与分配。</p>
+<p>第三个问题<br>栈的安全问题，就是栈溢出———因为SS:SP只负责维护栈的读入与读出，不负责管理堆栈的范围。由于堆栈是向低地址“生长”的，对于缓存区的预期输入，我们很容易改变缓存之前的变量，地址，甚至是返回地址。由于虚拟地址总是维护成连续的一片片的，我们很容易就能够淹没原先的返回地址。在code部分执行返回地址后，返回到各种地方都是可能的，所以攻击者一般都会把自己的攻击代码与其地址搞到缓存区，以期执行自己的新代码，达到攻击目的。<br>对于堆栈安全，有许多保护措施：Canaries，NX，ASLR等，在之前的博客里有部分介绍，在之后的博客里也会继续补充。这里主要点一下ROP技术，参看此篇博客[对抗栈帧地址随机化/ASLR的两种思路和一些技巧]（<a target="_blank" rel="noopener" href="https://www.cnblogs.com/liqiuhao/p/7783688.html%EF%BC%89">https://www.cnblogs.com/liqiuhao/p/7783688.html）</a></p>
+<p>第四个问题<br>关于栈帧的对齐问题，这里首先提出了概念——出于对取指的考虑，在内存中的数据，有这样的规定，双字节数据必须以双字节为对齐，四字节数据必须以四字节为对齐……。对于结构体，在内存中其访问方式与数组一致，通过指针访问成员具体数据。但出于对齐问题考虑，我们的结构体并不是密铺的——结构体中的每一个元素所占用的空间应与最大元素一致。另外，出于对浮点数据的转移处理问题考虑，每一个栈帧的起始地址必须为16的倍数，每一个分配空间的函数所产生的块，也必须为16的倍数，所以在分配空间前，应当对地址进行恰当的处理。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/202111261921/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+  
     <article id="post-CSAPP读书笔记其一" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -751,82 +819,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/202106160117/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-  
-    <article id="post-图其一——邻接表的建立" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/202106060125/">图其一——邻接表的建立</a>
-    </h1>
-  
-
-        
-        <a href="/202106060125/" class="archive-article-date">
-  	<time datetime="2021-06-05T17:25:53.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-06-06</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="图论（一）"><a href="#图论（一）" class="headerlink" title="图论（一）"></a>图论（一）</h1><p>仍旧是乘着写作业的劲，赶出来的成果。（~ – ~）</p>
-<p>所以注释不全，还请谅解。</p>
-        
-          <a class="article-more-a" href="/202106060125/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/study//" class="article-tag-list-link color1">study</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/202106060125/">展开全文 >></a>
         </p>
       
 
