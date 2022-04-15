@@ -239,6 +239,178 @@
 
 
   
+    <article id="post-子集和问题" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/202112261545/">子集和问题</a>
+    </h1>
+  
+
+        
+        <a href="/202112261545/" class="archive-article-date">
+  	<time datetime="2021-12-26T07:45:01.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-12-26</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="信安数基大作业的研究"><a href="#信安数基大作业的研究" class="headerlink" title="信安数基大作业的研究"></a>信安数基大作业的研究</h1><p>此次将随着作业的完成更新此文。</p>
+<h2 id="子集和问题"><a href="#子集和问题" class="headerlink" title="子集和问题"></a>子集和问题</h2><p>首先读题，可知：</p>
+<blockquote>
+<p>子集和问题是指给定 <em>n</em>+1 个正整数 <em>a</em>0, …, <em>a**n</em>−1和 <em>s</em>，求解 <em>n</em> 个未知数 <em>x</em>0, …, <em>x**n</em>−1, 其中，对于 <em>i</em>=0, …, <em>n</em>−1，<em>x**i</em>=0 或 1，使得 <em>a</em>0<em>x</em>0+…+<em>a**n</em>−1<em>x**n</em>−1=<em>s</em>.</p>
+</blockquote>
+<p>我们要做的就是从给定的n维数组中找到确定的几个加数，最终得到目标和。</p>
+<blockquote>
+<p>每道题目均给出了五个参数：子集和问题维数 <em>n</em>、子集和密度<em>d</em>（定义见第三部分）、子集和向量 <strong>a</strong>=(<em>a</em>0, …, <em>a**n</em>−1)、和值 <em>s</em>、以及推荐的子集和问题解向量 <strong>x</strong>=(<em>x</em>0, …, <em>x**n</em>−1)的汉明重量 <em>k</em>（定义见第三部分）。待求解的子集和问题的解可能不唯一，选手若求解出的解向量 <strong>x</strong> 的汉明重量不为 <em>k</em> 同样得分。</p>
+</blockquote>
+<p>题目中给出了汉明重量，子集和密度两个陌生名词。在之后的题目小提示部分中做出了解释：</p>
+<blockquote>
+<p>背包密度 <em>d</em>=<em>n</em>/log2max{<em>a</em>1, …, <em>a**n</em>}</p>
+<p>汉明重量，即解向量中 1 的个数 <em>k</em>=|<em>x</em>0|+…+|<em>x**n</em>−1|</p>
+</blockquote>
+<p>根据提示，我们查阅到了许多相关的论文；</p>
+<h2 id="论文总结"><a href="#论文总结" class="headerlink" title="论文总结"></a>论文总结</h2><p>重点关注的是提示里提到的  <em>2010 年和 2011年的欧洲密码学年会上，研究人员进一步降低了子集和求解问题的计算复杂度</em>  这篇论文。</p>
+<p>这篇论文介绍了子集和问题相关研究状况的发展，首先给出了遍历加上生日攻击得到的2^0.5n的复杂度。这便是问题提出后的自然想法。然后介绍了前人通过部分数集的分治，将求解的时间复杂度大大降低。</p>
+<p>本篇论文提出的主要算法借鉴了其它两种前人的工作——</p>
+<ul>
+<li>将 -1 这一常量引入。</li>
+<li>将背包分解开为8份，每份均匀得到汉明重量——若汉明重量过小，则根据对称性求目标数的补集。</li>
+</ul>
+<p>将时间复杂度继续优化了下来。</p>
+<p>总的来说，论文提到的剪枝其实只是具有启发性，在线性运算中巧妙地降低了回溯成本，运用分治极大地降低了每个运算模块的复杂度，但并未达到让人豁然开朗的地步。</p>
+<p>之后大概学习了部分LLL算法之后，开始怀疑如何将子集和问题划归为求最短向量的问题。经过研习题目推荐的第三篇论文：<em>无碰撞背包的确定性格规约</em> 得知了构造方法：<br>构造格L(b0,…,bn)，其中bi={0,…,1(第i个),0,…(第n个为止)，Δa[i],Δ}，i∈[0,n-1]；bn={0,…,0,-cΔ,-kΔ}，其中c为解向量与背包向量的点积。k可以被认为是我们的汉明重量。（我们的题目如果没有碰撞情况下的话）Δ是一个大于k的常数。</p>
+<p>论文证明了，在没有碰撞的情况下，我们的最终答案是此格中的最小向量（svp）。</p>
+<h2 id="格理论与LLL算法"><a href="#格理论与LLL算法" class="headerlink" title="格理论与LLL算法"></a>格理论与LLL算法</h2><h3 id="入门格理论"><a href="#入门格理论" class="headerlink" title="入门格理论"></a>入门格理论</h3><p><strong>格</strong>：给定n个线性无关量b1,b2,…,bn∈R^m(向量空间)，由他们产生的格被定义为L(b1,b2,…,bn)={ Σxi bi | xi∈Z }；我们把b系列的向量，作为格的基。</p>
+<p><strong>满格</strong>：生成格的极大线性无关组的向量个数等于维数的格。</p>
+<p><strong>SPAN</strong>：格L(B)中基向量的所有线性组合所形成的集合，就叫做这组基向量所张成的空间(SPAN)。</p>
+<p><strong>基础区域</strong>：对于任意格基B，我们定义，p(B)={Bx|x∈R^n，0&lt;=xi&lt;1,i∈R}；</p>
+<p><strong>定理1</strong>：当基础区域与格不相交时，B为格的基。</p>
+<p><strong>幺模矩阵</strong>：假设矩阵U∈Z^n*n,|U|=+-1，则称U为幺模矩阵。幺模矩阵的逆也是幺模矩阵，幺模矩阵成群。</p>
+<p><strong>定理2</strong>：两个基B1,B2是等价的当且仅当B2=B1U，其中U表示某个幺模矩阵。</p>
+<p><strong>定理3</strong>：两个基等价当且仅当一个向量可以通过加减，互换，取反从另一个“basis”中获得。</p>
+<p><strong>格的行列式</strong>：当格为满格时，格的行列式是向量组的行列式的绝对值，为不满格时，为向量组行列式的转置与向量组的乘积这一整体的行列式的开平方。</p>
+<p><strong>施密特正交化</strong>：线代老知识，这里做下回顾：</p>
+<blockquote>
+<p>正交向量：两向量内积为零时，称其互为正交向量。</p>
+<p>正交向量组：两两正交的不含两向量的向量组为正交向量组。</p>
+<p>标准正交基：若两两正交的单位向量组构成向量空间的基则称他们为标准正交基</p>
+<p>施密特正交化就是一种求标准正交基的方法。</p>
+</blockquote>
+<p><strong>连续极小（最小长度）</strong>：其实也就是最小格向量。</p>
+<h3 id="LLL算法"><a href="#LLL算法" class="headerlink" title="LLL算法"></a>LLL算法</h3><p>设L⊂R^m是n维格，算法输入L的任意一组基，并以多项式时间输出一组LLL约化基。首先介绍LLL约化基的概念。</p>
+<p><strong>LLL约化基</strong>：格基需要满足以下性质才能成为LLL约化基。</p>
+<ul>
+<li>首先对于任意两个基中的向量，施密特正交化系数的绝对值小于1/2。（表示约化基）</li>
+<li>对于任意两个连续的基向量，有 σ∥bi∥^2 &lt;=∥b*i+1+μi+1,i bi*∥^2。</li>
+</ul>
+<p>所以我们容易得到，要想实现LLL算法，我们必须求得我们格基中的施密特正交系数。并且每次都要将对应bi换成正交化之后的结果。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/202112261545/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+  
+    <article id="post-CSAPP读书笔记其三——内存系统理解" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/202112191157/">CSAPP读书笔记其三——内存系统理解</a>
+    </h1>
+  
+
+        
+        <a href="/202112191157/" class="archive-article-date">
+  	<time datetime="2021-12-19T03:57:37.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-12-19</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/202112191157/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+  
     <article id="post-CSAPP读书笔记其二——函数栈帧" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -701,147 +873,6 @@
 
 
   
-    <article id="post-图（二）最短路径——Dijkstra算法" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/202106291914/">图（二）最短路径——Dijkstra算法以及一些小的碎碎念</a>
-    </h1>
-  
-
-        
-        <a href="/202106291914/" class="archive-article-date">
-  	<time datetime="2021-06-29T11:14:24.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-06-29</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="图论（二）"><a href="#图论（二）" class="headerlink" title="图论（二）"></a>图论（二）</h1><p>实际上按顺序应该先讲深搜和广搜，不过深搜广搜应该都掌握的还可以：这里就用两句经验之谈来进行总结：</p>
-<p>深搜：递归遍历当前连通，且未被遍历的结点。一个函数遍历一个节点，到空为止。</p>
-<p>广搜：嵌套式遍历当前结点连通的所有未被遍历的结点。一个函数遍历所有结点，每次嵌套遍历到空为止。</p>
-        
-          <a class="article-more-a" href="/202106291914/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/study//" class="article-tag-list-link color1">study</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/202106291914/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-  
-    <article id="post-稀疏矩阵的csr存储方式及其基本运算" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/202106160117/">稀疏矩阵的csr存储方式及其基本运算</a>
-    </h1>
-  
-
-        
-        <a href="/202106160117/" class="archive-article-date">
-  	<time datetime="2021-06-15T17:17:08.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-06-16</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="csr矩阵的多样化构建以及加法与乘法运算"><a href="#csr矩阵的多样化构建以及加法与乘法运算" class="headerlink" title="csr矩阵的多样化构建以及加法与乘法运算"></a>csr矩阵的多样化构建以及加法与乘法运算</h1><p>csr矩阵是比三元组效率还要高的矩阵存储方式，但实际上我用vector库并不能很好的体现出这一点。在python中，csr矩阵经常作为基本单元运算。</p>
-        
-          <a class="article-more-a" href="/202106160117/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/202106160117/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &amp;raquo;</a>
@@ -856,7 +887,7 @@
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2021 竭
+    		&copy; 2022 竭
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
