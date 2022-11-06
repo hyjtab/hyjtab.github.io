@@ -8,15 +8,15 @@
   <link rel="dns-prefetch" href="http://example.com">
   <title>从零开始写操作系统——其一 | 竭的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="helloOS的实现注明：本系列实验基于彭东老师的操作系统实战课程，分享内容仅供作者本人留档阅读。 任意操作系统的实现，离不开引导程序的指引。由于本次实验仅仅是一次思路探索，做出的所谓OS也不过是一个单纯的黑屏和提示字，所以引导程序借用了成熟的GRUB引导程序，并出于虚拟机引导程序版本不同的考虑，在引导头引用上，使用了两个不同版本的必需代码。 本次虚拟机环境为Ubuntu20.0.8，带有图形化界">
+  <meta name="description" content="helloOS的实现注明：本系列实验基于彭东老师的操作系统实战课程，分享内容仅供作者本人留档阅读。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="从零开始写操作系统——其一">
 <meta property="og:url" content="http://example.com/202211070036/index.html">
 <meta property="og:site_name" content="竭的博客">
-<meta property="og:description" content="helloOS的实现注明：本系列实验基于彭东老师的操作系统实战课程，分享内容仅供作者本人留档阅读。 任意操作系统的实现，离不开引导程序的指引。由于本次实验仅仅是一次思路探索，做出的所谓OS也不过是一个单纯的黑屏和提示字，所以引导程序借用了成熟的GRUB引导程序，并出于虚拟机引导程序版本不同的考虑，在引导头引用上，使用了两个不同版本的必需代码。 本次虚拟机环境为Ubuntu20.0.8，带有图形化界">
+<meta property="og:description" content="helloOS的实现注明：本系列实验基于彭东老师的操作系统实战课程，分享内容仅供作者本人留档阅读。">
 <meta property="og:locale">
 <meta property="article:published_time" content="2022-11-06T16:36:07.000Z">
-<meta property="article:modified_time" content="2022-11-06T17:18:05.701Z">
+<meta property="article:modified_time" content="2022-11-06T17:58:07.842Z">
 <meta property="article:author" content="竭">
 <meta property="article:tag" content="新手学习编程">
 <meta name="twitter:card" content="summary">
@@ -166,6 +166,7 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h1 id="helloOS的实现"><a href="#helloOS的实现" class="headerlink" title="helloOS的实现"></a>helloOS的实现</h1><p>注明：本系列实验基于彭东老师的操作系统实战课程，分享内容仅供作者本人留档阅读。</p>
+<a id="more"></a>
 <p>任意操作系统的实现，离不开引导程序的指引。由于本次实验仅仅是一次思路探索，做出的所谓OS也不过是一个单纯的黑屏和提示字，所以引导程序借用了成熟的GRUB引导程序，并出于虚拟机引导程序版本不同的考虑，在引导头引用上，使用了两个不同版本的必需代码。</p>
 <p>本次虚拟机环境为Ubuntu20.0.8，带有图形化界面。值得一提的是，由于本次demo使用了GRUB，故不能在WSL上进行实际操作，因为WSL并不需要这样的引导头进行启动，故该虚拟机是vmware虚拟机。</p>
 <p>除了针对引用GRUB部分进行的介绍外，还有一部分是重要的系统初始化。这些初始化代码主要进行了如下工作：首先是初始化了各个寄存器，随后令机器进入保护模式，最后引导CS:IP指向主函数。以上是汇编部分的整体情况。</p>

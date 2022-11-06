@@ -260,26 +260,9 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h1 id="linux环境下MySQL服务的部署步骤"><a href="#linux环境下MySQL服务的部署步骤" class="headerlink" title="linux环境下MySQL服务的部署步骤"></a>linux环境下MySQL服务的部署步骤</h1><p>由于笔者之前开发经历均采用了windows本地的傻瓜式图形界面进行操作，在部署真正的linux服务器时遇到了不少困难，此篇文章供笔者及大家参考。</p>
-<p><code>dpkg -l|grep mysql</code>查看是否已经安装MySQL-sever。若出现server则不需要进行安装操作。</p>
-<h2 id="1-安装"><a href="#1-安装" class="headerlink" title="1.安装"></a>1.安装</h2><p><code>sudo apt-get update</code>——下载不成功之罪魁祸首，其实主要是笔者服务器空转好长时间了=_=。</p>
-<p><code>sudo apt install mysql-server</code>——如果还没有成功，注意检查sources.list内容，及时换源。</p>
-<p><code>netstat -tap | grep mysql</code>——检查mysql服务是否运行，若出现listen字样，即可进行下一步操作。</p>
-<h2 id="2-配置"><a href="#2-配置" class="headerlink" title="2.配置"></a>2.配置</h2><p><code>mysql -u root -p</code>——该命令可以登入正在运行的mysql服务器。如果是刚下载，则接下来的password部分仅需要敲回车略过即可。</p>
-<p><code>exit;</code>——注意带分号，退出这个一无是处的mysql。</p>
-<p><code>mysql_secure_installation</code>——进行密码权限相关设置。注意此处会停五下，第一次是密码校验插件的安装。如果项目安全需求高，或者自己密码记忆力强，或者单纯喜欢安全，则可以选择y，其余情况推荐n，因为密码系统可能会导致后续发生问题。第二次，建立root用户密码，第三次删除匿名帐户，必选y。第四次，禁止管理员远程登陆，看个人需求选择即可。第五次，刷新配置，必选y。</p>
-<h2 id="3-公开化与授权"><a href="#3-公开化与授权" class="headerlink" title="3.公开化与授权"></a>3.公开化与授权</h2><p>编辑/etc/mysql/mysql.conf.d/mysqld.cnf 配置文件，将bind-adress这一行注释掉。</p>
-<p><code>mysql -u root -p</code>随后进入数据库，密码就是刚才设置的密码。</p>
-<p><code>grant all on *.* to root@&#39;%&#39; identified by &#39;你的密码&#39; with grant option;</code>在mysql中执行该命令，注意分号，引号不需去掉。</p>
-<p>这时可能会出现密码检测问题 (报错ERROR 1819 (HY000)) ，你的密码达不到高安全级，但确实是root用户的密码，这时可能需要修改root账户的密码或者改掉安全级限制，这里介绍修改安全级限制的方法。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">set global validate_password_policy&#x3D;LOW;  \\等级</span><br><span class="line">set global validate_password_length&#x3D;6;   \\长度</span><br></pre></td></tr></table></figure>
-<p>在mysql中执行如上两条指令即可。修改密码则有如下几种方式：引号不需要去掉，中括号不要加。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysqladmin -u root -p password &quot;新密码&quot; 回车 ，Enter password: 【输入原来的旧密码】</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt;use mysql;</span><br><span class="line">mysql&gt; update user set password&#x3D;password(&quot;新密码&quot;) where user&#x3D;&#39;root&#39;;      </span><br><span class="line">mysql&gt; flush privileges;</span><br><span class="line">mysql&gt; exit;</span><br></pre></td></tr></table></figure>
-<p>具体其他情况参见<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_44767040/article/details/124299587">该条博客</a></p>
-<p>书接正题，随后刷新权限并退出即可</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; flush privileges;    # 刷新权限</span><br><span class="line">mysql&gt; exit；</span><br></pre></td></tr></table></figure>
-<h2 id="4-修改端口"><a href="#4-修改端口" class="headerlink" title="4.修改端口"></a>4.修改端口</h2><p>众所周知，MySQL服务器初始运行在3306端口上。修改端口可以通过更改/etc/mysql/mysql.conf.d/mysqld.cnf文件，修改port参数。随后执行<code>systemctl restart mysql</code>命令重启服务，查看端口信息，则可以在mysql中通过<code>show global variables like &#39;port&#39;;</code>获取端口号信息。</p>
-<h2 id="预告：CSAPP系列以及C-PRIMER系列马上就出续集！还请大家多多担待-gt-lt"><a href="#预告：CSAPP系列以及C-PRIMER系列马上就出续集！还请大家多多担待-gt-lt" class="headerlink" title="预告：CSAPP系列以及C++PRIMER系列马上就出续集！还请大家多多担待&gt;_&lt;!!!"></a>预告：CSAPP系列以及C++PRIMER系列马上就出续集！还请大家多多担待&gt;_&lt;!!!</h2>
+        
+          <a class="article-more-a" href="/202211070119/#more">more >></a>
+        
       
 
       
@@ -341,19 +324,9 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h1 id="helloOS的实现"><a href="#helloOS的实现" class="headerlink" title="helloOS的实现"></a>helloOS的实现</h1><p>注明：本系列实验基于彭东老师的操作系统实战课程，分享内容仅供作者本人留档阅读。</p>
-<p>任意操作系统的实现，离不开引导程序的指引。由于本次实验仅仅是一次思路探索，做出的所谓OS也不过是一个单纯的黑屏和提示字，所以引导程序借用了成熟的GRUB引导程序，并出于虚拟机引导程序版本不同的考虑，在引导头引用上，使用了两个不同版本的必需代码。</p>
-<p>本次虚拟机环境为Ubuntu20.0.8，带有图形化界面。值得一提的是，由于本次demo使用了GRUB，故不能在WSL上进行实际操作，因为WSL并不需要这样的引导头进行启动，故该虚拟机是vmware虚拟机。</p>
-<p>除了针对引用GRUB部分进行的介绍外，还有一部分是重要的系统初始化。这些初始化代码主要进行了如下工作：首先是初始化了各个寄存器，随后令机器进入保护模式，最后引导CS:IP指向主函数。以上是汇编部分的整体情况。</p>
-<p>随后是针对main函数，由于helloOS操作系统并没有C语言运行环境，所以printf()函数编译后在操作系统中是失效的——没有其他库中包含该函数！所以需要自己编写。</p>
-<p>那么针对这个问题，解决方法就是研究“屏幕”和显示到底是个什么东西。显卡有两种工作模式，一种是字符模式，一种是图形模式。显然在这个demo中我们只需要关心字符模式即可。在显卡通用的VSEA标准下，显卡提供一个VGABIOS的固件程序，该固件程序运行在字符模式下时，把屏幕分成24×80的格间，每个格间映射一片内存——从0xb8000开始，每两个字节对应一个字符，第一字节是ASCLL码，第二字节是字符颜色。</p>
-<p>显然，我们只需要将helloOS中printf的内容从0xb8000开始，每隔一个内存空间就映射一个字符即可，具体代码实现就不粘贴了。</p>
-<p>helloOS的主要代码就告一段落了。剩下的代码就是有关Makefile的制作，lds文件的安排了，这些不属于主线内容，而且又是一个大坑，所以就暂且不表，放在之后。</p>
-<p>随后便是实操上的困难。在我这个版本的ubuntu，开机是没有选择系统界面的，这需要去修改/etc/default/grub文件，将其hide属性注释或删除，timeout属性延长至20-30，GRUB_CMDLINE_LINUX_DEFAUL这个属性设置为text。</p>
-<p>最后执行<code>sudo update-grub</code>该部分修改就结束了。</p>
-<p>然后还要修改的文件是/boot/grub/grub.cfg，在其内部添加helloOS启动项，注意set root属性，需要通过指令df确定，而其余陌生属性通过上下文确定。启动项模板如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">menuentry &#39;helloOS&#39;&#123;</span><br><span class="line">    insmod part_msdos#上下文</span><br><span class="line">    insmod ext2#上下文</span><br><span class="line">    set root &#x3D; &#39;hd0,msdos1&#39;#数字按情况修改</span><br><span class="line">    mutiboot2 &#x3D; &#x2F;boot&#x2F;helloOS.bin#提前放好编译好的操作系统文件</span><br><span class="line">    boot</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>随后重启操作系统，选择helloOS，这样我们的“自研”操作系统便横空出世了。</p>
-
+        
+          <a class="article-more-a" href="/202211070036/#more">more >></a>
+        
       
 
       
@@ -479,56 +452,9 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h1 id="信安数基大作业的研究"><a href="#信安数基大作业的研究" class="headerlink" title="信安数基大作业的研究"></a>信安数基大作业的研究</h1><p>此次将随着作业的完成更新此文。</p>
-<h2 id="子集和问题"><a href="#子集和问题" class="headerlink" title="子集和问题"></a>子集和问题</h2><p>首先读题，可知：</p>
-<blockquote>
-<p>子集和问题是指给定 <em>n</em>+1 个正整数 <em>a</em>0, …, <em>a**n</em>−1和 <em>s</em>，求解 <em>n</em> 个未知数 <em>x</em>0, …, <em>x**n</em>−1, 其中，对于 <em>i</em>=0, …, <em>n</em>−1，<em>x**i</em>=0 或 1，使得 <em>a</em>0<em>x</em>0+…+<em>a**n</em>−1<em>x**n</em>−1=<em>s</em>.</p>
-</blockquote>
-<p>我们要做的就是从给定的n维数组中找到确定的几个加数，最终得到目标和。</p>
-<blockquote>
-<p>每道题目均给出了五个参数：子集和问题维数 <em>n</em>、子集和密度<em>d</em>（定义见第三部分）、子集和向量 <strong>a</strong>=(<em>a</em>0, …, <em>a**n</em>−1)、和值 <em>s</em>、以及推荐的子集和问题解向量 <strong>x</strong>=(<em>x</em>0, …, <em>x**n</em>−1)的汉明重量 <em>k</em>（定义见第三部分）。待求解的子集和问题的解可能不唯一，选手若求解出的解向量 <strong>x</strong> 的汉明重量不为 <em>k</em> 同样得分。</p>
-</blockquote>
-<p>题目中给出了汉明重量，子集和密度两个陌生名词。在之后的题目小提示部分中做出了解释：</p>
-<blockquote>
-<p>背包密度 <em>d</em>=<em>n</em>/log2max{<em>a</em>1, …, <em>a**n</em>}</p>
-<p>汉明重量，即解向量中 1 的个数 <em>k</em>=|<em>x</em>0|+…+|<em>x**n</em>−1|</p>
-</blockquote>
-<p>根据提示，我们查阅到了许多相关的论文；</p>
-<h2 id="论文总结"><a href="#论文总结" class="headerlink" title="论文总结"></a>论文总结</h2><p>重点关注的是提示里提到的  <em>2010 年和 2011年的欧洲密码学年会上，研究人员进一步降低了子集和求解问题的计算复杂度</em>  这篇论文。</p>
-<p>这篇论文介绍了子集和问题相关研究状况的发展，首先给出了遍历加上生日攻击得到的2^0.5n的复杂度。这便是问题提出后的自然想法。然后介绍了前人通过部分数集的分治，将求解的时间复杂度大大降低。</p>
-<p>本篇论文提出的主要算法借鉴了其它两种前人的工作——</p>
-<ul>
-<li>将 -1 这一常量引入。</li>
-<li>将背包分解开为8份，每份均匀得到汉明重量——若汉明重量过小，则根据对称性求目标数的补集。</li>
-</ul>
-<p>将时间复杂度继续优化了下来。</p>
-<p>总的来说，论文提到的剪枝其实只是具有启发性，在线性运算中巧妙地降低了回溯成本，运用分治极大地降低了每个运算模块的复杂度，但并未达到让人豁然开朗的地步。</p>
-<p>之后大概学习了部分LLL算法之后，开始怀疑如何将子集和问题划归为求最短向量的问题。经过研习题目推荐的第三篇论文：<em>无碰撞背包的确定性格规约</em> 得知了构造方法：<br>构造格L(b0,…,bn)，其中bi={0,…,1(第i个),0,…(第n个为止)，Δa[i],Δ}，i∈[0,n-1]；bn={0,…,0,-cΔ,-kΔ}，其中c为解向量与背包向量的点积。k可以被认为是我们的汉明重量。（我们的题目如果没有碰撞情况下的话）Δ是一个大于k的常数。</p>
-<p>论文证明了，在没有碰撞的情况下，我们的最终答案是此格中的最小向量（svp）。</p>
-<h2 id="格理论与LLL算法"><a href="#格理论与LLL算法" class="headerlink" title="格理论与LLL算法"></a>格理论与LLL算法</h2><h3 id="入门格理论"><a href="#入门格理论" class="headerlink" title="入门格理论"></a>入门格理论</h3><p><strong>格</strong>：给定n个线性无关量b1,b2,…,bn∈R^m(向量空间)，由他们产生的格被定义为L(b1,b2,…,bn)={ Σxi bi | xi∈Z }；我们把b系列的向量，作为格的基。</p>
-<p><strong>满格</strong>：生成格的极大线性无关组的向量个数等于维数的格。</p>
-<p><strong>SPAN</strong>：格L(B)中基向量的所有线性组合所形成的集合，就叫做这组基向量所张成的空间(SPAN)。</p>
-<p><strong>基础区域</strong>：对于任意格基B，我们定义，p(B)={Bx|x∈R^n，0&lt;=xi&lt;1,i∈R}；</p>
-<p><strong>定理1</strong>：当基础区域与格不相交时，B为格的基。</p>
-<p><strong>幺模矩阵</strong>：假设矩阵U∈Z^n*n,|U|=+-1，则称U为幺模矩阵。幺模矩阵的逆也是幺模矩阵，幺模矩阵成群。</p>
-<p><strong>定理2</strong>：两个基B1,B2是等价的当且仅当B2=B1U，其中U表示某个幺模矩阵。</p>
-<p><strong>定理3</strong>：两个基等价当且仅当一个向量可以通过加减，互换，取反从另一个“basis”中获得。</p>
-<p><strong>格的行列式</strong>：当格为满格时，格的行列式是向量组的行列式的绝对值，为不满格时，为向量组行列式的转置与向量组的乘积这一整体的行列式的开平方。</p>
-<p><strong>施密特正交化</strong>：线代老知识，这里做下回顾：</p>
-<blockquote>
-<p>正交向量：两向量内积为零时，称其互为正交向量。</p>
-<p>正交向量组：两两正交的不含两向量的向量组为正交向量组。</p>
-<p>标准正交基：若两两正交的单位向量组构成向量空间的基则称他们为标准正交基</p>
-<p>施密特正交化就是一种求标准正交基的方法。</p>
-</blockquote>
-<p><strong>连续极小（最小长度）</strong>：其实也就是最小格向量。</p>
-<h3 id="LLL算法"><a href="#LLL算法" class="headerlink" title="LLL算法"></a>LLL算法</h3><p>设L⊂R^m是n维格，算法输入L的任意一组基，并以多项式时间输出一组LLL约化基。首先介绍LLL约化基的概念。</p>
-<p><strong>LLL约化基</strong>：格基需要满足以下性质才能成为LLL约化基。</p>
-<ul>
-<li>首先对于任意两个基中的向量，施密特正交化系数的绝对值小于1/2。（表示约化基）</li>
-<li>对于任意两个连续的基向量，有 σ∥bi∥^2 &lt;=∥b*i+1+μi+1,i bi*∥^2。</li>
-</ul>
-<p>所以我们容易得到，要想实现LLL算法，我们必须求得我们格基中的施密特正交系数。并且每次都要将对应bi换成正交化之后的结果。</p>
-
+        
+          <a class="article-more-a" href="/202112261545/#more">more >></a>
+        
       
 
       
