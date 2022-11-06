@@ -6,15 +6,17 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>Archives: 2022 | 竭的博客</title>
+  <title>从零开始写操作系统——其一 | 竭的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="c++学习">
-<meta property="og:type" content="website">
-<meta property="og:title" content="竭的博客">
-<meta property="og:url" content="http://example.com/archives/2022/index.html">
+  <meta name="description" content="helloOS的实现注明：本系列实验基于彭东老师的操作系统实战课程，分享内容仅供作者本人留档阅读。 任意操作系统的实现，离不开引导程序的指引。由于本次实验仅仅是一次思路探索，做出的所谓OS也不过是一个单纯的黑屏和提示字，所以引导程序借用了成熟的GRUB引导程序，并出于虚拟机引导程序版本不同的考虑，在引导头引用上，使用了两个不同版本的必需代码。 本次虚拟机环境为Ubuntu20.0.8，带有图形化界">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从零开始写操作系统——其一">
+<meta property="og:url" content="http://example.com/202211070036/index.html">
 <meta property="og:site_name" content="竭的博客">
-<meta property="og:description" content="c++学习">
+<meta property="og:description" content="helloOS的实现注明：本系列实验基于彭东老师的操作系统实战课程，分享内容仅供作者本人留档阅读。 任意操作系统的实现，离不开引导程序的指引。由于本次实验仅仅是一次思路探索，做出的所谓OS也不过是一个单纯的黑屏和提示字，所以引导程序借用了成熟的GRUB引导程序，并出于虚拟机引导程序版本不同的考虑，在引导头引用上，使用了两个不同版本的必需代码。 本次虚拟机环境为Ubuntu20.0.8，带有图形化界">
 <meta property="og:locale">
+<meta property="article:published_time" content="2022-11-06T16:36:07.000Z">
+<meta property="article:modified_time" content="2022-11-06T17:18:05.701Z">
 <meta property="article:author" content="竭">
 <meta property="article:tag" content="新手学习编程">
 <meta name="twitter:card" content="summary">
@@ -143,104 +145,217 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-从零开始写操作系统——其一" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2022" class="archive-year">2022</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/202211070119/" class="archive-article-date">
-  	<time datetime="2022-11-06T17:19:04.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-11-07</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/202211070119/">MySQL linux服务器部署指南</a>
+    <h1 class="article-title" itemprop="name">
+      从零开始写操作系统——其一
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/202211070036/" class="archive-article-date">
+        
+        <a href="/202211070036/" class="archive-article-date">
   	<time datetime="2022-11-06T16:36:07.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-11-07</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/202211070036/">从零开始写操作系统——其一</a>
-    </h1>
-  
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="helloOS的实现"><a href="#helloOS的实现" class="headerlink" title="helloOS的实现"></a>helloOS的实现</h1><p>注明：本系列实验基于彭东老师的操作系统实战课程，分享内容仅供作者本人留档阅读。</p>
+<p>任意操作系统的实现，离不开引导程序的指引。由于本次实验仅仅是一次思路探索，做出的所谓OS也不过是一个单纯的黑屏和提示字，所以引导程序借用了成熟的GRUB引导程序，并出于虚拟机引导程序版本不同的考虑，在引导头引用上，使用了两个不同版本的必需代码。</p>
+<p>本次虚拟机环境为Ubuntu20.0.8，带有图形化界面。值得一提的是，由于本次demo使用了GRUB，故不能在WSL上进行实际操作，因为WSL并不需要这样的引导头进行启动，故该虚拟机是vmware虚拟机。</p>
+<p>除了针对引用GRUB部分进行的介绍外，还有一部分是重要的系统初始化。这些初始化代码主要进行了如下工作：首先是初始化了各个寄存器，随后令机器进入保护模式，最后引导CS:IP指向主函数。以上是汇编部分的整体情况。</p>
+<p>随后是针对main函数，由于helloOS操作系统并没有C语言运行环境，所以printf()函数编译后在操作系统中是失效的——没有其他库中包含该函数！所以需要自己编写。</p>
+<p>那么针对这个问题，解决方法就是研究“屏幕”和显示到底是个什么东西。显卡有两种工作模式，一种是字符模式，一种是图形模式。显然在这个demo中我们只需要关心字符模式即可。在显卡通用的VSEA标准下，显卡提供一个VGABIOS的固件程序，该固件程序运行在字符模式下时，把屏幕分成24×80的格间，每个格间映射一片内存——从0xb8000开始，每两个字节对应一个字符，第一字节是ASCLL码，第二字节是字符颜色。</p>
+<p>显然，我们只需要将helloOS中printf的内容从0xb8000开始，每隔一个内存空间就映射一个字符即可，具体代码实现就不粘贴了。</p>
+<p>helloOS的主要代码就告一段落了。剩下的代码就是有关Makefile的制作，lds文件的安排了，这些不属于主线内容，而且又是一个大坑，所以就暂且不表，放在之后。</p>
+<p>随后便是实操上的困难。在我这个版本的ubuntu，开机是没有选择系统界面的，这需要去修改/etc/default/grub文件，将其hide属性注释或删除，timeout属性延长至20-30，GRUB_CMDLINE_LINUX_DEFAUL这个属性设置为text。</p>
+<p>最后执行<code>sudo update-grub</code>该部分修改就结束了。</p>
+<p>然后还要修改的文件是/boot/grub/grub.cfg，在其内部添加helloOS启动项，注意set root属性，需要通过指令df确定，而其余陌生属性通过上下文确定。启动项模板如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">menuentry &#39;helloOS&#39;&#123;</span><br><span class="line">    insmod part_msdos#上下文</span><br><span class="line">    insmod ext2#上下文</span><br><span class="line">    set root &#x3D; &#39;hd0,msdos1&#39;#数字按情况修改</span><br><span class="line">    mutiboot2 &#x3D; &#x2F;boot&#x2F;helloOS.bin#提前放好编译好的操作系统文件</span><br><span class="line">    boot</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>随后重启操作系统，选择helloOS，这样我们的“自研”操作系统便横空出世了。</p>
 
-        <div class="article-info info-on-right">
-          
-          
+      
 
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>啊啊啊，你要请我吃糖吗？<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/assets/alipay.jpg">
+                      <span class="reward-type">支付宝</span>
+                    </div>
+                    
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/assets/weixin.jpg">
+                      <span class="reward-type">微信</span>
+                    </div>
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/202211070036/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/202206030129/" class="archive-article-date">
-  	<time datetime="2022-06-02T17:29:33.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-06-03</time>
-</a>
+<nav id="article-nav">
+  
+    <a href="/202211070119/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          MySQL linux服务器部署指南
+        
+      </div>
+    </a>
+  
+  
+    <a href="/202206030129/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">密码学大作业——NS认证协议</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/202206030129/">密码学大作业——NS认证协议</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#helloOS%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.</span> <span class="toc-text">helloOS的实现</span></a></li></ol>
+                    </div>
+                </span>
+            </div>
         </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
+        
+    </div>
+</aside>
+
+
+
   
   
-    </div></section>
   
 
-    
+  
+  <!--PC和WAP自适应版-->
+<div id="SOHUCS" sid="请将此处替换为配置SourceID的语句" ></div> 
+<script type="text/javascript"> 
+(function(){ 
+var appid = 'cyvy0kEyY'; 
+var conf = 'prod_c7747a5cd73c28307ba82bfa6df60860'; 
+var width = window.innerWidth || document.documentElement.clientWidth; 
+if (width < 1000) {
+var head = document.getElementsByTagName('head')[0]||document.head||document.documentElement;
+var script = document.createElement('script');
+script.type = 'text/javascript';
+script.charset = 'utf-8';
+script.id = 'changyan_mobile_js';
+script.src = 'https://cy-cdn.kuaizhan.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf;
+head.appendChild(script);
+} else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://cy-cdn.kuaizhan.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})}); } })(); </script>
+  
 
+  
+
+  
 
           </div>
         </div>
@@ -265,8 +380,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: true,

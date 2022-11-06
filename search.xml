@@ -26,6 +26,49 @@
       </categories>
   </entry>
   <entry>
+    <title>MySQL linux服务器部署指南</title>
+    <url>//202211070119/</url>
+    <content><![CDATA[<h1 id="linux环境下MySQL服务的部署步骤"><a href="#linux环境下MySQL服务的部署步骤" class="headerlink" title="linux环境下MySQL服务的部署步骤"></a>linux环境下MySQL服务的部署步骤</h1><p>由于笔者之前开发经历均采用了windows本地的傻瓜式图形界面进行操作，在部署真正的linux服务器时遇到了不少困难，此篇文章供笔者及大家参考。</p>
+<p><code>dpkg -l|grep mysql</code>查看是否已经安装MySQL-sever。若出现server则不需要进行安装操作。</p>
+<h2 id="1-安装"><a href="#1-安装" class="headerlink" title="1.安装"></a>1.安装</h2><p><code>sudo apt-get update</code>——下载不成功之罪魁祸首，其实主要是笔者服务器空转好长时间了=_=。</p>
+<p><code>sudo apt install mysql-server</code>——如果还没有成功，注意检查sources.list内容，及时换源。</p>
+<p><code>netstat -tap | grep mysql</code>——检查mysql服务是否运行，若出现listen字样，即可进行下一步操作。</p>
+<h2 id="2-配置"><a href="#2-配置" class="headerlink" title="2.配置"></a>2.配置</h2><p><code>mysql -u root -p</code>——该命令可以登入正在运行的mysql服务器。如果是刚下载，则接下来的password部分仅需要敲回车略过即可。</p>
+<p><code>exit;</code>——注意带分号，退出这个一无是处的mysql。</p>
+<p><code>mysql_secure_installation</code>——进行密码权限相关设置。注意此处会停五下，第一次是密码校验插件的安装。如果项目安全需求高，或者自己密码记忆力强，或者单纯喜欢安全，则可以选择y，其余情况推荐n，因为密码系统可能会导致后续发生问题。第二次，建立root用户密码，第三次删除匿名帐户，必选y。第四次，禁止管理员远程登陆，看个人需求选择即可。第五次，刷新配置，必选y。</p>
+<h2 id="3-公开化与授权"><a href="#3-公开化与授权" class="headerlink" title="3.公开化与授权"></a>3.公开化与授权</h2><p>编辑/etc/mysql/mysql.conf.d/mysqld.cnf 配置文件，将bind-adress这一行注释掉。</p>
+<p><code>mysql -u root -p</code>随后进入数据库，密码就是刚才设置的密码。</p>
+<p><code>grant all on *.* to root@&#39;%&#39; identified by &#39;你的密码&#39; with grant option;</code>在mysql中执行该命令，注意分号，引号不需去掉。</p>
+<p>这时可能会出现密码检测问题 (报错ERROR 1819 (HY000)) ，你的密码达不到高安全级，但确实是root用户的密码，这时可能需要修改root账户的密码或者改掉安全级限制，这里介绍修改安全级限制的方法。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">set global validate_password_policy&#x3D;LOW;  \\等级</span><br><span class="line">set global validate_password_length&#x3D;6;   \\长度</span><br></pre></td></tr></table></figure>
+<p>在mysql中执行如上两条指令即可。修改密码则有如下几种方式：引号不需要去掉，中括号不要加。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mysqladmin -u root -p password &quot;新密码&quot; 回车 ，Enter password: 【输入原来的旧密码】</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mysql&gt;use mysql;</span><br><span class="line">mysql&gt; update user set password&#x3D;password(&quot;新密码&quot;) where user&#x3D;&#39;root&#39;;      </span><br><span class="line">mysql&gt; flush privileges;</span><br><span class="line">mysql&gt; exit;</span><br></pre></td></tr></table></figure>
+<p>具体其他情况参见<a href="https://blog.csdn.net/weixin_44767040/article/details/124299587">该条博客</a></p>
+<p>书接正题，随后刷新权限并退出即可</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mysql&gt; flush privileges;    # 刷新权限</span><br><span class="line">mysql&gt; exit；</span><br></pre></td></tr></table></figure>
+<h2 id="4-修改端口"><a href="#4-修改端口" class="headerlink" title="4.修改端口"></a>4.修改端口</h2><p>众所周知，MySQL服务器初始运行在3306端口上。修改端口可以通过更改/etc/mysql/mysql.conf.d/mysqld.cnf文件，修改port参数。随后执行<code>systemctl restart mysql</code>命令重启服务，查看端口信息，则可以在mysql中通过<code>show global variables like &#39;port&#39;;</code>获取端口号信息。</p>
+<h2 id="预告：CSAPP系列以及C-PRIMER系列马上就出续集！还请大家多多担待-gt-lt"><a href="#预告：CSAPP系列以及C-PRIMER系列马上就出续集！还请大家多多担待-gt-lt" class="headerlink" title="预告：CSAPP系列以及C++PRIMER系列马上就出续集！还请大家多多担待&gt;_&lt;!!!"></a>预告：CSAPP系列以及C++PRIMER系列马上就出续集！还请大家多多担待&gt;_&lt;!!!</h2>]]></content>
+  </entry>
+  <entry>
+    <title>从零开始写操作系统——其一</title>
+    <url>//202211070036/</url>
+    <content><![CDATA[<h1 id="helloOS的实现"><a href="#helloOS的实现" class="headerlink" title="helloOS的实现"></a>helloOS的实现</h1><p>注明：本系列实验基于彭东老师的操作系统实战课程，分享内容仅供作者本人留档阅读。</p>
+<p>任意操作系统的实现，离不开引导程序的指引。由于本次实验仅仅是一次思路探索，做出的所谓OS也不过是一个单纯的黑屏和提示字，所以引导程序借用了成熟的GRUB引导程序，并出于虚拟机引导程序版本不同的考虑，在引导头引用上，使用了两个不同版本的必需代码。</p>
+<p>本次虚拟机环境为Ubuntu20.0.8，带有图形化界面。值得一提的是，由于本次demo使用了GRUB，故不能在WSL上进行实际操作，因为WSL并不需要这样的引导头进行启动，故该虚拟机是vmware虚拟机。</p>
+<p>除了针对引用GRUB部分进行的介绍外，还有一部分是重要的系统初始化。这些初始化代码主要进行了如下工作：首先是初始化了各个寄存器，随后令机器进入保护模式，最后引导CS:IP指向主函数。以上是汇编部分的整体情况。</p>
+<p>随后是针对main函数，由于helloOS操作系统并没有C语言运行环境，所以printf()函数编译后在操作系统中是失效的——没有其他库中包含该函数！所以需要自己编写。</p>
+<p>那么针对这个问题，解决方法就是研究“屏幕”和显示到底是个什么东西。显卡有两种工作模式，一种是字符模式，一种是图形模式。显然在这个demo中我们只需要关心字符模式即可。在显卡通用的VSEA标准下，显卡提供一个VGABIOS的固件程序，该固件程序运行在字符模式下时，把屏幕分成24×80的格间，每个格间映射一片内存——从0xb8000开始，每两个字节对应一个字符，第一字节是ASCLL码，第二字节是字符颜色。</p>
+<p>显然，我们只需要将helloOS中printf的内容从0xb8000开始，每隔一个内存空间就映射一个字符即可，具体代码实现就不粘贴了。</p>
+<p>helloOS的主要代码就告一段落了。剩下的代码就是有关Makefile的制作，lds文件的安排了，这些不属于主线内容，而且又是一个大坑，所以就暂且不表，放在之后。</p>
+<p>随后便是实操上的困难。在我这个版本的ubuntu，开机是没有选择系统界面的，这需要去修改/etc/default/grub文件，将其hide属性注释或删除，timeout属性延长至20-30，GRUB_CMDLINE_LINUX_DEFAUL这个属性设置为text。</p>
+<p>最后执行<code>sudo update-grub</code>该部分修改就结束了。</p>
+<p>然后还要修改的文件是/boot/grub/grub.cfg，在其内部添加helloOS启动项，注意set root属性，需要通过指令df确定，而其余陌生属性通过上下文确定。启动项模板如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">menuentry &#39;helloOS&#39;&#123;</span><br><span class="line">    insmod part_msdos#上下文</span><br><span class="line">    insmod ext2#上下文</span><br><span class="line">    set root &#x3D; &#39;hd0,msdos1&#39;#数字按情况修改</span><br><span class="line">    mutiboot2 &#x3D; &#x2F;boot&#x2F;helloOS.bin#提前放好编译好的操作系统文件</span><br><span class="line">    boot</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>随后重启操作系统，选择helloOS，这样我们的“自研”操作系统便横空出世了。</p>
+]]></content>
+  </entry>
+  <entry>
     <title>密码学大作业——NS认证协议</title>
     <url>//202206030129/</url>
     <content><![CDATA[<h1 id="DES-C-Socket-NS认证"><a href="#DES-C-Socket-NS认证" class="headerlink" title="DES + C++ Socket + NS认证"></a>DES + C++ Socket + NS认证</h1><p>对称密码采用DES加密。Windows环境下的C++Socket，实现NS认证。具体还原的场景是，User1向KDC请求与User2进行连接，KDC分发给User1密钥。User1用KDC下发的信息转交给User2，并与User2进行交互验证。在过程中，User1被视为Client，User2与KDC均视为Server。</p>
@@ -426,7 +469,7 @@
 <p>GOT被拆分成.got节和.got.plt节两个部分，后者需要延迟绑定，有读写权限。</p>
 <p><strong>延迟绑定</strong></p>
 <p>由于动态链接会造成链接过程变得冗长，为了加快启动速度，采用了延迟绑定技术。引入了PLT（过程链链表），配合GOT来实现延迟绑定。</p>
-<p>对于每一个.o程序中反汇编后的&lt; func@plt &gt;部分，其实都蕴含着两条语句：jmp <a href="mailto:&#102;&#x75;&#x6e;&#x63;&#64;&#x67;&#x6f;&#116;&#46;&#x70;&#x6c;&#x74;">&#102;&#x75;&#x6e;&#x63;&#64;&#x67;&#x6f;&#116;&#46;&#x70;&#x6c;&#x74;</a>, push n.若<a href="mailto:&#102;&#x75;&#110;&#99;&#64;&#x67;&#x6f;&#x74;&#x2e;&#112;&#108;&#x74;">&#102;&#x75;&#110;&#99;&#64;&#x67;&#x6f;&#x74;&#x2e;&#112;&#108;&#x74;</a>为空，则执行下一条语句push n(将func在rel.plt中的下标压入栈中)，不为空则不执行下一条。若执行了压栈，则程序会接着运行，找到链接器中的_dl_runtime_reslove()函数，然后将本身块位置与函数名提供给它，寻找func()的真实地址。</p>
+<p>对于每一个.o程序中反汇编后的&lt; func@plt &gt;部分，其实都蕴含着两条语句：jmp <a href="mailto:&#102;&#117;&#x6e;&#99;&#x40;&#103;&#x6f;&#116;&#46;&#112;&#x6c;&#x74;">&#102;&#117;&#x6e;&#99;&#x40;&#103;&#x6f;&#116;&#46;&#112;&#x6c;&#x74;</a>, push n.若<a href="mailto:&#x66;&#117;&#x6e;&#x63;&#x40;&#103;&#111;&#x74;&#x2e;&#x70;&#x6c;&#116;">&#x66;&#117;&#x6e;&#x63;&#x40;&#103;&#111;&#x74;&#x2e;&#x70;&#x6c;&#116;</a>为空，则执行下一条语句push n(将func在rel.plt中的下标压入栈中)，不为空则不执行下一条。若执行了压栈，则程序会接着运行，找到链接器中的_dl_runtime_reslove()函数，然后将本身块位置与函数名提供给它，寻找func()的真实地址。</p>
 <h2 id="总结与提升"><a href="#总结与提升" class="headerlink" title="总结与提升"></a>总结与提升</h2><p>1.动态链接与延迟绑定详情：《程序员的自我修养：链接、装载与库》</p>
 <p>2.ELF文件结构详情：<a href="https://blog.csdn.net/u011298001/category_8506924.html">点此进入</a></p>
 <p>3.总结：</p>
