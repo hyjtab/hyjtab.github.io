@@ -26,6 +26,41 @@
       </categories>
   </entry>
   <entry>
+    <title>寒假前1——c-primer第三章读书笔记</title>
+    <url>//202211132204/</url>
+    <content><![CDATA[<p>割了差不多两年的读书笔记，还是挺怀念的。毕竟人过境迁，现在的我也不是之前的唯C++主义者了。但不得不承认，C++的语言泛式被众多语言至今仍然保留，而且新发展的C语言标准也在不断向简单化的脚本语言方面学习。在偏底层的应用场景下，在注重效率的众多项目里，C++语言仍旧保持着很高的使用率。所以这次我仍然选择回来填坑了。有空就写咯。</p>
+<h2 id=""><a href="#" class="headerlink" title=""></a></h2>]]></content>
+  </entry>
+  <entry>
+    <title>计算机网络系统方法读书笔记其一——chap1 基础</title>
+    <url>//202211132157/</url>
+    <content><![CDATA[<h1 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h1><p>本书有着和CSAPP一样的行文习惯，喜欢在开头将巨大的信息量表现出来，内容横跨分组交换，网络延迟，网络功能，常见协议等等，本书的第一章读书笔记我就打算采用边读边写的方式进行编撰。以求和之后的章节内容形成有机连动。</p>
+<hr>
+]]></content>
+  </entry>
+  <entry>
+    <title>从零开始写操作系统——其二</title>
+    <url>//202211122042/</url>
+    <content><![CDATA[<h1 id="CPU三种运行模式"><a href="#CPU三种运行模式" class="headerlink" title="CPU三种运行模式"></a>CPU三种运行模式</h1><p>注明：本系列实验基于彭东老师的操作系统实战课程，分享内容仅供作者本人留档阅读。</p>
+<a id="more"></a>
+<p>CPU作为整个计算机的核心部件，具有取值，寻址，运算，控制等多种功能。其中，根据寻址功能的形式不同，将CPU运行模式分为三种运行模式。这三种运行模式是随着计算机的发展而不断更新的，因此存在许多历史遗留问题，导致标志位、保留位的位数、位置、出现可能不太合理。</p>
+<h2 id="模式一：实模式"><a href="#模式一：实模式" class="headerlink" title="模式一：实模式"></a>模式一：实模式</h2><h3 id="1-寻址方式"><a href="#1-寻址方式" class="headerlink" title="1.寻址方式"></a>1.寻址方式</h3><p>与汇编语言课程上的寻址与地址编法一样。分段寄存器与段偏移进行移位后寻址，寻址范围为$2^{20}$。对于编址结果直接映射在物理内存中，地址是多少，就运行在什么地方。其出现的历史原因是由于早期设备并发性差，通常程序员需要单人手操程序进行逐步调试。因此，CPU给与使用者无限的信任，并且由于寻址范围小，所以也不需要之后两种方式使用的的层次结构，因此实模式以真实地址编址，并以所有指令的真实效果运行，没有所谓的权限划分。</p>
+<h3 id="2-中断方式"><a href="#2-中断方式" class="headerlink" title="2.中断方式"></a>2.中断方式</h3><p>实模式的中断实现方式也比较简单。分为硬件中断与软中断两种，常见的软中断就是int指令，而硬件中断通常由CPU的某个针脚的电信号引发。不论是哪种中断，硬件中断通过中断控制器产生数字，软中断通过指令传送数字，该数字称作中断号。该中断号与IDTR寄存器中存放的中断表基址计算出对应中断表项的地址。表项中具有中断基地址与段偏移，将两者分别载入CS与IP寄存器中，便可顺利执行中断函数。</p>
+<h2 id="模式二：保护模式"><a href="#模式二：保护模式" class="headerlink" title="模式二：保护模式"></a>模式二：保护模式</h2><h3 id="1-寻址方式-1"><a href="#1-寻址方式-1" class="headerlink" title="1.寻址方式"></a>1.寻址方式</h3><p>出现保护模式的两个推动力，便是我们在实模式中提出的实模式的两点缺陷：权限问题与寻址范围问题。而保护模式提出的方法有效缓解了这两个问题。首先，寻址范围问题上，我们的设备也在不断扩充位数，在实模式下运行的AX系列的16位寄存器，在保护模式加入下，我们得以控制32位的EAX系列寄存器。</p>
+<p>值得注意的是，在保护模式这种情况下，CPU执行的内存管理方式仍是分段方式，同时，为满足对不同指令集的限制执行，我们还需要对部分指令进行权限控制。因此，在这种情况下的保护模式采用的权限控制手段是分段权限控制。分段权限控制加上更大的段基址需求，导致了保护模式的核心——段描述符的出现。</p>
+<blockquote>
+<p>一个段描述符有 64 位 8 字节数据，里面包含了段基地址、段长度、段权限、段类型（可以是系统段、代码段、数据段）、段是否可读写，可执行等。</p>
+</blockquote>
+<p>段描述符按次序排列成表，由操作系统维护在内存中，查询手段是依靠16位段寄存器加上GDTR寄存器中存在的段描述符基址便可访问到对应的段描述符，从而获得该段的地址。更一般地，段寄存器其实有80位长，除前16位指示段描述符所在位置外，剩下的64位则直接是缓存的段描述符，只不过后64位对程序员透明，这种设计其实减少了访存次数，提升了程序运行效率。保护模式的分段其实对程序运行并不友好，所以出现了保护模式的平坦模式这种设计——所有段的起止均相同且均等于内存大小——这样的操作既合法又避免了分段方式的缺点。</p>
+<p>需要注意的是，权限的判断基于CS与SS的末尾的RPL组成的CPL，代表当前所处权限，权限值越小等级越高。</p>
+<h3 id="2-中断方式-1"><a href="#2-中断方式-1" class="headerlink" title="2.中断方式"></a>2.中断方式</h3><p>保护模式的中断方式则略显复杂，首先，同样的，我们需要一个中断号，一个系统中断寄存器IDTR，只不过，为体现更多的权限控制思想，IDTR中存在的为中断门描述符。CPU触发中断时，首先检查中断号是否大于中断描述符表长度，随后检查CPL是否大于中断描述符的DPL（中断权限控制位），若小于，则检查CPL是否小于目的段的DPL，若结果为先小于等于后大于等于，则中断触发成功。</p>
+<h3 id="3-进入保护模式"><a href="#3-进入保护模式" class="headerlink" title="3.进入保护模式"></a>3.进入保护模式</h3><p>保护模式的进入，首先应该初始化段描述符与段描述符基址指针，并令GDTR寄存器指向段描述符表。随后设置CR0寄存器末位为1，进入保护模式。随后进行一次长跳转，刷新段地址，使保护模式配置生效。</p>
+<h2 id="模式三：长模式"><a href="#模式三：长模式" class="headerlink" title="模式三：长模式"></a>模式三：长模式</h2><h3 id="1-寻址方式-2"><a href="#1-寻址方式-2" class="headerlink" title="1.寻址方式"></a>1.寻址方式</h3><p>长模式又称为AMD64模式，因为是由AMD首先提出的，它使CPU拥有了处理64位数据的能力。长模式仍然是依靠段描述符进行寻址与控制的。值得注意的是，段描述符中不再限制段长度，同时段基址也不再具有意义，唯一有意义的是权限控制位DPL，所以段描述符长度并未随着寻址范围的增大而增大，仍然是64位数据。</p>
+<h3 id="2-中断方式-2"><a href="#2-中断方式-2" class="headerlink" title="2.中断方式"></a>2.中断方式</h3><p>但中断描述符，必须记录基址。所以他的长度拓展到128位，其余的与保护模式相同，不再赘述。</p>
+<h3 id="3-进入长模式"><a href="#3-进入长模式" class="headerlink" title="3.进入长模式"></a>3.进入长模式</h3><p>长模式的进入，同样是首先将段描述符表初始化，并设置GDTR寄存器。但在设置GDTR寄存器之前，我们需要启动内存分页模式，这意味着我们需要将CR4寄存器末第五位进行置1。并且将分页表基址移入CR3寄存器。长模式是建立在保护模式之上的，因此需要进行开启保护模式的操作——对CR0寄存器置位。并且还需要设置MSR寄存器，以正式开启长模式。随后长跳转刷新段描述符，便可以正式进入长模式工作。</p>
+]]></content>
+  </entry>
+  <entry>
     <title>重大告知</title>
     <url>//202211090235/</url>
     <content><![CDATA[<h1 id="本站GitHub维持托管的状态，但可通过新域名访问"><a href="#本站GitHub维持托管的状态，但可通过新域名访问" class="headerlink" title="本站GitHub维持托管的状态，但可通过新域名访问"></a>本站GitHub维持托管的状态，但可通过新域名访问</h1><p><a href="https://blog.tasfa1tals.top/">新域名</a></p>
@@ -66,6 +101,7 @@
 <p>任意操作系统的实现，离不开引导程序的指引。由于本次实验仅仅是一次思路探索，做出的所谓OS也不过是一个单纯的黑屏和提示字，所以引导程序借用了成熟的GRUB引导程序，并出于虚拟机引导程序版本不同的考虑，在引导头引用上，使用了两个不同版本的必需代码。</p>
 <p>本次虚拟机环境为Ubuntu20.0.8，带有图形化界面。值得一提的是，由于本次demo使用了GRUB，故不能在WSL上进行实际操作，因为WSL并不需要这样的引导头进行启动，故该虚拟机是vmware虚拟机。</p>
 <p>除了针对引用GRUB部分进行的介绍外，还有一部分是重要的系统初始化。这些初始化代码主要进行了如下工作：首先是初始化了各个寄存器，随后令机器进入保护模式，最后引导CS:IP指向主函数。以上是汇编部分的整体情况。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">MBT_HDR_FLAGS EQU 0x00010003</span><br><span class="line">MBT_HDR_MAGIC EQU 0x1BADB002</span><br><span class="line">MBT_HDR2_MAGIC EQU 0xE85250D6</span><br><span class="line">global _start	;	导出_start符号</span><br><span class="line">extern main	;	导入main函数符号</span><br><span class="line">section .start.text;	定义.start.text节</span><br><span class="line">bits 32	;	汇编成32为代码</span><br><span class="line">_start:</span><br><span class="line">jmp _entry</span><br><span class="line">ALIGN 8</span><br><span class="line">mbt_hdr:</span><br><span class="line">dd MBT_HDR_MAGIC</span><br><span class="line">dd MBT_HDR_FLAGS</span><br><span class="line">dd -(MBT_HDR_MAGIC+MBT_HDR_FLAGS)</span><br><span class="line">dd mbt_hdr</span><br><span class="line">dd _start</span><br><span class="line">dd 0</span><br><span class="line">dd 0</span><br><span class="line">dd _entry</span><br><span class="line"></span><br><span class="line">ALIGN 8</span><br><span class="line">mbt2_hdr:</span><br><span class="line">DD MBT_HDR_MAGIC</span><br><span class="line">DD 0</span><br><span class="line">DD mbt2_hdr_end - mbt2_hdr</span><br><span class="line">DD -(MBT_HDR_MAGIC + 0 + (mbt2_hdr_end - mbt2_hdr))</span><br><span class="line">DW 2, 0</span><br><span class="line">DD 24</span><br><span class="line">DD mbt2_hdr</span><br><span class="line">DD _start</span><br><span class="line">DD 0</span><br><span class="line">DD 0</span><br><span class="line">DW 3, 0</span><br><span class="line">DD 12</span><br><span class="line">DD _entry</span><br><span class="line">DD 0</span><br><span class="line">DW 0, 0</span><br><span class="line">DD 8</span><br><span class="line">mbt2_hdr_end:</span><br><span class="line"></span><br><span class="line">ALIGN 8</span><br><span class="line">_entry:</span><br><span class="line">cli</span><br><span class="line">in al, 0x70</span><br><span class="line">or al, 0x80</span><br><span class="line">out 0x70, al</span><br><span class="line">lgdt [GDT_PTR]</span><br><span class="line">jmp dword 0x8 : _32bits_mode</span><br><span class="line">_32bits_mode:</span><br><span class="line">mov ax, 0x10</span><br><span class="line">mov ds, ax</span><br><span class="line">mov ss, ax</span><br><span class="line">mov es, ax</span><br><span class="line">mov fs, ax</span><br><span class="line">mov gs, ax</span><br><span class="line">xor eax, eax</span><br><span class="line">xor ebx, ebx</span><br><span class="line">xor ecx, ecx</span><br><span class="line">xor edx, edx</span><br><span class="line">xor edi, edi</span><br><span class="line">xor esi, esi</span><br><span class="line">xor ebp, ebp</span><br><span class="line">xor esp, esp</span><br><span class="line"></span><br><span class="line">mov esp, 0x9000</span><br><span class="line"></span><br><span class="line">call main</span><br><span class="line"></span><br><span class="line">halt_step:</span><br><span class="line">halt</span><br><span class="line">jmp halt_step</span><br><span class="line">GDT_START:</span><br><span class="line">knull_dsc: dq 0</span><br><span class="line">kcode_dsc: dq 0x00CF9E000000FFFF</span><br><span class="line">;段基地址&#x3D;0，段长度&#x3D;0xfffff;G&#x3D;1,D&#x2F;B&#x3D;1,L&#x3D;0,AVL&#x3D;0 ;P&#x3D;1,DPL&#x3D;0,S&#x3D;1;T&#x3D;1,C&#x3D;1,R&#x3D;1,A&#x3D;0</span><br><span class="line">kdate_dsc: dq 0x00CF92000000FFFF</span><br><span class="line">k16cd_dsc: dq 0x00009E000000FFFF</span><br><span class="line">k16da_dsc: dq 0x000092000000FFFF</span><br><span class="line">GDT_END:</span><br><span class="line">GDT_PTR:</span><br><span class="line">GDTLEN dw GDT_END-GDT_START-1</span><br><span class="line">GDTBASE dd GDT_START</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <p>随后是针对main函数，由于helloOS操作系统并没有C语言运行环境，所以printf()函数编译后在操作系统中是失效的——没有其他库中包含该函数！所以需要自己编写。</p>
 <p>那么针对这个问题，解决方法就是研究“屏幕”和显示到底是个什么东西。显卡有两种工作模式，一种是字符模式，一种是图形模式。显然在这个demo中我们只需要关心字符模式即可。在显卡通用的VSEA标准下，显卡提供一个VGABIOS的固件程序，该固件程序运行在字符模式下时，把屏幕分成24×80的格间，每个格间映射一片内存——从0xb8000开始，每两个字节对应一个字符，第一字节是ASCLL码，第二字节是字符颜色。</p>
 <p>显然，我们只需要将helloOS中printf的内容从0xb8000开始，每隔一个内存空间就映射一个字符即可，具体代码实现就不粘贴了。</p>
@@ -479,7 +515,7 @@
 <p>GOT被拆分成.got节和.got.plt节两个部分，后者需要延迟绑定，有读写权限。</p>
 <p><strong>延迟绑定</strong></p>
 <p>由于动态链接会造成链接过程变得冗长，为了加快启动速度，采用了延迟绑定技术。引入了PLT（过程链链表），配合GOT来实现延迟绑定。</p>
-<p>对于每一个.o程序中反汇编后的&lt; func@plt &gt;部分，其实都蕴含着两条语句：jmp <a href="mailto:&#x66;&#x75;&#110;&#99;&#64;&#103;&#x6f;&#x74;&#46;&#x70;&#x6c;&#x74;">&#x66;&#x75;&#110;&#99;&#64;&#103;&#x6f;&#x74;&#46;&#x70;&#x6c;&#x74;</a>, push n.若<a href="mailto:&#x66;&#117;&#x6e;&#99;&#64;&#103;&#111;&#x74;&#46;&#x70;&#x6c;&#116;">&#x66;&#117;&#x6e;&#99;&#64;&#103;&#111;&#x74;&#46;&#x70;&#x6c;&#116;</a>为空，则执行下一条语句push n(将func在rel.plt中的下标压入栈中)，不为空则不执行下一条。若执行了压栈，则程序会接着运行，找到链接器中的_dl_runtime_reslove()函数，然后将本身块位置与函数名提供给它，寻找func()的真实地址。</p>
+<p>对于每一个.o程序中反汇编后的&lt; func@plt &gt;部分，其实都蕴含着两条语句：jmp <a href="mailto:&#102;&#x75;&#x6e;&#x63;&#x40;&#x67;&#111;&#x74;&#46;&#112;&#x6c;&#116;">&#102;&#x75;&#x6e;&#x63;&#x40;&#x67;&#111;&#x74;&#46;&#112;&#x6c;&#116;</a>, push n.若<a href="mailto:&#102;&#x75;&#110;&#99;&#64;&#x67;&#111;&#116;&#46;&#x70;&#x6c;&#x74;">&#102;&#x75;&#110;&#99;&#64;&#x67;&#111;&#116;&#46;&#x70;&#x6c;&#x74;</a>为空，则执行下一条语句push n(将func在rel.plt中的下标压入栈中)，不为空则不执行下一条。若执行了压栈，则程序会接着运行，找到链接器中的_dl_runtime_reslove()函数，然后将本身块位置与函数名提供给它，寻找func()的真实地址。</p>
 <h2 id="总结与提升"><a href="#总结与提升" class="headerlink" title="总结与提升"></a>总结与提升</h2><p>1.动态链接与延迟绑定详情：《程序员的自我修养：链接、装载与库》</p>
 <p>2.ELF文件结构详情：<a href="https://blog.csdn.net/u011298001/category_8506924.html">点此进入</a></p>
 <p>3.总结：</p>
@@ -672,7 +708,7 @@
 <p>那对于变量，你有什么印象呢？就拿<code>int a</code>这段最简单的代码来说吧！我们通常会说这段代码<strong>定义</strong>并<strong>声明</strong>了一个<strong>基本类型</strong>——整型变量，这个变量的名字是<code>a</code>；</p>
 <p>这样一来，就出现了三个重要知识点，也就是黑体加粗的这三个关键词。在后面的部分里会进行详细的介绍的。</p>
 <p>变量类型又不止这一种！那在实际应用中，会出现很多类似于：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">double hyj &#x3D; 1.2;</span><br><span class="line">int tab &#x3D; 3;</span><br><span class="line">std :: cout &lt;&lt; hyj + tab &lt;&lt; std :: endl;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">double h &#x3D; 1.2;</span><br><span class="line">int tab &#x3D; 3;</span><br><span class="line">std :: cout &lt;&lt; h + t &lt;&lt; std :: endl;</span><br></pre></td></tr></table></figure>
 <p>这样的代码，输出的结果会是整型还是浮点型的呢？其中就涉及到了<strong>类型转换</strong>这个知识点。</p>
 <p>然后对于爱好学习的同学，可能已经在网上阅读过不少代码，会发现老师所写的代码和网上大牛分享的代码中有一个明显的区别：<code>const</code>这个东东，网上的代码好像用得特别多！</p>
 <p>还有一些切入进计算机内存地址的“高级变量”，<strong>指针</strong>与<strong>引用</strong>，这些变量类型，也会在本章讲到，当然最痛苦的，莫过于俄罗斯套娃了！指针的指针，指针的引用，指针的<code>const</code>……</p>
@@ -783,7 +819,7 @@
 <p>代码运行之后，屏幕上只会显示“hyjtab2”的字样，说明，对于bool类型来说，只有赋值为0时，才会转化为false，其余情况，全都是true。</p>
 <p>而当我们把一个bool类型赋给非bool类型时，true对应1，false对应0。</p>
 <p><strong>对于浮点类型，</strong></p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line"><span class="keyword">int</span> hyj = <span class="number">12</span>;</span><br><span class="line"><span class="keyword">double</span> tab =<span class="number">1.2</span>;</span><br><span class="line"><span class="keyword">int</span> a = <span class="number">0</span>;</span><br><span class="line">a = tab;</span><br><span class="line"><span class="built_in">std</span> :: <span class="built_in">cout</span> &lt;&lt; a &lt;&lt; <span class="built_in">std</span> :: <span class="built_in">endl</span>;</span><br><span class="line">a = hyj + tab;</span><br><span class="line"><span class="built_in">std</span> :: <span class="built_in">cout</span> &lt;&lt; a &lt;&lt; <span class="built_in">std</span> ::<span class="built_in">endl</span>;</span><br><span class="line"><span class="built_in">std</span> :: <span class="built_in">cout</span> &lt;&lt; hyj + tab &lt;&lt; <span class="built_in">std</span> :: <span class="built_in">endl</span>;</span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line"><span class="keyword">int</span> h = <span class="number">12</span>;</span><br><span class="line"><span class="keyword">double</span> t =<span class="number">1.2</span>;</span><br><span class="line"><span class="keyword">int</span> a = <span class="number">0</span>;</span><br><span class="line">a = t;</span><br><span class="line"><span class="built_in">std</span> :: <span class="built_in">cout</span> &lt;&lt; a &lt;&lt; <span class="built_in">std</span> :: <span class="built_in">endl</span>;</span><br><span class="line">a = h + t;</span><br><span class="line"><span class="built_in">std</span> :: <span class="built_in">cout</span> &lt;&lt; a &lt;&lt; <span class="built_in">std</span> ::<span class="built_in">endl</span>;</span><br><span class="line"><span class="built_in">std</span> :: <span class="built_in">cout</span> &lt;&lt; h + t &lt;&lt; <span class="built_in">std</span> :: <span class="built_in">endl</span>;</span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>代码运行结果为“1，13，13.2”，说明，当我们把一个浮点数赋给一个整数类型时，我们进行了近似处理，结果只保留小数点前的部分。</p>
 <p>与整型数进行运算时，会将整型数转化为浮点数，得到的转化值小数点后位全为零，然后运算，得出浮点型结果。</p>
 <p><strong>对于无符号类型（unsigned），</strong></p>
@@ -797,7 +833,7 @@
 <p>对于<strong>有符号类型</strong>，则结果为<strong>未定义的</strong>，程序可能崩溃，可能产生垃圾数据，也可能继续运行。</p>
 <h4 id="类型转换的其它发生条件："><a href="#类型转换的其它发生条件：" class="headerlink" title="类型转换的其它发生条件："></a>类型转换的其它发生条件：</h4><p><strong>条件语句：</strong></p>
 <p>当表达式作为条件时，会发生其它类型转化为bool型的隐性操作。</p>
-<p><em>注意：</em>我们在实际操作中，极有可能以后一不注意，就将负数赋值给了无符号对象，会引发意想不到的错误。还有在计算中，很多情况下，我们会将无符号类型与带符号类型混合计算，这时就要根据无符号类型类型转化规则进行提前推测，得出结果。</p>
+<p> 注意：我们在实际操作中，极有可能以后一不注意，就将负数赋值给了无符号对象，会引发意想不到的错误。还有在计算中，很多情况下，我们会将无符号类型与带符号类型混合计算，这时就要根据无符号类型类型转化规则进行提前推测，得出结果。</p>
 <p><em>小零食：空类型（void）之所以不能访问是因为它只指明了访问的起始地址，而未指明起点向后读取多少内存，以及如何解析二进制数据的问题。而其它数据类型这三个问题的答案都是确切的。</em></p>
 <h3 id="Q3-字面值常量的类型到底是？"><a href="#Q3-字面值常量的类型到底是？" class="headerlink" title="Q3: 字面值常量的类型到底是？"></a>Q3: 字面值常量的类型到底是？</h3><h4 id="对于整型与浮点型："><a href="#对于整型与浮点型：" class="headerlink" title="对于整型与浮点型："></a>对于整型与浮点型：</h4><p><strong>整型字面值：</strong></p>
 <p>对于整型字面值常量，其类型由符号与值决定，而是否有符号，与进制有一定关系。对于一般的十进制数，默认都是有符号数。而十六进制与八进制数既可能是有符号类也可能是无符号类型。</p>
