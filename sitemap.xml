@@ -2,6 +2,34 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://blog.tasfa1tals.top/202211070036/</loc>
+    
+    <lastmod>2022-11-24</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.tasfa1tals.top/202211142215/</loc>
+    
+    <lastmod>2022-11-24</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.tasfa1tals.top/202211122042/</loc>
+    
+    <lastmod>2022-11-24</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.tasfa1tals.top/202211250115/</loc>
+    
+    <lastmod>2022-11-24</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://blog.tasfa1tals.top/404/</loc>
     
     <lastmod>2022-11-14</lastmod>
@@ -199,10 +227,66 @@
   </url>
 
   
+  <url>
+    <loc>https://blog.tasfa1tals.top/tags/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/</loc>
+    <lastmod>2022-11-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.tasfa1tals.top/tags/OS/</loc>
+    <lastmod>2022-11-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.tasfa1tals.top/tags/helloOS/</loc>
+    <lastmod>2022-11-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.tasfa1tals.top/tags/%E8%BF%90%E8%A1%8C%E6%A8%A1%E5%BC%8F/</loc>
+    <lastmod>2022-11-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.tasfa1tals.top/tags/GBN/</loc>
+    <lastmod>2022-11-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.tasfa1tals.top/tags/UDP/</loc>
+    <lastmod>2022-11-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
 
   
   <url>
+    <loc>https://blog.tasfa1tals.top/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/</loc>
+    <lastmod>2022-11-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://blog.tasfa1tals.top/categories/study/</loc>
+    <lastmod>2022-11-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.tasfa1tals.top/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/</loc>
     <lastmod>2022-11-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>

@@ -1,0 +1,1419 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="计网实验——基于UDP的GBN协议的实现, 一名努力的coder">
+    <meta name="description" content="编程学习 底层原理 信息安全">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>计网实验——基于UDP的GBN协议的实现 | tasfa1tals的博客</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+
+    <script src="/libs/jquery/jquery.min.js"></script>
+
+<meta name="generator" content="Hexo 5.3.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+
+
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">tasfa1tals的博客</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>留言板</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">tasfa1tals的博客</div>
+        <div class="logo-desc">
+            
+            编程学习 底层原理 信息安全
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			留言板
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/1.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">计网实验——基于UDP的GBN协议的实现</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        width: 345px;
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        padding: 35px 0 15px 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content {
+        padding-bottom: 30px;
+        overflow: auto;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+
+        position: absolute;
+        right: 23.5vw;
+        display: block;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/GBN/">
+                                <span class="chip bg-color">GBN</span>
+                            </a>
+                        
+                            <a href="/tags/UDP/">
+                                <span class="chip bg-color">UDP</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="post-category">
+                                计算机网络
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2022-11-25
+                </div>
+                
+
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    2.1k
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                    8 分
+                </div>
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h1 id="单向GBN的实现"><a href="#单向GBN的实现" class="headerlink" title="单向GBN的实现"></a>单向GBN的实现</h1><p>首先，在进行介绍实现之前，我们应该充分理解什么是GBN协议：GBN协议，即Go Back N Step，也就是回退N步协议。同样基于滑动窗口，发送窗口可以有多个，但接收窗口只能有1个，且只能按顺序接受。窗口滑动的规则是，必须接受到接收方的确认后，窗口才可向前滑动。当出现丢包或无响应时，无论当前发到哪个包，将所有未确认的包全部重新上传。这基本上就是GBN协议规定的所有内容。具体可参见下图：<br><img src="https://cdn.staticaly.com/gh/hyjtab/Pic_Bed@main/picture/GBN%E5%8D%8F%E8%AE%AE.mmwka0a341s.webp" alt="Alt"></p>
+<h2 id="编程踩坑记录"><a href="#编程踩坑记录" class="headerlink" title="编程踩坑记录"></a>编程踩坑记录</h2><p>首先，基本上的UDP沟通可以查看密码学KDC的实现部分。本部分的踩坑记录主要是针对一些记忆点深刻的坑进行描述。讲述笔者是如何对这些bug进行解决的。</p>
+<h3 id="UDP的初始化问题"><a href="#UDP的初始化问题" class="headerlink" title="UDP的初始化问题"></a>UDP的初始化问题</h3><p>关于UDP的初始化，和TCP有所不同，具体参数可以参见下述代码：</p>
+<pre class=" language-c++"><code class="language-c++">sockClnt = socket(AF_INET, SOCK_DGRAM, 0);
+  addrClnt.sin_family = AF_INET;
+  addrClnt.sin_port = htons(port);
+  addrClnt.sin_addr.S_un.S_addr = inet_addr("127.0.0.1");  //主动发送的目的地
+  SOCKADDR_IN addrSrv;
+  addrSrv.sin_family = AF_INET;
+  addrSrv.sin_port = htons(c_port);
+  addrSrv.sin_addr.S_un.S_addr = htonl(INADDR_ANY);  //绑定的端口
+  if (::bind(sockClnt, (LPSOCKADDR)&addrSrv, sizeof(SOCKADDR_IN)) ==
+      SOCKET_ERROR) </code></pre>
+<p>除了这些，重点要讲的是，将sendto和recvfrom包装到函数中时，不得不将使用的socket放到全局变量的位置。如果将socket提前初始化，将AE_INET,SOCKDGRAM等参数提前放置，则会导致socket生成失败，原因是因为在全局变量初始化时，并未加载winsock，这些宏定义有效，但不被windows处理。因而会造成socket的初始化失败。</p>
+<h3 id="recvfrom的有限阻塞问题"><a href="#recvfrom的有限阻塞问题" class="headerlink" title="recvfrom的有限阻塞问题"></a>recvfrom的有限阻塞问题</h3><p>一般情况下，recvfrom是阻塞的。但由于windows设计问题，如果在一个udp包已经发送的情况下，如果此时发送者下线或不再发送回应，总之就是抛弃该连接了的话。会强制令recvfrom结束阻塞，WSAGetlasterror会返回报错代码10054。而这种情况下，我们无法维持recvfrom的阻塞，就不能正常进行线程计时器的管理。所以我们必须解决该问题。解决问题的办法如下述代码：</p>
+<pre class=" language-c++"><code class="language-c++">#pragma comment(lib, "ws2_32.lib")
+#define SIO_UDP_CONNRESET _WSAIOW(IOC_VENDOR, 12)
+  BOOL bNewBehavior = FALSE;
+  DWORD dwBytesReturned = 0;
+  WSAIoctl(sockClnt, SIO_UDP_CONNRESET, &bNewBehavior, sizeof bNewBehavior,
+           NULL, 0, &dwBytesReturned, NULL, NULL);</code></pre>
+<p>其中，sockClnt需要换成当前程序使用的udp套接字。</p>
+<h3 id="recvfrom的计时问题"><a href="#recvfrom的计时问题" class="headerlink" title="recvfrom的计时问题"></a>recvfrom的计时问题</h3><p>recvfrom的阻塞可以通过自身机制进行设置，注意，此法仅限用于默认的阻塞recvfrom不能用于设置成非阻塞状态的socket。具体做法如下：</p>
+<pre class=" language-c++"><code class="language-c++">timeval tv;
+  tv.tv_sec = 1000;
+  tv.tv_usec = 0;
+  long b = 0;
+  b = setsockopt(sockClnt, SOL_SOCKET, SO_RCVTIMEO, (char*)&tv, sizeof(tv));</code></pre>
+<h3 id="mutex的使用问题以及std造成的小问题合集"><a href="#mutex的使用问题以及std造成的小问题合集" class="headerlink" title="mutex的使用问题以及std造成的小问题合集"></a>mutex的使用问题以及std造成的小问题合集</h3><p>可以通过#include &lt; mutex &gt;来使用信号量。生成信号量应该使用 std::mutex m1; 这样的语句，每一个信号量对象，都有几个方法，其中最常用的是lock和unlock。注意使用时尽量避免死锁发生。</p>
+<p>其他std问题：</p>
+<pre class=" language-c++"><code class="language-c++">\\尽量使用::bind()函数，以免和std空间中的std::bind()函数混淆。
+\\thread也是在std命名空间当中的。</code></pre>
+<h3 id="一些字符串处理问题"><a href="#一些字符串处理问题" class="headerlink" title="一些字符串处理问题"></a>一些字符串处理问题</h3><pre class=" language-c++"><code class="language-c++">\\首先是strcat
+strcat(dest,src);
+\\将src中内容复制到src后。
+\\其次是转化文档内容变为字符串。
+    std::string filebuf;
+    std::ifstream ifs("in.txt");
+    std::ostringstream buf;
+    char ch;
+    while(buf&&ifs.get(ch))
+        buf.put(ch);
+    filebuf = buf.str();
+\\主要利用string流对象
+\\string彻底转为char *
+strcpy(str,filebuf.c_str());</code></pre>
+<h3 id="编译问题"><a href="#编译问题" class="headerlink" title="编译问题"></a>编译问题</h3><p>关于编译问题，遇到了一个巨大难题，在解决阻塞问题之后，发现使用普通的编译指令已经无法进行编译了。会出现“undefined reference to `_imp__WSAIoctl@36’”的报错。解决问题的方法是在本地mingw编译依赖文件夹中找到这两个库文件：libwldap32.a和libws2_32.a，并将这两个文件的位置附在g++命令之后，相当于引入依赖文件。<br>我本人的头文件顺序及编译指令如下所示：</p>
+<pre class=" language-c++"><code class="language-c++">#include <WinSock2.h>
+#include <stdio.h>
+#include <tchar.h>
+#include <ctime>
+#include <Windows.h>
+#include <Mstcpip.h>
+#include <mutex>
+#include <set>
+#include <thread>
+#include <fstream>
+#include <sstream>
+#include <cstring>
+\\g++ Client.cpp -o Client -lwsock32 F:\improvement\libws2_32.a F:\improvement\libwldap32.a</code></pre>
+<h2 id="系统设计思路"><a href="#系统设计思路" class="headerlink" title="系统设计思路"></a>系统设计思路</h2><h3 id="客户端设计"><a href="#客户端设计" class="headerlink" title="客户端设计"></a>客户端设计</h3><ul>
+<li><p>发送函数：首先在窗口允许的范围内不停发送，窗口满之后，进行等待，待接收到服务器端的回应之后，滑动窗口，直到发送完毕。</p>
+</li>
+<li><p>重发函数：发送函数判断当前是否处于重发状态，若处于，则移动重发指针，计算偏移，开启重发机制。同时需要注意各种线程问题。</p>
+</li>
+<li><p>接收函数：注意线程问题，每个接收函数均置于不同的线程当中。负责移动接收指针，重发指针，开启重发，管理重发次数等线程级别交互问题。</p>
+</li>
+<li><p>文件读取函数：将文件内容读到c风格字符串中。</p>
+</li>
+<li><p>主函数：负责初始化和调用文件读取函数及发送函数。</p>
+</li>
+</ul>
+<h3 id="服务器端设计"><a href="#服务器端设计" class="headerlink" title="服务器端设计"></a>服务器端设计</h3><ul>
+<li><p>接收部分：进行普遍嗅探型接收（为了更加直观的展示客户端行为，如果严格设置，则不易看到重发）</p>
+</li>
+<li><p>发送部分：体现限制接收窗口，必须严格按序进行确认，在此处确认的包才可被视为进入服务器的包。</p>
+</li>
+<li><p>生成序号函数： 为发送部分服务，生成正确的ack包编号。</p>
+</li>
+</ul>
+<h3 id="包设计"><a href="#包设计" class="headerlink" title="包设计"></a>包设计</h3><p>第一字节被设计为序号位，第二字节被设计为确认位，第三字节被设为分段位，第四字节被视为段末位。</p>
+<h2 id="部分代码粘贴"><a href="#部分代码粘贴" class="headerlink" title="部分代码粘贴"></a>部分代码粘贴</h2><p>还没交实验报告，故将部分关键代码隐去，后续更新。</p>
+<ol>
+<li><p>client.cpp</p>
+<pre class=" language-c++"><code class="language-c++">#include <WinSock2.h>
+#include <stdio.h>
+#include <tchar.h>
+#include <ctime>
+#include <Windows.h>
+#include <Mstcpip.h>
+#include <mutex>
+#include <set>
+#include <thread>
+#include <fstream>
+#include <sstream>
+#include <cstring>
+#pragma comment(lib, "ws2_32.lib")
+#define SIO_UDP_CONNRESET _WSAIOW(IOC_VENDOR, 12)
+#define MAXMSG 7600
+const int MAXRESEND = 2;
+const int WINDOWSIZE = 4;
+std::set<int> wd;
+struct resend {
+int start;    //需要重发开始的长度
+int tmp = 0;  //已接受的结束的长度
+int end;      //需要重发结束的长度
+} r;
+int base = 0;
+bool af = false;
+int cnt = 0;
+int rcvcnt = 0;
+int t_rcvcnt = 0;
+int sendcnt = 0;
+int resendcnt = 0;
+std::mutex mtx, mtx1, mtx2, mtx3, mtx4;
+bool timeout = false;
+SOCKET sockClnt;
+SOCKADDR_IN _addrSrv;
+SOCKADDR_IN addrClnt;
+char str[MAXMSG];
+int slen = 0;
+int len = sizeof(SOCKADDR);
+void readfile(){
+/**略去**/
+}
+void sendmsg();
+void resendf() {
+/**略去**/
+}
+void sendmsg() {
+/**略去**/
+}
+int main() {
+readfile();
+WSADATA wsaData;
+int port = 5099;
+int c_port = 66666;
+if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) {
+ mtx2.lock();
+ printf("加载套接字失败： %d......\n", WSAGetLastError());
+ mtx2.unlock();
+ return 1;
+}
+sockClnt = socket(AF_INET, SOCK_DGRAM, 0);
+addrClnt.sin_family = AF_INET;
+addrClnt.sin_port = htons(port);
+addrClnt.sin_addr.S_un.S_addr = inet_addr("127.0.0.1");  //主动发送的目的地
+SOCKADDR_IN addrSrv;
+addrSrv.sin_family = AF_INET;
+addrSrv.sin_port = htons(c_port);
+addrSrv.sin_addr.S_un.S_addr = htonl(INADDR_ANY);  //绑定的端口
+if (::bind(sockClnt, (LPSOCKADDR)&addrSrv, sizeof(SOCKADDR_IN)) ==
+   SOCKET_ERROR) {
+ mtx2.lock();
+ printf("套接字绑定失败：%d......\n", WSAGetLastError());
+ mtx2.unlock();
+ closesocket(sockClnt);
+ WSACleanup();
+ return 1;
+}
+BOOL bNewBehavior = FALSE;
+DWORD dwBytesReturned = 0;
+WSAIoctl(sockClnt, SIO_UDP_CONNRESET, &bNewBehavior, sizeof bNewBehavior,
+        NULL, 0, &dwBytesReturned, NULL, NULL);
+timeval tv;
+tv.tv_sec = 1000;
+tv.tv_usec = 0;
+long b = 0;
+b = setsockopt(sockClnt, SOL_SOCKET, SO_RCVTIMEO, (char*)&tv, sizeof(tv));
+if (b == -1) {
+ mtx2.lock();
+ printf("设置socket定时器失败！\n");
+ mtx2.unlock();
+ closesocket(sockClnt);
+ WSACleanup();
+ exit(0);
+}
+r.start = 0;
+r.end = 0;
+//初始化完成，开始发送数据
+cnt = slen / 59 + 1;
+mtx2.lock();
+printf("消息拆分为: %d个\n", cnt);
+mtx2.unlock();
+if (cnt > 1) {
+ af = true;
+}
+int k = 0;
+resendf();
+//
+Sleep(15000);
+printf("父进程结束！\n");
+closesocket(sockClnt);
+WSACleanup();
+return 0;
+}</code></pre>
+</li>
+<li><p>server.cpp</p>
+<pre class=" language-c++"><code class="language-c++">#include <WinSock2.h>
+#include <stdio.h>
+#include <tchar.h>
+#include <ws2tcpip.h>
+#pragma comment(lib, "ws2_32.lib")
+int seqnum = 0;
+void generate(char *ackbuf, char *buf) {
+char *num;
+itoa((int)buf[0], num, 10);
+for (int i = 0; i < 3; i++) {
+ ackbuf[i + 10] = num[i];
+}
+}
+int main() {
+WSADATA wsaData;
+int port = 5099;
+if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) {
+ printf("加载套接字失败： %d......\n", WSAGetLastError());
+ return 1;
+}
+SOCKET sockSrv = socket(PF_INET, SOCK_DGRAM, 0);
+SOCKADDR_IN addrSrv;
+addrSrv.sin_family = AF_INET;
+addrSrv.sin_port = htons(port);
+addrSrv.sin_addr.S_un.S_addr = htonl(INADDR_ANY);
+if (::bind(sockSrv, (LPSOCKADDR)&addrSrv, sizeof(SOCKADDR_IN)) ==
+   SOCKET_ERROR) {
+ printf("套接字绑定失败：%d......\n", WSAGetLastError());
+ return 1;
+}
+char buf[64];
+char ackbuf[32] = {0 , 1 , 0 , 0,'a', 'c', 'k', ' ', '=', ' '};
+char result[60];
+SOCKADDR_IN addrClnt;
+int len = sizeof(SOCKADDR);
+//初始化完成，开始发送数据
+int end = 0;
+while (1) {
+ bool finish = true;
+ memset(buf, 0, sizeof(buf));
+ int rlen = recvfrom(sockSrv, buf, sizeof(buf), 0,
+                     (struct sockaddr *)&addrClnt, &len);
+ printf("客户端IP地址： 127.0.0.1, 端口：%d\n", ntohs(addrClnt.sin_port));
+ if (buf[2] == 1) {
+   finish = false;
+   if (buf[3] == 1) finish = true;
+ }
+ for (int i = 0; i < 60; i++) {
+   result[i] = buf[4 + i];
+ }
+ printf("客户端消息：%s\n", result);
+ printf("客户端消息长度： %d\n", rlen);
+ /**控制发送端口部分略去**/
+}
+closesocket(sockSrv);
+
+WSACleanup();
+
+return 0;
+}</code></pre>
+</li>
+</ol>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">tasfa1tals</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://blog.tasfa1tals.top/202211250115/">https://blog.tasfa1tals.top/202211250115/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">tasfa1tals</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/GBN/">
+                                    <span class="chip bg-color">GBN</span>
+                                </a>
+                            
+                                <a href="/tags/UDP/">
+                                    <span class="chip bg-color">UDP</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        
+    <div id="SOHUCS"></div>
+    <script type="text/javascript">
+        window.onload = function () {
+            var loadChangYan = function () {
+                var appid = 'cyvy0kEyY';
+                var conf = 'b10a82567da6df6d87fe359be265c1f4';
+                var width = window.innerWidth || document.documentElement.clientWidth;
+                if (width < 960) {
+                    var head = document.getElementsByTagName('head')[0] || document.head || document.documentElement;
+                    var script = document.createElement('script');
+                    script.type = 'text/javascript';
+                    script.charset = 'utf-8';
+                    script.id = 'changyan_mobile_js';
+                    script.src = 'https://cy-cdn.kuaizhan.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid +
+                        '&conf=' + conf;
+                    head.appendChild(script);
+                } else {
+                    var loadJs = function (d, a) {
+                        var c = document.getElementsByTagName("head")[0] || document.head || document.documentElement;
+                        var b = document.createElement("script");
+                        b.setAttribute("type", "text/javascript");
+                        b.setAttribute("charset", "UTF-8");
+                        b.setAttribute("src", d);
+                        if (typeof a === "function") {
+                            if (window.attachEvent) {
+                                b.onreadystatechange = function () {
+                                    var e = b.readyState;
+                                    if (e === "loaded" || e === "complete") {
+                                        b.onreadystatechange = null;
+                                        a()
+                                    }
+                                }
+                            } else {
+                                b.onload = a
+                            }
+                        }
+                        c.appendChild(b)
+                    };
+                    loadJs("https://cy-cdn.kuaizhan.com/upload/changyan.js", function () {
+                        window.changyan.api.config({
+                            appid: appid,
+                            conf: conf
+                        })
+                    });
+                }
+            }
+
+            loadChangYan();
+        }
+    </script>
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
+            <div class="card">
+                <a href="/202211250115/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="计网实验——基于UDP的GBN协议的实现">
+                        
+                        <span class="card-title">计网实验——基于UDP的GBN协议的实现</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-11-25
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="post-category">
+                                    计算机网络
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/GBN/">
+                        <span class="chip bg-color">GBN</span>
+                    </a>
+                    
+                    <a href="/tags/UDP/">
+                        <span class="chip bg-color">UDP</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/202211142215/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/20.jpg" class="responsive-img" alt="从零开始写操作系统——其三">
+                        
+                        <span class="card-title">从零开始写操作系统——其三</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-11-14
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="post-category">
+                                    操作系统
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">
+                        <span class="chip bg-color">内存管理</span>
+                    </a>
+                    
+                    <a href="/tags/OS/">
+                        <span class="chip bg-color">OS</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+<script>
+    $('#articleContent').on('copy', function (e) {
+        // IE8 or earlier browser is 'undefined'
+        if (typeof window.getSelection === 'undefined') return;
+
+        var selection = window.getSelection();
+        // if the selection is short let's not annoy our users.
+        if (('' + selection).length < Number.parseInt('120')) {
+            return;
+        }
+
+        // create a div outside of the visible area and fill it with the selected text.
+        var bodyElement = document.getElementsByTagName('body')[0];
+        var newdiv = document.createElement('div');
+        newdiv.style.position = 'absolute';
+        newdiv.style.left = '-99999px';
+        bodyElement.appendChild(newdiv);
+        newdiv.appendChild(selection.getRangeAt(0).cloneContents());
+
+        // we need a <pre> tag workaround.
+        // otherwise the text inside "pre" loses all the line breaks!
+        if (selection.getRangeAt(0).commonAncestorContainer.nodeName === 'PRE') {
+            newdiv.innerHTML = "<pre>" + newdiv.innerHTML + "</pre>";
+        }
+
+        var url = document.location.href;
+        newdiv.innerHTML += '<br />'
+            + '来源: tasfa1tals的博客<br />'
+            + '文章作者: tasfa1tals<br />'
+            + '文章链接: <a href="' + url + '">' + url + '</a><br />'
+            + '本文章著作权归作者所有，任何形式的转载都请注明出处。';
+
+        selection.selectAllChildren(newdiv);
+        window.setTimeout(function () {bodyElement.removeChild(newdiv);}, 200);
+    });
+</script>
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+        <link rel="stylesheet" href="/libs/aplayer/APlayer.min.css">
+<style>
+    .aplayer .aplayer-lrc p {
+        
+        display: none;
+        
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 16px !important;
+    }
+
+    .aplayer .aplayer-lrc p.aplayer-lrc-current {
+        
+        display: none;
+        
+        font-size: 15px;
+        color: #42b983;
+    }
+
+    
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+        left: -66px !important;
+    }
+
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+        left: 0px !important;
+    }
+
+    
+</style>
+<div class="">
+    
+    <div class="row">
+        <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
+                   server="netease"
+                   type="playlist"
+                   id="503838841"
+                   fixed='true'
+                   autoplay='false'
+                   theme='#42b983'
+                   loop='all'
+                   order='random'
+                   preload='auto'
+                   volume='0.7'
+                   list-folded='true'
+        >
+        </meting-js>
+    </div>
+</div>
+
+<script src="/libs/aplayer/APlayer.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
+
+    
+    <div class="container row center-align" style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2019-2022</span>
+            
+            <span id="year">2019</span>
+            <a href="/about" target="_blank">tasfa1tals</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <br>
+            
+            &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
+                class="white-color">47.6k</span>&nbsp;字
+            
+            
+            
+            
+            
+            
+            <span id="busuanzi_container_site_pv">
+                |&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;<span id="busuanzi_value_site_pv"
+                    class="white-color"></span>&nbsp;次
+            </span>
+            
+            
+            <span id="busuanzi_container_site_uv">
+                |&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;<span id="busuanzi_value_site_uv"
+                    class="white-color"></span>&nbsp;人
+            </span>
+            
+            <br>
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/hyjtab/" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:2741521652@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=2741521652" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 2741521652" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+	
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>
