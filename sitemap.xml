@@ -72,20 +72,6 @@
   </url>
   
   <url>
-    <loc>https://blog.tasfa1tals.top/202211122042/</loc>
-    
-    <lastmod>2022-11-13</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://blog.tasfa1tals.top/202211070036/</loc>
-    
-    <lastmod>2022-11-12</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://blog.tasfa1tals.top/202211090235/</loc>
     
     <lastmod>2022-11-08</lastmod>
@@ -207,7 +193,7 @@
 
   <url>
     <loc>https://blog.tasfa1tals.top/</loc>
-    <lastmod>2022-11-14</lastmod>
+    <lastmod>2022-11-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -217,14 +203,14 @@
   
   <url>
     <loc>https://blog.tasfa1tals.top/categories/study/</loc>
-    <lastmod>2022-11-14</lastmod>
+    <lastmod>2022-11-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://blog.tasfa1tals.top/categories/daily/</loc>
-    <lastmod>2022-11-14</lastmod>
+    <lastmod>2022-11-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
