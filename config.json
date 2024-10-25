@@ -1,8 +1,8 @@
 {
     "title":"Tasfa1tals的博客",
     "subTitle":"人们应当想象，西西弗是快乐的",
-    "avatarUrl":"hyjtab.github.io/avatar.png",
-    "faviconUrl":"hyjtab.github.io/mango.svg",
+    "avatarUrl":"https://hyjtab.github.io/avatar.jpg",
+    "faviconUrl":"https://hyjtab.github.io/mango.svg",
     "GMEEK_VERSION":"last",
     "onePageListNum":10,
     "startSite":"2024/10/25",
@@ -10,5 +10,6 @@
     "startSite":"10/25/2024",
     "nightTheme":"dark_dimmed",
     "urlMode":"issue",
+    "bottomText":"日拱一卒，功不唐捐",
     "needComment": 1
 }
