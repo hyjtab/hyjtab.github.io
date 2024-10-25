@@ -12,6 +12,7 @@
     "urlMode":"issue",
     "bottomText":"日拱一卒，功不唐捐",
     "needComment": 1,
-    "allHead":"<script src='https://blog.meekdai.com/Gmeek/plugins/GmeekBSZ.js'></script>",
-    "script":"<script src='https://blog.meekdai.com/Gmeek/plugins/GmeekTOC.js'></script>"
+    "allHead":"<script src='https://blog.meekdai.com/Gmeek/plugins/GmeekVercount.js'></script>",
+    "script":"<script src='https://blog.meekdai.com/Gmeek/plugins/GmeekTOC.js'></script><script src='https://blog.liyifan.xyz/assets/copy.js'></script>",
+"
 }
