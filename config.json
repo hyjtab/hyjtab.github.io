@@ -1,6 +1,14 @@
 {
-    "title":"Blog Title",
-    "subTitle":"Blog description",
-    "avatarUrl":"https://github.githubassets.com/favicons/favicon.svg",
-    "GMEEK_VERSION":"last"
+    "title":"Tasfa1tals的博客",
+    "subTitle":"人们应当想象，西西弗是快乐的",
+    "avatarUrl":"hyjtab.github.io/avatar.png",
+    "faviconUrl":"hyjtab.github.io/mango.svg",
+    "GMEEK_VERSION":"last",
+    "onePageListNum":10,
+    "startSite":"2024/10/25",
+    "dayTheme":"light",
+    "startSite":"10/25/2024",
+    "nightTheme":"dark_dimmed",
+    "urlMode":"issue",
+    "needComment": 1
 }
