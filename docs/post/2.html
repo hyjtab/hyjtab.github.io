@@ -10,10 +10,10 @@
         let theme = localStorage.getItem("meek_theme") || "light";
         document.documentElement.setAttribute("data-color-mode", theme);
     </script>
-<meta name="description" content="#每日一题
+<meta name="description" content="# 每日一题
 > 给你一个整数数组 rewardValues，长度为 n，代表奖励的值。">
 <meta property="og:title" content="leetcode每日一题">
-<meta property="og:description" content="#每日一题
+<meta property="og:description" content="# 每日一题
 > 给你一个整数数组 rewardValues，长度为 n，代表奖励的值。">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://hyjtab.github.io/post/2.html">
@@ -75,7 +75,7 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 </div>
 </div>
     <div id="content">
-<div class="markdown-body" id="postBody"><p>#每日一题</p>
+<div class="markdown-body" id="postBody"><h1>每日一题</h1>
 <blockquote>
 <p>给你一个整数数组 rewardValues，长度为 n，代表奖励的值。<br>
 最初，你的总奖励 x 为 0，所有下标都是 未标记 的。你可以执行以下操作任意次 ：<br>
@@ -83,9 +83,9 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 如果 rewardValues[i] 大于 你当前的总奖励 x，则将 rewardValues[i] 加到 x 上（即 x = x + rewardValues[i]），并标记下标 i。<br>
 以整数形式返回执行最优操作能够获得的 最大总奖励。</p>
 </blockquote>
-<p>今天是一道hard题，第一眼就感觉很像动态规划，但是没有坚持这个思路，去试了暴力和贪心，发现都不能做出来，于是去翻题解，官方题解使用了移位和动态规划结合的做法。是一种基于类零一背包的两数之和优化做法。<br>
-##动态规划<br>
-于是顺着链接，翻看代码随想录，捡了捡思路，首先是动态规划五部曲：</p>
+<p>今天是一道hard题，第一眼就感觉很像动态规划，但是没有坚持这个思路，去试了暴力和贪心，发现都不能做出来，于是去翻题解，官方题解使用了移位和动态规划结合的做法。是一种基于类零一背包的两数之和优化做法。</p>
+<h2>动态规划</h2>
+<p>于是顺着链接，翻看代码随想录，捡了捡思路，首先是动态规划五部曲：</p>
 <blockquote>
 <p>1.确定dp数组（dp table）以及下标的含义<br>
 2.确定递推公式<br>
@@ -100,9 +100,9 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 <p>然后是如何初始化，这就要考虑等式左右两边的递推时的下标变化情况。我们可以明显看出ij均为从小到大，因此只需要正确初始化每个index为0的行列即可。随后是遍历顺序，由于边界情况都被正确初始化，所以推导以任意一维为主均可正确运行。随后便是打印验证环节。</p>
 <p>除此之外，数组下标和内容的含义还可以变化，令j为价值，而内容为能否实现这样的递归顺序。那么我们的递归公式将变成：<br>
 $dp[i][j] = dp[i-1][j-v[i]]||dp[i-1][j]$，<br>
-递归起点便只有00和j=0全为true。答案即为内容为true的最大的j。<br>
-##bitset优化压缩<br>
-这题的思路应该倾向于第二种，但是不做任何改变依旧会超时。答案做的优化是，将数组压缩成为1维数组，随后转为bitset。由于题目特性，只有v大于当前和时才能够纳入背包，因此当前价值jv&lt;= j &lt;2v</p></div>
+递归起点便只有00和j=0全为true。答案即为内容为true的最大的j。</p>
+<h2>bitset优化压缩</h2>
+<p>这题的思路应该倾向于第二种，但是不做任何改变依旧会超时。答案做的优化是，将数组压缩成为1维数组，随后转为bitset。由于题目特性，只有v大于当前和时才能够纳入背包，因此当前价值jv&lt;= j &lt;2v</p></div>
 <div style="font-size:small;margin-top:8px;float:right;">日拱一卒，功不唐捐</div>
 
 <button class="btn btn-block" type="button" onclick="openComments()" id="cmButton">评论</button>
