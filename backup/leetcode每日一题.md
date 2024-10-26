@@ -36,13 +36,13 @@ $dp[i]=max(dp[i-1],dp[i-w[j]]+v[i])$
 最后答案从最大可能性2m-1开始搜寻，最大者即为答案。
 
 答案来自[灵茶山艾府](https://leetcode.cn/problems/maximum-total-reward-using-operations-ii/solutions/2805413/bitset-you-hua-0-1-bei-bao-by-endlessche-m1xn/)这位大佬。
-'''
+
+```cpp
 class Solution {
 public:
     int maxTotalReward(vector<int>& rewardValues) {
         ranges::sort(rewardValues);
         rewardValues.erase(unique(rewardValues.begin(), rewardValues.end()), rewardValues.end());
-
         bitset<100000> f{1};
         for (int v : rewardValues) {
             int shift = f.size() - v;
@@ -57,8 +57,7 @@ public:
         }
     }
 };
-
-'''
+```
 bitset语法部分：
 初始化
 ![leetcodenotes1](https://github.com/user-attachments/assets/cd9ab729-1af0-4d09-bde8-598dc3b5025b)

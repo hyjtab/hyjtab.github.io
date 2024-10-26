@@ -21,7 +21,7 @@
 <meta property="og:url" content="https://hyjtab.github.io/post/2.html">
 <meta property="og:image" content="https://hyjtab.github.io/avatar.jpg">
 <title>leetcode每日一题</title>
-
+<link href="//unpkg.com/@wooorm/starry-night@2.1.1/style/both.css" rel="stylesheet" />
 
 
 </head>
@@ -119,30 +119,27 @@ $dp[i]=max(dp[i-1],dp[i-w[j]]+v[i])$</p>
 <h2>bitset优化压缩</h2>
 <p>这题的思路应该倾向于第二种，但是不做任何改变依旧会超时。答案做的优化是，将数组压缩成为1维数组，随后转为bitset。由于题目特性，只有v大于当前价值和j时才能够纳入背包，因此当前价值和满足v&lt;= j &lt;2v，因此，对于每一个v，都需要在j∈[v , 2v)区间内做这样的操作：dp[j] = dp [j-v] || dp[j]。再次压缩为bitmap，即f左移size-j再右移size-j再左移v，前两次抵消的目的是清除大于v位的比特，随后进行或运算，实现我们的动归算法。</p>
 <p>最后答案从最大可能性2m-1开始搜寻，最大者即为答案。</p>
-<p>答案来自<a href="https://leetcode.cn/problems/maximum-total-reward-using-operations-ii/solutions/2805413/bitset-you-hua-0-1-bei-bao-by-endlessche-m1xn/" rel="nofollow">灵茶山艾府</a>这位大佬。<br>
-'''<br>
-class Solution {<br>
-public:<br>
-int maxTotalReward(vector&amp; rewardValues) {<br>
-ranges::sort(rewardValues);<br>
-rewardValues.erase(unique(rewardValues.begin(), rewardValues.end()), rewardValues.end());</p>
-<pre class="notranslate"><code class="notranslate">    bitset&lt;100000&gt; f{1};
-    for (int v : rewardValues) {
-        int shift = f.size() - v;
-        // 左移 shift 再右移 shift，把所有 &gt;= v 的比特位置 0
-        // f |= f &lt;&lt; shift &gt;&gt; shift &lt;&lt; v;
-        f |= f &lt;&lt; shift &gt;&gt; (shift - v); // 简化上式
-    }
-    for (int i = rewardValues.back() * 2 - 1; ; i--) {
-        if (f.test(i)) {
-            return i;
+<p>答案来自<a href="https://leetcode.cn/problems/maximum-total-reward-using-operations-ii/solutions/2805413/bitset-you-hua-0-1-bei-bao-by-endlessche-m1xn/" rel="nofollow">灵茶山艾府</a>这位大佬。</p>
+<div class="highlight highlight-source-c++"><pre class="notranslate"><span class="pl-k">class</span> <span class="pl-en">Solution</span> {
+<span class="pl-k">public:</span>
+    <span class="pl-k">int</span> <span class="pl-en">maxTotalReward</span>(vector&lt;<span class="pl-k">int</span>&gt;&amp; rewardValues) {
+        <span class="pl-c1">ranges::sort</span>(rewardValues);
+        rewardValues.<span class="pl-c1">erase</span>(<span class="pl-c1">unique</span>(rewardValues.<span class="pl-c1">begin</span>(), rewardValues.<span class="pl-c1">end</span>()), rewardValues.<span class="pl-c1">end</span>());
+        bitset&lt;<span class="pl-c1">100000</span>&gt; f{<span class="pl-c1">1</span>};
+        <span class="pl-k">for</span> (<span class="pl-k">int</span> v : rewardValues) {
+            <span class="pl-k">int</span> shift = f.<span class="pl-c1">size</span>() - v;
+            <span class="pl-c"><span class="pl-c">//</span> 左移 shift 再右移 shift，把所有 &gt;= v 的比特位置 0</span>
+            <span class="pl-c"><span class="pl-c">//</span> f |= f &lt;&lt; shift &gt;&gt; shift &lt;&lt; v;</span>
+            f |= f &lt;&lt; shift &gt;&gt; (shift - v); <span class="pl-c"><span class="pl-c">//</span> 简化上式</span>
+        }
+        <span class="pl-k">for</span> (<span class="pl-k">int</span> i = rewardValues.<span class="pl-c1">back</span>() * <span class="pl-c1">2</span> - <span class="pl-c1">1</span>; ; i--) {
+            <span class="pl-k">if</span> (f.<span class="pl-c1">test</span>(i)) {
+                <span class="pl-k">return</span> i;
+            }
         }
     }
-}
-</code></pre>
-<p>};</p>
-<p>'''<br>
-bitset语法部分：<br>
+};</pre></div>
+<p>bitset语法部分：<br>
 初始化<br>
 <a target="_blank" rel="noopener noreferrer" href="https://github.com/user-attachments/assets/cd9ab729-1af0-4d09-bde8-598dc3b5025b"><img src="https://github.com/user-attachments/assets/cd9ab729-1af0-4d09-bde8-598dc3b5025b" alt="leetcodenotes1" style="max-width: 100%;"></a><br>
 size<br>
