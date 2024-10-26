@@ -1,11 +1,12 @@
 # 每日一题（零一背包与bitset）
+> Leetcode 3181. 执行操作可获得的最大总奖励 II
 > 给你一个整数数组 rewardValues，长度为 n，代表奖励的值。
 > 最初，你的总奖励 x 为 0，所有下标都是 未标记 的。你可以执行以下操作任意次 ：
 > 从区间 [0, n - 1] 中选择一个 未标记 的下标 i。
 > 如果 rewardValues[i] 大于 你当前的总奖励 x，则将 rewardValues[i] 加到 x 上（即 x = x + rewardValues[i]），并标记下标 i。
 > 以整数形式返回执行最优操作能够获得的 最大总奖励。
 
-今天是一道hard题，第一眼就感觉很像动态规划，但是没有坚持这个思路，去试了暴力和贪心，发现都不能做出来，于是去翻题解，官方题解使用了移位和动态规划结合的做法。是一种基于类零一背包的两数之和优化做法。
+今天是一道hard题，第一眼就感觉很像动态规划，但是没有坚持这个思路，去试了暴力和贪心，发现都不能做出来，于是去翻题解，官方题解使用了bitset优化空间和动态规划结合的做法。是一种基于类零一背包的优化做法。
 ## 动态规划
 于是顺着链接，翻看代码随想录，捡了捡思路，首先是动态规划五部曲：
 >1.确定dp数组（dp table）以及下标的含义
@@ -34,6 +35,30 @@ $dp[i]=max(dp[i-1],dp[i-w[j]]+v[i])$
 
 最后答案从最大可能性2m-1开始搜寻，最大者即为答案。
 
+答案来自[灵茶山艾府](https://leetcode.cn/problems/maximum-total-reward-using-operations-ii/solutions/2805413/bitset-you-hua-0-1-bei-bao-by-endlessche-m1xn/)这位大佬。
+'''
+class Solution {
+public:
+    int maxTotalReward(vector<int>& rewardValues) {
+        ranges::sort(rewardValues);
+        rewardValues.erase(unique(rewardValues.begin(), rewardValues.end()), rewardValues.end());
+
+        bitset<100000> f{1};
+        for (int v : rewardValues) {
+            int shift = f.size() - v;
+            // 左移 shift 再右移 shift，把所有 >= v 的比特位置 0
+            // f |= f << shift >> shift << v;
+            f |= f << shift >> (shift - v); // 简化上式
+        }
+        for (int i = rewardValues.back() * 2 - 1; ; i--) {
+            if (f.test(i)) {
+                return i;
+            }
+        }
+    }
+};
+
+'''
 bitset语法部分：
 初始化
 ![leetcodenotes1](https://github.com/user-attachments/assets/cd9ab729-1af0-4d09-bde8-598dc3b5025b)
