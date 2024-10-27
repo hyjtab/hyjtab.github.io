@@ -1,5 +1,19 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>Tasfa1tals的博客</title><link>https://hyjtab.github.io</link><description>人们应当想象，西西弗是快乐的</description><copyright>Tasfa1tals的博客</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://hyjtab.github.io/avatar.jpg</url><title>avatar</title><link>https://hyjtab.github.io</link></image><lastBuildDate>Sun, 27 Oct 2024 07:59:24 +0000</lastBuildDate><managingEditor>Tasfa1tals的博客</managingEditor><ttl>60</ttl><webMaster>Tasfa1tals的博客</webMaster><item><title>leetcode每日一题20241027（并查集）</title><link>https://hyjtab.github.io/post/3.html</link><description># 每日一题&#13;
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>Tasfa1tals的博客</title><link>https://hyjtab.github.io</link><description>人们应当想象，西西弗是快乐的</description><copyright>Tasfa1tals的博客</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://hyjtab.github.io/avatar.jpg</url><title>avatar</title><link>https://hyjtab.github.io</link></image><lastBuildDate>Sun, 27 Oct 2024 09:49:20 +0000</lastBuildDate><managingEditor>Tasfa1tals的博客</managingEditor><ttl>60</ttl><webMaster>Tasfa1tals的博客</webMaster><item><title>第0章到第4章小结</title><link>https://hyjtab.github.io/post/4.html</link><description># 第0章&#13;
+1.给出一个最短的c++有效程序：&#13;
+```&#13;
+int main(){}&#13;
+```&#13;
+# 第1章&#13;
+2.iostream库中cin的字符串读取，自动省略开头空白字符，并在之后遇到空白字符（包括空格）就会截止&#13;
+&#13;
+3.string初始化（库函数小括号初始化方式）(num,value)&#13;
+&#13;
+4.第一段定义有效，第二段定义无效，因为字符串常量未实现+运算符重载：&#13;
+```cpp&#13;
+const std::string hello = 'Hello';&#13;
+const std::string message = hello + ', world' + '!';&#13;
+\\上面一行的中间结果会返回一个string类型的中间变量，继续和'!'做加法。</description><guid isPermaLink="true">https://hyjtab.github.io/post/4.html</guid><pubDate>Sun, 27 Oct 2024 09:48:46 +0000</pubDate></item><item><title>leetcode每日一题20241027（并查集）</title><link>https://hyjtab.github.io/post/3.html</link><description># 每日一题&#13;
 &gt;[684. 冗余连接](https://leetcode.cn/problems/redundant-connection/)&#13;
 &#13;
 &gt;树可以看成是一个连通且无环的无向图。</description><guid isPermaLink="true">https://hyjtab.github.io/post/3.html</guid><pubDate>Sun, 27 Oct 2024 07:55:49 +0000</pubDate></item><item><title>leetcode每日一题20241026（零一背包与bitset）</title><link>https://hyjtab.github.io/post/2.html</link><description># 每日一题（零一背包与bitset）&#13;
