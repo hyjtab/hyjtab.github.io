@@ -96,11 +96,11 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 <h3>深搜：</h3>
 <p>这是我想出的解法：从根部‘’空开始往下搜索，左为0，右为1，除根结点外，其余所有节点检查末尾是否为‘0’，若为‘0’，则只能向右深搜，否则两边都可以，最深为n，取叶子节点值为答案。<br>
 ##模拟与位运算<br>
-前面两种做法都是基于生成答案的思想，从无到有，而这两种则是直接生成。<br>
-###模拟<br>
-首先生成一个长为n的全‘0’串，随后在‘0’串上根据index进行递归，递归的规则如下：index超过n，递归结束，加入结果列表，没有超过n，修改本次递归index对应的index为1，并且调用两次递归函数分别为index+1和index+2。<br>
-###位运算<br>
-位运算是一个精巧的做法，主要的妙处在于按位取反和快速生成二进制字符串，这里也做下总结：</p>
+前面两种做法都是基于生成答案的思想，从无到有，而这两种则是直接生成。</p>
+<h3>模拟</h3>
+<p>首先生成一个长为n的全‘0’串，随后在‘0’串上根据index进行递归，递归的规则如下：index超过n，递归结束，加入结果列表，没有超过n，修改本次递归index对应的index为1，并且调用两次递归函数分别为index+1和index+2。</p>
+<h3>位运算</h3>
+<p>位运算是一个精巧的做法，主要的妙处在于按位取反和快速生成二进制字符串，这里也做下总结：</p>
 <div class="highlight highlight-source-c++"><pre class="notranslate"><span class="pl-c"><span class="pl-c">//</span>由于长度为n，因此我们需要取n位按位取反</span>
 t = i ^ ( (<span class="pl-c1">1</span> &lt;&lt; n) - <span class="pl-c1">1</span>);
 <span class="pl-c"><span class="pl-c">//</span>若按位取反后左移一位和之前按位与的结果不为零，则说明连续0不存在</span>
