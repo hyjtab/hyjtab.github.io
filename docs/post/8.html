@@ -155,33 +155,61 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 <p>首先在两个数组中分别取第k/2大的数，总有一大一小。小者以及小者之前的数是需要被筛去的，因为定然不会是第k大的数。接着更新 $ k = k - |删掉的大小| $ ，在剩下的数组中继续按照更新的k来进行二分。如此往复，直至k为1，则选出两数组中当前指针最大者为止。</p>
 <p>这种想法下，有两种边界情况需要考虑，第一种是小者数组为空，或者两数组无相交部分的情况。这种情况下，我们应该认为所有数组的末尾隐含着一个最大值INTMAX，这样就能够让未空数组一直更新了，当然也可以通过强制收缩范围来实现。</p>
 <p>另一个问题就是要考虑中位数自带的奇偶问题，因此，我们需要在总数为偶数时调用两次函数来进行查找。</p>
+<div class="highlight highlight-source-c++"><pre class="notranslate"><span class="pl-k">class</span> <span class="pl-en">Solution</span> {
+<span class="pl-k">public:</span>
+    <span class="pl-k">int</span> <span class="pl-en">findKth</span>(vector&lt;<span class="pl-k">int</span>&gt;&amp; nums1, vector&lt;<span class="pl-k">int</span>&gt;&amp; nums2, <span class="pl-k">int</span> k){
+        <span class="pl-k">int</span> index1 = <span class="pl-c1">0</span>, index2 = <span class="pl-c1">0</span>, len1 = nums1.<span class="pl-c1">size</span>(), len2 = nums2.<span class="pl-c1">size</span>();
+        <span class="pl-k">while</span>(<span class="pl-c1">true</span>){
+            <span class="pl-k">if</span>(index1 == len1) <span class="pl-k">return</span> nums2[index2 + k - <span class="pl-c1">1</span>];
+            <span class="pl-k">if</span>(index2 == len2) <span class="pl-k">return</span> nums1[index1 + k - <span class="pl-c1">1</span>];
+            <span class="pl-k">if</span>(k == <span class="pl-c1">1</span>) <span class="pl-k">return</span> <span class="pl-c1">min</span>(nums1[index1], nums2[index2]);<span class="pl-c"><span class="pl-c">//</span>第k个，从1开始数起</span>
+            <span class="pl-k">int</span> newIndex1 = <span class="pl-c1">min</span>(index1 + k / <span class="pl-c1">2</span> - <span class="pl-c1">1</span>, len1 - <span class="pl-c1">1</span>);
+            <span class="pl-k">int</span> newIndex2 = <span class="pl-c1">min</span>(index2 + k / <span class="pl-c1">2</span> - <span class="pl-c1">1</span>, len2 - <span class="pl-c1">1</span>);
+            <span class="pl-k">if</span>(nums1[newIndex1] &gt; nums2[newIndex2]) {
+                k -= (newIndex2 - index2 + <span class="pl-c1">1</span>);
+                index2 = newIndex2 + <span class="pl-c1">1</span>;
+            }
+            <span class="pl-k">else</span>{
+                k -= (newIndex1 - index1 + <span class="pl-c1">1</span>);
+                index1 = newIndex1 + <span class="pl-c1">1</span>;
+            }
+        }
+    }
+    <span class="pl-k">double</span> <span class="pl-en">findMedianSortedArrays</span>(vector&lt;<span class="pl-k">int</span>&gt;&amp; nums1, vector&lt;<span class="pl-k">int</span>&gt;&amp; nums2) {
+        <span class="pl-k">int</span> n = nums1.<span class="pl-c1">size</span>(), m = nums2.<span class="pl-c1">size</span>();
+        <span class="pl-k">if</span>((n + m) % <span class="pl-c1">2</span> == <span class="pl-c1">1</span>){
+            <span class="pl-k">return</span> <span class="pl-c1">findKth</span>(nums1, nums2, (n + m + <span class="pl-c1">1</span>) / <span class="pl-c1">2</span>);<span class="pl-c"><span class="pl-c">//</span>奇数向上取整</span>
+        }<span class="pl-k">else</span>{
+            <span class="pl-k">return</span> (<span class="pl-c1">findKth</span>(nums1, nums2, (n + m) / <span class="pl-c1">2</span>) + <span class="pl-c1">findKth</span>(nums1, nums2, (n + m) / <span class="pl-c1">2</span> + <span class="pl-c1">1</span>) ) / <span class="pl-c1">2.0</span>;<span class="pl-c"><span class="pl-c">//</span>偶数除以二加上1</span>
+        }
+    }
+};</pre></div>
 <p>还有一种思路，便是划分方式，对数组1和数组2进行左右划分，左划分和右划分数量一致时，中间两位的均值即为中位数。这里需要考虑的问题有两个，第一个是划分变量如何更新维护，第二是边界条件以及数组长度的奇偶处理。</p>
 <p>对于第一个问题，最大的困难其实是两个数组如何同时二分，其实很好理解，只用维护一个二分变量即可，另一个则由数组总数自动确定，即，每次划分都划分成左右两部分都是具有相同数量数据的数组。至于合法性，只要验证这样一个问题：即数组一的左划分是否大于数组二的右划分，如果大于，则将划分向右移，如果数组二的左划分大于数组一的右划分，则划分向左移。其他情况则说明已经到达目的点。</p>
 <p>边界条件和奇偶性的处理方面，可以这样进行，对每一个空隙都’插入‘一个和右边数字相同的值，开头和结尾’插入‘INT_MIN和INT_MAX。这样做的目的是可以让数组数量始终控制在偶数，不用讨论奇偶性，同时如果左右划分不足，则INT_MIN和INT_MAX可以保证划分指针不会继续朝错误的方向移动。</p>
-<pre class="notranslate"><code class="notranslate">class Solution {
-public:
-    double findMedianSortedArrays(vector&lt;int&gt;&amp; nums1, vector&lt;int&gt;&amp; nums2) {
-        int m = nums1.size(), n = nums2.size();
-        if(m &gt; n){      //保证m较短，为的是控制后面的c2 = m + n - c1不会产生越界。
-            return findMedianSortedArrays(nums2, nums1);
+<div class="highlight highlight-source-c++"><pre class="notranslate"><span class="pl-k">class</span> <span class="pl-en">Solution</span> {
+<span class="pl-k">public:</span>
+    <span class="pl-k">double</span> <span class="pl-en">findMedianSortedArrays</span>(vector&lt;<span class="pl-k">int</span>&gt;&amp; nums1, vector&lt;<span class="pl-k">int</span>&gt;&amp; nums2) {
+        <span class="pl-k">int</span> m = nums1.<span class="pl-c1">size</span>(), n = nums2.<span class="pl-c1">size</span>();
+        <span class="pl-k">if</span>(m &gt; n){      <span class="pl-c"><span class="pl-c">//</span>保证m较短，为的是控制后面的c2 = m + n - c1不会产生越界。</span>
+            <span class="pl-k">return</span> <span class="pl-c1">findMedianSortedArrays</span>(nums2, nums1);
         }
-        int c1, c2, Lmax1, Lmax2, Rmin1, Rmin2, l = 0, r = 2 * m;
-        while(l &lt;= r){
-            c1 = (l + r) / 2;
+        <span class="pl-k">int</span> c1, c2, Lmax1, Lmax2, Rmin1, Rmin2, l = <span class="pl-c1">0</span>, r = <span class="pl-c1">2</span> * m;
+        <span class="pl-k">while</span>(l &lt;= r){
+            c1 = (l + r) / <span class="pl-c1">2</span>;
             c2 = m + n - c1;
-            return nums2[(c2 - 1)/2];
-            Lmax1 = (c1 == 0) ? INT_MIN : nums1[(c1 - 1)/2];
-            Lmax2 = (c2 == 0) ? INT_MIN : nums2[(c2 - 1)/2];
-            Rmin1 = (c1 == 2 * m)? INT_MAX: nums1[c1 / 2];
-            Rmin2 = (c2 == 2 * n)? INT_MAX: nums2[c2 / 2];
-            if(Lmax1 &gt; Rmin2) r = c1 - 1;
-            else if(Lmax2 &gt; Rmin1) l = c1 + 1;
-            else break;
+            <span class="pl-k">return</span> nums2[(c2 - <span class="pl-c1">1</span>)/<span class="pl-c1">2</span>];
+            Lmax1 = (c1 == <span class="pl-c1">0</span>) ? INT_MIN : nums1[(c1 - <span class="pl-c1">1</span>)/<span class="pl-c1">2</span>];
+            Lmax2 = (c2 == <span class="pl-c1">0</span>) ? INT_MIN : nums2[(c2 - <span class="pl-c1">1</span>)/<span class="pl-c1">2</span>];
+            Rmin1 = (c1 == <span class="pl-c1">2</span> * m)? INT_MAX: nums1[c1 / <span class="pl-c1">2</span>];
+            Rmin2 = (c2 == <span class="pl-c1">2</span> * n)? INT_MAX: nums2[c2 / <span class="pl-c1">2</span>];
+            <span class="pl-k">if</span>(Lmax1 &gt; Rmin2) r = c1 - <span class="pl-c1">1</span>;
+            <span class="pl-k">else</span> <span class="pl-k">if</span>(Lmax2 &gt; Rmin1) l = c1 + <span class="pl-c1">1</span>;
+            <span class="pl-k">else</span> <span class="pl-k">break</span>;
         }
-        return (max(Lmax1,Lmax2)+min(Rmin1,Rmin2)) / 2.0;
+        <span class="pl-k">return</span> (<span class="pl-c1">max</span>(Lmax1,Lmax2)+<span class="pl-c1">min</span>(Rmin1,Rmin2)) / <span class="pl-c1">2.0</span>;
     }
-};
-</code></pre>
+};</pre></div>
 <h1>滑动窗口</h1>
 <blockquote>
 <p><a href="https://leetcode.cn/problems/longest-substring-without-repeating-characters/" rel="nofollow">3. 无重复字符的最长子串</a><br>
