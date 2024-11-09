@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>Tasfa1tals的博客</title><link>https://hyjtab.github.io</link><description>人们应当想象，西西弗是快乐的</description><copyright>Tasfa1tals的博客</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://hyjtab.github.io/avatar.jpg</url><title>avatar</title><link>https://hyjtab.github.io</link></image><lastBuildDate>Fri, 08 Nov 2024 14:21:41 +0000</lastBuildDate><managingEditor>Tasfa1tals的博客</managingEditor><ttl>60</ttl><webMaster>Tasfa1tals的博客</webMaster><item><title>滑动窗口与双指针刷题记录</title><link>https://hyjtab.github.io/post/9.html</link><description># 滑动窗口&#13;
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>Tasfa1tals的博客</title><link>https://hyjtab.github.io</link><description>人们应当想象，西西弗是快乐的</description><copyright>Tasfa1tals的博客</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://hyjtab.github.io/avatar.jpg</url><title>avatar</title><link>https://hyjtab.github.io</link></image><lastBuildDate>Sat, 09 Nov 2024 04:21:29 +0000</lastBuildDate><managingEditor>Tasfa1tals的博客</managingEditor><ttl>60</ttl><webMaster>Tasfa1tals的博客</webMaster><item><title>滑动窗口与双指针刷题记录</title><link>https://hyjtab.github.io/post/9.html</link><description># 滑动窗口&#13;
 ##定长窗口&#13;
 &gt;[1652. 拆炸弹](https://leetcode.cn/problems/defuse-the-bomb/)&#13;
 &gt;你有一个炸弹需要拆除，时间紧迫！你的情报员会给你一个长度为 n 的 循环 数组 code 以及一个密钥 k 。</description><guid isPermaLink="true">https://hyjtab.github.io/post/9.html</guid><pubDate>Fri, 08 Nov 2024 09:03:14 +0000</pubDate></item><item><title>阶段刷题总结（二分法与滑动窗口）</title><link>https://hyjtab.github.io/post/8.html</link><description># 写在前面&#13;
@@ -10,16 +10,16 @@
 2.键入 shell：startup &#13;
 3.找到需要开机启动的程序&#13;
 4.创建快捷方式拖入刚才打开的窗口。</description><guid isPermaLink="true">https://hyjtab.github.io/post/5.html</guid><pubDate>Mon, 28 Oct 2024 07:45:23 +0000</pubDate></item><item><title>第0章到第4章小结</title><link>https://hyjtab.github.io/post/4.html</link><description># 第0章&#13;
-1.给出一个最短的c++有效程序：&#13;
+1. 给出一个最短的c++有效程序：&#13;
 ```&#13;
 int main(){}&#13;
 ```&#13;
 # 第1章&#13;
-2.iostream库中cin的字符串读取，自动省略开头空白字符，并在之后遇到空白字符（包括空格）就会截止&#13;
+2. iostream库中cin的字符串读取，自动省略开头空白字符，并在之后遇到空白字符（包括空格）就会截止&#13;
 &#13;
-3.string初始化（库函数小括号初始化方式）(num,value)&#13;
+3. string初始化（库函数小括号初始化方式）(num,value)&#13;
 &#13;
-4.第一段定义有效，第二段定义无效，因为字符串常量未实现+运算符重载：&#13;
+4. 第一段定义有效，第二段定义无效，因为字符串常量未实现+运算符重载：&#13;
 ```cpp&#13;
 const std::string hello = 'Hello';&#13;
 const std::string message = hello + ', world' + '!';&#13;

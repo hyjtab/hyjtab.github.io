@@ -11,32 +11,32 @@
         document.documentElement.setAttribute("data-color-mode", theme);
     </script>
 <meta name="description" content="# 第0章
-1.给出一个最短的c++有效程序：
+1. 给出一个最短的c++有效程序：
 ```
 int main(){}
 ```
 # 第1章
-2.iostream库中cin的字符串读取，自动省略开头空白字符，并在之后遇到空白字符（包括空格）就会截止
+2. iostream库中cin的字符串读取，自动省略开头空白字符，并在之后遇到空白字符（包括空格）就会截止
 
-3.string初始化（库函数小括号初始化方式）(num,value)
+3. string初始化（库函数小括号初始化方式）(num,value)
 
-4.第一段定义有效，第二段定义无效，因为字符串常量未实现+运算符重载：
+4. 第一段定义有效，第二段定义无效，因为字符串常量未实现+运算符重载：
 ```cpp
 const std::string hello = 'Hello';
 const std::string message = hello + ', world' + '!';
 \\上面一行的中间结果会返回一个string类型的中间变量，继续和'!'做加法。">
 <meta property="og:title" content="第0章到第4章小结">
 <meta property="og:description" content="# 第0章
-1.给出一个最短的c++有效程序：
+1. 给出一个最短的c++有效程序：
 ```
 int main(){}
 ```
 # 第1章
-2.iostream库中cin的字符串读取，自动省略开头空白字符，并在之后遇到空白字符（包括空格）就会截止
+2. iostream库中cin的字符串读取，自动省略开头空白字符，并在之后遇到空白字符（包括空格）就会截止
 
-3.string初始化（库函数小括号初始化方式）(num,value)
+3. string初始化（库函数小括号初始化方式）(num,value)
 
-4.第一段定义有效，第二段定义无效，因为字符串常量未实现+运算符重载：
+4. 第一段定义有效，第二段定义无效，因为字符串常量未实现+运算符重载：
 ```cpp
 const std::string hello = 'Hello';
 const std::string message = hello + ', world' + '!';
@@ -112,20 +112,32 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 </div>
     <div id="content">
 <div class="markdown-body" id="postBody"><h1>第0章</h1>
-<p>1.给出一个最短的c++有效程序：</p>
+<ol>
+<li>给出一个最短的c++有效程序：</li>
+</ol>
 <pre class="notranslate"><code class="notranslate">int main(){}
 </code></pre>
 <h1>第1章</h1>
-<p>2.iostream库中cin的字符串读取，自动省略开头空白字符，并在之后遇到空白字符（包括空格）就会截止</p>
-<p>3.string初始化（库函数小括号初始化方式）(num,value)</p>
-<p>4.第一段定义有效，第二段定义无效，因为字符串常量未实现+运算符重载：</p>
+<ol start="2">
+<li>
+<p>iostream库中cin的字符串读取，自动省略开头空白字符，并在之后遇到空白字符（包括空格）就会截止</p>
+</li>
+<li>
+<p>string初始化（库函数小括号初始化方式）(num,value)</p>
+</li>
+<li>
+<p>第一段定义有效，第二段定义无效，因为字符串常量未实现+运算符重载：</p>
+</li>
+</ol>
 <div class="highlight highlight-source-c++"><pre class="notranslate"><span class="pl-k">const</span> std::string hello = <span class="pl-s"><span class="pl-pds">"</span>Hello<span class="pl-pds">"</span></span>;
 <span class="pl-k">const</span> std::string message = hello + <span class="pl-s"><span class="pl-pds">"</span>, world<span class="pl-pds">"</span></span> + <span class="pl-s"><span class="pl-pds">"</span>!<span class="pl-pds">"</span></span>;
 \\上面一行的中间结果会返回一个string类型的中间变量，继续和<span class="pl-s"><span class="pl-pds">"</span>!<span class="pl-pds">"</span></span>做加法。
 <span class="pl-k">const</span> std::string exclam = <span class="pl-s"><span class="pl-pds">"</span>!<span class="pl-pds">"</span></span>;
 <span class="pl-k">const</span> std::string message = <span class="pl-s"><span class="pl-pds">"</span>Hello<span class="pl-pds">"</span></span> + <span class="pl-s"><span class="pl-pds">"</span>, world<span class="pl-pds">"</span></span> + exclam;
 \\上面一行在第一步就会报错。</pre></div>
-<p>5.修改}}为};}不会发生任何变化</p>
+<ol start="5">
+<li>修改}}为};}不会发生任何变化</li>
+</ol>
 <div class="highlight highlight-source-c++"><pre class="notranslate">#<span class="pl-k">include</span> <span class="pl-s"><span class="pl-pds">&lt;</span>iostream<span class="pl-pds">&gt;</span></span>
 #<span class="pl-k">include</span> <span class="pl-s"><span class="pl-pds">&lt;</span>string<span class="pl-pds">&gt;</span></span>
 <span class="pl-k">int</span> <span class="pl-en">main</span>()
@@ -135,7 +147,52 @@ std::cout &lt;&lt; s &lt;&lt; std::endl;
 { <span class="pl-k">const</span> std::string s = <span class="pl-s"><span class="pl-pds">"</span>another string<span class="pl-pds">"</span></span>;
 std::cout &lt;&lt; s &lt;&lt; std::endl; }}<span class="pl-c"><span class="pl-c">//</span>这里</span>
 <span class="pl-k">return</span> <span class="pl-c1">0</span>;
-}</pre></div></div>
+}</pre></div>
+<h2>第2章</h2>
+<ol start="6">
+<li>
+<p><strong>运算符优先级</strong>：三目运算符优先级最低，其次是赋值运算，之后是或运算，再后是与运算，再后是关系运算符，之后是移位运算，之后是加减运算，之后是乘除模运算，而后是非运算以及++x，最后是x++。</p>
+</li>
+<li>
+<p>string内部仍然拥有一个计数类型 ：string::size_type，这样做的目的是为了防止在不同机器之间转移时出现数据类型突然扩大或缩小的问题。</p>
+</li>
+</ol>
+<h2>第3章</h2>
+<ol start="8">
+<li>
+<p>内部类型的局部变量不会进行隐含的缺省初始化</p>
+</li>
+<li>
+<p>io控制器setprecision与setw放在头文件中，定义了流长度类型streamsize。setprecison函数需要在输出流中调用，并影响后面的流，也可以直接通过cout.precision()来在流外设置精度。</p>
+</li>
+</ol>
+<h2>第4章</h2>
+<ol start="10">
+<li>
+<p>非常量引用参数不能使用表达式传参。</p>
+</li>
+<li>
+<p>使用in.clear()，作用是清除当前流的错误状态，如果不去除，后续流状态将会一直保持错误。</p>
+</li>
+<li>
+<p>c++异常处理，try catch结构来进行，错误类型一般都定义在之中。</p>
+</li>
+<li>
+<p>sort函数的自定义： sort函数支持自定义谓词，即返回值为bool的函数，sort函数使用的默认谓词是＜，修改这个谓词定义便可以任意的方式排列自定义的数据。</p>
+</li>
+<li>
+<p>系统头可以不为文件，其可以内置在编译器之中。</p>
+</li>
+<li>
+<p>头文件应该只声明必要的名称，为用户保留最大的灵活性。</p>
+</li>
+<li>
+<p>在源文件使用using声明只是一个局部性的决策，不会影响全局，在源文件中引用对应头文件会使编译器为我们检查是否存在不一致。</p>
+</li>
+<li>
+<p>我们应该防止对头文件的重复包含，为此可以用一条#ifndef #define #endif指令来围起这个文件。</p>
+</li>
+</ol></div>
 <div style="font-size:small;margin-top:8px;float:right;">日拱一卒，功不唐捐</div>
 
 <button class="btn btn-block" type="button" onclick="openComments()" id="cmButton">评论</button>
