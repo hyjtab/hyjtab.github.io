@@ -20,7 +20,7 @@ git init
 ```
 建立一个.git文件夹。
 ## 3.跟踪、工作区与暂存区 ##
-工作区：任何一个在本地仓库根文件夹下的文件都在工作区，新建的文件状态为未跟踪，新修改的状态为未暂存
+工作区：任何一个在本地仓库根文件夹下的文件都在工作区，新建的文件状态为未跟踪，新修改的状态为未暂存，状态可以通过git status指令查看，修改过多可以添加-s参数来进行修改。
 
 暂存区：需要通过git add [文件名] 指令从工作区添加，暂存区的内容需要git commit -m [注释]指令才能进入本地仓库
 ```
@@ -46,19 +46,58 @@ mix撤回仓库与暂存区内容
 
 HEAD~ HEAD^表示前一个版本，后面可加数字，当前版本作为0，越早越大。
 
-##5.查看工作区、暂存区、本地仓库之间的差异 ##
+## 5.查看工作区、暂存区、本地仓库之间的差异 ##
+```
 git diif  默认比较工作区与暂存区的区别
-
 git diff HEAD 比较工作区与本地仓库的区别
-
 git diff --cached 比较暂存区与本地仓库之间的区别
-
 git diff [ID1] [ID2] [filename]比较特定文件版本差别
+```
 ## 6. 删除文件 ##
 ### 方式一 ###
+```
 1. 删除本地文件
 2. git add.
 3. git commit `注释`
+```
 ### 方式二 ###
+```
 1. git rm [filenames]
 2. git commit `注释`
+```
+注：git rm --cached [filename]只删除暂存区文件
+## 7.gitignore文件 ##
+在文件中写入需要忽略的文件名即可 Blob语法模式匹配
+
+## 8.生成ssh密钥 ##
+```
+cd ~
+cd .ssh
+ssh-keygen -t rsa -b 4096
+```
+随后将公钥上传到github上
+若生成的本地密钥文件名不为默认文件名，需要进行如下操作：
+```
+tail -5 config
+#github
+Host github.com
+HostName github.com
+PreferredAuthentications publickey
+IdentityFile ~/.ssh/test 
+```
+## 9.下载远程仓库 ##
+git clone [ssh链接]
+### 先有本地再有远程该怎么办？ ###
+```
+git remote add origin [link]        origin表示远程仓库的别名
+git remote -v                              可以查看远程仓库的别名和地址
+git brach -M main                      设置本地分支为main
+git push -u origin main:main      将本地仓库的main分支推从给远程仓库的main分支
+```
+## 10.同步远程仓库与本地仓库 ##
+```
+git push <remote> <brach> 推送到远程仓库
+git pull <remote> 从远程仓库获取
+```
+注意，执行git pull时，git回自动执行一次合并，如果发生冲突，则需要解决冲突
+执行git fetch，只会获取远程仓库中的文件，不会自动合并，需要手动进行
