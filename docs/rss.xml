@@ -1,5 +1,25 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>Tasfa1tals的博客</title><link>https://hyjtab.github.io</link><description>人们应当想象，西西弗是快乐的</description><copyright>Tasfa1tals的博客</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://hyjtab.github.io/avatar.jpg</url><title>avatar</title><link>https://hyjtab.github.io</link></image><lastBuildDate>Sat, 09 Nov 2024 04:21:29 +0000</lastBuildDate><managingEditor>Tasfa1tals的博客</managingEditor><ttl>60</ttl><webMaster>Tasfa1tals的博客</webMaster><item><title>滑动窗口与双指针刷题记录</title><link>https://hyjtab.github.io/post/9.html</link><description># 滑动窗口&#13;
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>Tasfa1tals的博客</title><link>https://hyjtab.github.io</link><description>人们应当想象，西西弗是快乐的</description><copyright>Tasfa1tals的博客</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://hyjtab.github.io/avatar.jpg</url><title>avatar</title><link>https://hyjtab.github.io</link></image><lastBuildDate>Thu, 09 Jan 2025 16:42:45 +0000</lastBuildDate><managingEditor>Tasfa1tals的博客</managingEditor><ttl>60</ttl><webMaster>Tasfa1tals的博客</webMaster><item><title>GIT学习记录</title><link>https://hyjtab.github.io/post/10.html</link><description>## 1. git配置 ##&#13;
+设置用户名与邮箱信息&#13;
+```&#13;
+git config --global user.name&#13;
+git config --global user.email&#13;
+```&#13;
+设置命令行别名：&#13;
+```&#13;
+touch ~\.bashrc&#13;
+```&#13;
+随后在文件中写入以下命令别名&#13;
+```&#13;
+alias git-log='git log --pretty=oneline --all --graph --abbrev-commit'&#13;
+alias ll='ls -al'&#13;
+```&#13;
+## 2. git本地仓库初始化 ##&#13;
+很简单&#13;
+```&#13;
+git init&#13;
+```&#13;
+建立一个.git文件夹。</description><guid isPermaLink="true">https://hyjtab.github.io/post/10.html</guid><pubDate>Thu, 09 Jan 2025 16:42:22 +0000</pubDate></item><item><title>滑动窗口与双指针刷题记录</title><link>https://hyjtab.github.io/post/9.html</link><description># 滑动窗口&#13;
 ##定长窗口&#13;
 &gt;[1652. 拆炸弹](https://leetcode.cn/problems/defuse-the-bomb/)&#13;
 &gt;你有一个炸弹需要拆除，时间紧迫！你的情报员会给你一个长度为 n 的 循环 数组 code 以及一个密钥 k 。</description><guid isPermaLink="true">https://hyjtab.github.io/post/9.html</guid><pubDate>Fri, 08 Nov 2024 09:03:14 +0000</pubDate></item><item><title>阶段刷题总结（二分法与滑动窗口）</title><link>https://hyjtab.github.io/post/8.html</link><description># 写在前面&#13;
