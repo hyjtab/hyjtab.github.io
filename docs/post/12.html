@@ -164,7 +164,8 @@ System.out.println(str2.intern() == str2);//false
 <p>其次，不可变性使得字符串在多线程环境下可以安全地共享。在Java中，字符串常量池允许相同的字符串常量在内存中只存在一份实例。这意味着多个线程可以引用并共享相同的字符串对象，而无需担心其中一个线程会修改它，从而保证了线程安全性。</p>
 <p><strong>3.加快字符串处理速度</strong></p>
 <p>不可变性还为字符串的缓存和优化提供了机会。由于字符串的值在创建后不会改变，可以在创建时计算并缓存其哈希码、长度等属性，以提高性能和效率。</p>
-<p>由于String是不可变的，保证了hashCode的唯一性，于是在创建对象时其hashCode就可以放心的缓存了，不需要重新计算。这也就是一般将String作为Map的Key的原因，处理速度要快过其它的键对象。所以HashMap中的键往往都使用String。</p></div>
+<p>由于String是不可变的，保证了hashCode的唯一性，于是在创建对象时其hashCode就可以放心的缓存了，不需要重新计算。这也就是一般将String作为Map的Key的原因，处理速度要快过其它的键对象。所以HashMap中的键往往都使用String。</p>
+<h1>注解相关</h1></div>
 <div style="font-size:small;margin-top:8px;float:right;">日拱一卒，功不唐捐</div>
 
 <button class="btn btn-block" type="button" onclick="openComments()" id="cmButton">评论</button>
