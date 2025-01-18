@@ -1,5 +1,29 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>Tasfa1tals的博客</title><link>https://hyjtab.github.io</link><description>人们应当想象，西西弗是快乐的</description><copyright>Tasfa1tals的博客</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://hyjtab.github.io/avatar.jpg</url><title>avatar</title><link>https://hyjtab.github.io</link></image><lastBuildDate>Mon, 13 Jan 2025 15:10:28 +0000</lastBuildDate><managingEditor>Tasfa1tals的博客</managingEditor><ttl>60</ttl><webMaster>Tasfa1tals的博客</webMaster><item><title>go语言学习记录</title><link>https://hyjtab.github.io/post/11.html</link><description>## 1 := 与 =&#13;
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>Tasfa1tals的博客</title><link>https://hyjtab.github.io</link><description>人们应当想象，西西弗是快乐的</description><copyright>Tasfa1tals的博客</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://hyjtab.github.io/avatar.jpg</url><title>avatar</title><link>https://hyjtab.github.io</link></image><lastBuildDate>Sat, 18 Jan 2025 15:57:21 +0000</lastBuildDate><managingEditor>Tasfa1tals的博客</managingEditor><ttl>60</ttl><webMaster>Tasfa1tals的博客</webMaster><item><title>Java 语法拾遗</title><link>https://hyjtab.github.io/post/12.html</link><description># String的不变性
+相关题目：
+```
+String a = 'hello, ';
+String b = 'world!';
+String c = 'hello, world!';
+if(a + b == c) System.out.println('yes');//无输出
+if('hello, ' + 'world!' == c) System.out.println('yes');//有输出
+String a1 = new String('hello, ');
+if (a1 == a ) System.out.println('yes');//无输出
+StringBuilder sb1 = new StringBulider('nihao, ');
+String s1 = sb1.toString();
+StringBuilder sb2 = sb1;
+sb1.append('Java!');
+String s2 = sb1.toString();
+if(s1 == s2) System.out.println('yes');//无输出
+if(sb1 == sb2) System.out.println('yes');//有输出
+
+String str1 = new StringBuilder('计算机').append('软件').toString();
+System.out.println(str1.intern() == str1);//true
+String str2 = new StringBuilder('ja').append('va').toString();
+System.out.println(str2.intern() == str2);//false
+```
+## 原因
+String本身是一个final修饰的类，同时其内容保存在value变量中，其属性为final修饰的私有成员变量。</description><guid isPermaLink="true">https://hyjtab.github.io/post/12.html</guid><pubDate>Sat, 18 Jan 2025 15:57:00 +0000</pubDate></item><item><title>go语言学习记录</title><link>https://hyjtab.github.io/post/11.html</link><description>## 1 := 与 =&#13;
 := 与下面的语句等价&#13;
 ```&#13;
 var [变量] [类型]&#13;
