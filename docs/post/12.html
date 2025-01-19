@@ -226,7 +226,11 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 <p>有元注解和自定义注解</p>
 <h2>注解的继承</h2>
 <p>类级别 (Type): 注解 仅 在 类 Class 上且注解上含有 元注解 <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/inherited/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/inherited">@inherited</a> 时, 才会被继承;（在 jdk 8 中, 接口Interface 无法继承任何Type类型注解)</p>
-<p>属性和方法级别 (Property, Method): 注解 无论何时都会 被子类或子接口继承, 除非子类或子接口重写.</p></div>
+<p>属性和方法级别 (Property, Method): 注解 无论何时都会 被子类或子接口继承, 除非子类或子接口重写。</p>
+<h2>文件输入输出流的一般用法</h2>
+<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-k">while</span> ((<span class="pl-s1">len</span> = <span class="pl-s1">fis</span>.<span class="pl-en">read</span>(<span class="pl-s1">buffer</span>)) != -<span class="pl-c1">1</span>) {<span class="pl-c">//</span>
+                <span class="pl-s1">fos</span>.<span class="pl-en">write</span>(<span class="pl-s1">buffer</span>, <span class="pl-c1">0</span>, <span class="pl-s1">len</span>);
+       }</pre></div></div>
 <div style="font-size:small;margin-top:8px;float:right;">日拱一卒，功不唐捐</div>
 
 <button class="btn btn-block" type="button" onclick="openComments()" id="cmButton">评论</button>
