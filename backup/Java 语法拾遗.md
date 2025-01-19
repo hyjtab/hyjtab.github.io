@@ -99,6 +99,15 @@ public enum Week {
     }
 }
 ```
+用枚举类实现单例模式：
+```
+public enum Singleton {
+     INSTANCE;
+     public void businessMethod() {
+          System.out.println("我是一个单例！");
+     }
+}
+```
 # 注解相关
 有元注解和自定义注解
 ```java

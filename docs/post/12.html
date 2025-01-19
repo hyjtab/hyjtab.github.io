@@ -214,6 +214,14 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
         <span class="pl-k">return</span> <span class="pl-en">super</span>.<span class="pl-en">toString</span>() +<span class="pl-s">":"</span>+ <span class="pl-s1">description</span>;
     }
 }</pre></div>
+<p>用枚举类实现单例模式：</p>
+<pre class="notranslate"><code class="notranslate">public enum Singleton {
+     INSTANCE;
+     public void businessMethod() {
+          System.out.println("我是一个单例！");
+     }
+}
+</code></pre>
 <h1>注解相关</h1>
 <p>有元注解和自定义注解</p>
 <div class="highlight highlight-source-java"><pre class="notranslate"></pre></div></div>
