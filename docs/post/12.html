@@ -12,7 +12,7 @@
     </script>
 <meta name="description" content="# String的不变性
 相关题目：
-```
+```java
 String a = 'hello, ';
 String b = 'world!';
 String c = 'hello, world!';
@@ -38,7 +38,7 @@ String本身是一个final修饰的类，同时其内容保存在value变量中�
 <meta property="og:title" content="Java 语法拾遗">
 <meta property="og:description" content="# String的不变性
 相关题目：
-```
+```java
 String a = 'hello, ';
 String b = 'world!';
 String c = 'hello, world!';
@@ -65,7 +65,7 @@ String本身是一个final修饰的类，同时其内容保存在value变量中�
 <meta property="og:url" content="https://hyjtab.github.io/post/12.html">
 <meta property="og:image" content="https://hyjtab.github.io/avatar.jpg">
 <title>Java 语法拾遗</title>
-
+<link href="//unpkg.com/@wooorm/starry-night@2.1.1/style/both.css" rel="stylesheet" />
 
 
 </head>
@@ -133,26 +133,25 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
     <div id="content">
 <div class="markdown-body" id="postBody"><h1>String的不变性</h1>
 <p>相关题目：</p>
-<pre class="notranslate"><code class="notranslate">String a = "hello, ";
-String b = "world!";
-String c = "hello, world!";
-if(a + b == c) System.out.println("yes");//无输出
-if("hello, " + "world!" == c) System.out.println("yes");//有输出
-String a1 = new String("hello, ");
-if (a1 == a ) System.out.println("yes");//无输出
-StringBuilder sb1 = new StringBulider("nihao, ");
-String s1 = sb1.toString();
-StringBuilder sb2 = sb1;
-sb1.append("Java!");
-String s2 = sb1.toString();
-if(s1 == s2) System.out.println("yes");//无输出
-if(sb1 == sb2) System.out.println("yes");//有输出
+<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-smi">String</span> <span class="pl-s1">a</span> = <span class="pl-s">"hello, "</span>;
+<span class="pl-smi">String</span> <span class="pl-s1">b</span> = <span class="pl-s">"world!"</span>;
+<span class="pl-smi">String</span> <span class="pl-s1">c</span> = <span class="pl-s">"hello, world!"</span>;
+<span class="pl-k">if</span>(<span class="pl-s1">a</span> + <span class="pl-s1">b</span> == <span class="pl-s1">c</span>) <span class="pl-smi">System</span>.<span class="pl-s1">out</span>.<span class="pl-en">println</span>(<span class="pl-s">"yes"</span>);<span class="pl-c">//无输出</span>
+<span class="pl-k">if</span>(<span class="pl-s">"hello, "</span> + <span class="pl-s">"world!"</span> == <span class="pl-s1">c</span>) <span class="pl-smi">System</span>.<span class="pl-s1">out</span>.<span class="pl-en">println</span>(<span class="pl-s">"yes"</span>);<span class="pl-c">//有输出</span>
+<span class="pl-smi">String</span> <span class="pl-s1">a1</span> = <span class="pl-k">new</span> <span class="pl-smi">String</span>(<span class="pl-s">"hello, "</span>);
+<span class="pl-k">if</span> (<span class="pl-s1">a1</span> == <span class="pl-s1">a</span> ) <span class="pl-smi">System</span>.<span class="pl-s1">out</span>.<span class="pl-en">println</span>(<span class="pl-s">"yes"</span>);<span class="pl-c">//无输出</span>
+<span class="pl-smi">StringBuilder</span> <span class="pl-s1">sb1</span> = <span class="pl-k">new</span> <span class="pl-smi">StringBulider</span>(<span class="pl-s">"nihao, "</span>);
+<span class="pl-smi">String</span> <span class="pl-s1">s1</span> = <span class="pl-s1">sb1</span>.<span class="pl-en">toString</span>();
+<span class="pl-smi">StringBuilder</span> <span class="pl-s1">sb2</span> = <span class="pl-s1">sb1</span>;
+<span class="pl-s1">sb1</span>.<span class="pl-en">append</span>(<span class="pl-s">"Java!"</span>);
+<span class="pl-smi">String</span> <span class="pl-s1">s2</span> = <span class="pl-s1">sb1</span>.<span class="pl-en">toString</span>();
+<span class="pl-k">if</span>(<span class="pl-s1">s1</span> == <span class="pl-s1">s2</span>) <span class="pl-smi">System</span>.<span class="pl-s1">out</span>.<span class="pl-en">println</span>(<span class="pl-s">"yes"</span>);<span class="pl-c">//无输出</span>
+<span class="pl-k">if</span>(<span class="pl-s1">sb1</span> == <span class="pl-s1">sb2</span>) <span class="pl-smi">System</span>.<span class="pl-s1">out</span>.<span class="pl-en">println</span>(<span class="pl-s">"yes"</span>);<span class="pl-c">//有输出</span>
 
-String str1 = new StringBuilder("计算机").append("软件").toString();
-System.out.println(str1.intern() == str1);//true
-String str2 = new StringBuilder("ja").append("va").toString();
-System.out.println(str2.intern() == str2);//false
-</code></pre>
+<span class="pl-smi">String</span> <span class="pl-s1">str1</span> = <span class="pl-k">new</span> <span class="pl-smi">StringBuilder</span>(<span class="pl-s">"计算机"</span>).<span class="pl-en">append</span>(<span class="pl-s">"软件"</span>).<span class="pl-en">toString</span>();
+<span class="pl-smi">System</span>.<span class="pl-s1">out</span>.<span class="pl-en">println</span>(<span class="pl-s1">str1</span>.<span class="pl-en">intern</span>() == <span class="pl-s1">str1</span>);<span class="pl-c">//true</span>
+<span class="pl-smi">String</span> <span class="pl-s1">str2</span> = <span class="pl-k">new</span> <span class="pl-smi">StringBuilder</span>(<span class="pl-s">"ja"</span>).<span class="pl-en">append</span>(<span class="pl-s">"va"</span>).<span class="pl-en">toString</span>();
+<span class="pl-smi">System</span>.<span class="pl-s1">out</span>.<span class="pl-en">println</span>(<span class="pl-s1">str2</span>.<span class="pl-en">intern</span>() == <span class="pl-s1">str2</span>);<span class="pl-c">//false</span></pre></div>
 <h2>原因</h2>
 <p>String本身是一个final修饰的类，同时其内容保存在value变量中，其属性为final修饰的私有成员变量。</p>
 <h2>不可变的好处：</h2>
@@ -165,7 +164,59 @@ System.out.println(str2.intern() == str2);//false
 <p><strong>3.加快字符串处理速度</strong></p>
 <p>不可变性还为字符串的缓存和优化提供了机会。由于字符串的值在创建后不会改变，可以在创建时计算并缓存其哈希码、长度等属性，以提高性能和效率。</p>
 <p>由于String是不可变的，保证了hashCode的唯一性，于是在创建对象时其hashCode就可以放心的缓存了，不需要重新计算。这也就是一般将String作为Map的Key的原因，处理速度要快过其它的键对象。所以HashMap中的键往往都使用String。</p>
-<h1>注解相关</h1></div>
+<h1>synchronized方法块</h1>
+<p>synchronized方法块的优点在于，能够更加精确的控制锁的范围，同时支持非this锁的特性，也使得不同方法的异步执行成为可能，提升了程序的并行性。</p>
+<p>synchronized方法的默认同步监视器为this，而synchronized静态方法为当前类的class对象。</p>
+<h1>枚举类</h1>
+<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-k">class</span> <span class="pl-smi">Season</span>{
+    <span class="pl-k">private</span> <span class="pl-k">final</span> <span class="pl-smi">String</span> <span class="pl-c1">SEASONNAME</span>;<span class="pl-c">//季节的名称</span>
+    <span class="pl-k">private</span> <span class="pl-k">final</span> <span class="pl-smi">String</span> <span class="pl-c1">SEASONDESC</span>;<span class="pl-c">//季节的描述</span>
+    <span class="pl-k">private</span> <span class="pl-smi">Season</span>(<span class="pl-smi">String</span> <span class="pl-s1">seasonName</span>,<span class="pl-smi">String</span> <span class="pl-s1">seasonDesc</span>){
+        <span class="pl-smi">this</span>.<span class="pl-c1">SEASONNAME</span> = <span class="pl-s1">seasonName</span>;
+        <span class="pl-smi">this</span>.<span class="pl-c1">SEASONDESC</span> = <span class="pl-s1">seasonDesc</span>;
+    }
+    <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">final</span> <span class="pl-smi">Season</span> <span class="pl-c1">SPRING</span> = <span class="pl-k">new</span> <span class="pl-smi">Season</span>(<span class="pl-s">"春天"</span>, <span class="pl-s">"春暖花开"</span>);
+    <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">final</span> <span class="pl-smi">Season</span> <span class="pl-c1">SUMMER</span> = <span class="pl-k">new</span> <span class="pl-smi">Season</span>(<span class="pl-s">"夏天"</span>, <span class="pl-s">"夏日炎炎"</span>);
+    <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">final</span> <span class="pl-smi">Season</span> <span class="pl-c1">AUTUMN</span> = <span class="pl-k">new</span> <span class="pl-smi">Season</span>(<span class="pl-s">"秋天"</span>, <span class="pl-s">"秋高气爽"</span>);
+    <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">final</span> <span class="pl-smi">Season</span> <span class="pl-c1">WINTER</span> = <span class="pl-k">new</span> <span class="pl-smi">Season</span>(<span class="pl-s">"冬天"</span>, <span class="pl-s">"白雪皑皑"</span>);
+
+    <span class="pl-c1">@</span><span class="pl-c1">Override</span>
+    <span class="pl-k">public</span> <span class="pl-smi">String</span> <span class="pl-en">toString</span>() {
+        <span class="pl-k">return</span> <span class="pl-s">"Season{"</span> +
+                <span class="pl-s">"SEASONNAME='"</span> + <span class="pl-c1">SEASONNAME</span> + <span class="pl-s">'\''</span> +
+                <span class="pl-s">", SEASONDESC='"</span> + <span class="pl-c1">SEASONDESC</span> + <span class="pl-s">'\''</span> +
+                <span class="pl-s">'}'</span>;
+    }
+}
+<span class="pl-k">class</span> <span class="pl-smi">SeasonTest</span>{
+    <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-smi">void</span> <span class="pl-en">main</span>(<span class="pl-smi">String</span>[] <span class="pl-s1">args</span>) {
+        <span class="pl-smi">System</span>.<span class="pl-s1">out</span>.<span class="pl-en">println</span>(<span class="pl-smi">Season</span>.<span class="pl-c1">AUTUMN</span>);
+    }
+}</pre></div>
+<p>枚举类基本成员变量为private final，枚举类暴露的变量public static final,更加现代化的写法如下所示：</p>
+<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-k">public</span> <span class="pl-k">enum</span> <span class="pl-smi">Week</span> {
+    <span class="pl-c1">MONDAY</span>(<span class="pl-s">"星期一"</span>),
+    <span class="pl-c1">TUESDAY</span>(<span class="pl-s">"星期二"</span>),
+    <span class="pl-c1">WEDNESDAY</span>(<span class="pl-s">"星期三"</span>),
+    <span class="pl-c1">THURSDAY</span>(<span class="pl-s">"星期四"</span>),
+    <span class="pl-c1">FRIDAY</span>(<span class="pl-s">"星期五"</span>),
+    <span class="pl-c1">SATURDAY</span>(<span class="pl-s">"星期六"</span>),
+    <span class="pl-c1">SUNDAY</span>(<span class="pl-s">"星期日"</span>);
+
+    <span class="pl-k">private</span> <span class="pl-k">final</span> <span class="pl-smi">String</span> <span class="pl-s1">description</span>;
+
+    <span class="pl-k">private</span> <span class="pl-smi">Week</span>(<span class="pl-smi">String</span> <span class="pl-s1">description</span>){
+        <span class="pl-smi">this</span>.<span class="pl-s1">description</span> = <span class="pl-s1">description</span>;
+    }
+
+    <span class="pl-c1">@</span><span class="pl-c1">Override</span>
+    <span class="pl-k">public</span> <span class="pl-smi">String</span> <span class="pl-en">toString</span>() {
+        <span class="pl-k">return</span> <span class="pl-en">super</span>.<span class="pl-en">toString</span>() +<span class="pl-s">":"</span>+ <span class="pl-s1">description</span>;
+    }
+}</pre></div>
+<h1>注解相关</h1>
+<p>有元注解和自定义注解</p>
+<div class="highlight highlight-source-java"><pre class="notranslate"></pre></div></div>
 <div style="font-size:small;margin-top:8px;float:right;">日拱一卒，功不唐捐</div>
 
 <button class="btn btn-block" type="button" onclick="openComments()" id="cmButton">评论</button>

@@ -1,6 +1,6 @@
 # String的不变性
 相关题目：
-```
+```java
 String a = "hello, ";
 String b = "world!";
 String c = "hello, world!";
@@ -43,4 +43,64 @@ String本身是一个final修饰的类，同时其内容保存在value变量中�
 
 由于String是不可变的，保证了hashCode的唯一性，于是在创建对象时其hashCode就可以放心的缓存了，不需要重新计算。这也就是一般将String作为Map的Key的原因，处理速度要快过其它的键对象。所以HashMap中的键往往都使用String。
 
+# synchronized方法块
+synchronized方法块的优点在于，能够更加精确的控制锁的范围，同时支持非this锁的特性，也使得不同方法的异步执行成为可能，提升了程序的并行性。
+
+synchronized方法的默认同步监视器为this，而synchronized静态方法为当前类的class对象。
+
+# 枚举类
+```java
+class Season{
+    private final String SEASONNAME;//季节的名称
+    private final String SEASONDESC;//季节的描述
+    private Season(String seasonName,String seasonDesc){
+        this.SEASONNAME = seasonName;
+        this.SEASONDESC = seasonDesc;
+    }
+    public static final Season SPRING = new Season("春天", "春暖花开");
+    public static final Season SUMMER = new Season("夏天", "夏日炎炎");
+    public static final Season AUTUMN = new Season("秋天", "秋高气爽");
+    public static final Season WINTER = new Season("冬天", "白雪皑皑");
+
+    @Override
+    public String toString() {
+        return "Season{" +
+                "SEASONNAME='" + SEASONNAME + '\'' +
+                ", SEASONDESC='" + SEASONDESC + '\'' +
+                '}';
+    }
+}
+class SeasonTest{
+    public static void main(String[] args) {
+        System.out.println(Season.AUTUMN);
+    }
+}
+```
+枚举类基本成员变量为private final，枚举类暴露的变量public static final,更加现代化的写法如下所示：
+```java
+public enum Week {
+    MONDAY("星期一"),
+    TUESDAY("星期二"),
+    WEDNESDAY("星期三"),
+    THURSDAY("星期四"),
+    FRIDAY("星期五"),
+    SATURDAY("星期六"),
+    SUNDAY("星期日");
+
+    private final String description;
+
+    private Week(String description){
+        this.description = description;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() +":"+ description;
+    }
+}
+```
 # 注解相关
+有元注解和自定义注解
+```java
+
+```
