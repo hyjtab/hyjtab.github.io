@@ -110,6 +110,7 @@ public enum Singleton {
 ```
 # 注解相关
 有元注解和自定义注解
-```java
+## 注解的继承
+类级别 (Type): 注解 仅 在 类 Class 上且注解上含有 元注解 @Inherited 时, 才会被继承;（在 jdk 8 中, 接口Interface 无法继承任何Type类型注解)
 
-```
+属性和方法级别 (Property, Method): 注解 无论何时都会 被子类或子接口继承, 除非子类或子接口重写.
