@@ -230,7 +230,10 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 <h2>文件输入输出流的一般用法</h2>
 <div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-k">while</span> ((<span class="pl-s1">len</span> = <span class="pl-s1">fis</span>.<span class="pl-en">read</span>(<span class="pl-s1">buffer</span>)) != -<span class="pl-c1">1</span>) {<span class="pl-c">//</span>
                 <span class="pl-s1">fos</span>.<span class="pl-en">write</span>(<span class="pl-s1">buffer</span>, <span class="pl-c1">0</span>, <span class="pl-s1">len</span>);
-       }</pre></div></div>
+       }</pre></div>
+<h2>序列化</h2>
+<p>自定义异常类需要声明serializeUID这个属性，并且其修饰符为stastic final long，作为唯一标识。</p>
+<p>serialize接口作为表示接口，也需要这么做。</p></div>
 <div style="font-size:small;margin-top:8px;float:right;">日拱一卒，功不唐捐</div>
 
 <button class="btn btn-block" type="button" onclick="openComments()" id="cmButton">评论</button>

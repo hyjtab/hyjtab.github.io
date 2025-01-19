@@ -121,3 +121,7 @@ while ((len = fis.read(buffer)) != -1) {//
                 fos.write(buffer, 0, len);
        }
 ```
+## 序列化
+自定义异常类需要声明serializeUID这个属性，并且其修饰符为stastic final long，作为唯一标识。
+
+serialize接口作为表示接口，也需要这么做。
