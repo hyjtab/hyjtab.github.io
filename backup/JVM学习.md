@@ -90,7 +90,7 @@ StringTable桶的个数越多，入池操作执行越快
 #### ServersocketChanel为主的通道
 
 #### Selector与SelectionKey
-
+```java
     public class NioServer {
         private int port ;
         private Selector selector;
@@ -218,8 +218,8 @@ StringTable桶的个数越多，入池操作执行越快
             }
         }
     }
-    
-
+```
+```java
     public class NioClient {
         private static final String host = "127.0.0.1";
         private static final int port = 8800;
@@ -305,7 +305,7 @@ StringTable桶的个数越多，入池操作执行越快
             }
         }
     }
-    
+```
     
 
 ### 具体回收细节

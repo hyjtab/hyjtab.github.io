@@ -139,7 +139,7 @@ new出来的变量
 <meta property="og:url" content="https://hyjtab.github.io/post/13.html">
 <meta property="og:image" content="https://hyjtab.github.io/avatar.jpg">
 <title>JVM学习</title>
-
+<link href="//unpkg.com/@wooorm/starry-night@2.1.1/style/both.css" rel="stylesheet" />
 
 
 </head>
@@ -263,221 +263,218 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 <h4>bytebuffer为主的缓冲区（本地的filebuffer）</h4>
 <h4>ServersocketChanel为主的通道</h4>
 <h4>Selector与SelectionKey</h4>
-<pre class="notranslate"><code class="notranslate">public class NioServer {
-    private int port ;
-    private Selector selector;
-    private ExecutorService service = Executors.newFixedThreadPool(5);
+<div class="highlight highlight-source-java"><pre class="notranslate">    <span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-smi">NioServer</span> {
+        <span class="pl-k">private</span> <span class="pl-smi">int</span> <span class="pl-s1">port</span> ;
+        <span class="pl-k">private</span> <span class="pl-smi">Selector</span> <span class="pl-s1">selector</span>;
+        <span class="pl-k">private</span> <span class="pl-smi">ExecutorService</span> <span class="pl-s1">service</span> = <span class="pl-smi">Executors</span>.<span class="pl-en">newFixedThreadPool</span>(<span class="pl-c1">5</span>);
+        
+        <span class="pl-k">public</span> <span class="pl-smi">NioServer</span>(<span class="pl-smi">int</span> <span class="pl-s1">port</span>) {
+            <span class="pl-smi">this</span>.<span class="pl-s1">port</span> = <span class="pl-s1">port</span>;
+        }
     
-    public NioServer(int port) {
-        this.port = port;
-    }
-
-    public void init() {
-        ServerSocketChannel serverSocketChannel = null;
-
-        try {
-            // Channel 定义
-            serverSocketChannel = ServerSocketChannel.open();
-            serverSocketChannel.configureBlocking(false);
-            serverSocketChannel.bind(new InetSocketAddress(port));
-
-            // 创建选择器
-            selector = Selector.open();
-
-            // 注册到 Selector ，监听 Accept 事件
-            serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
-
-            System.out.println("Start server");
-        }catch (Exception e){
-            e.printStackTrace();
+        <span class="pl-k">public</span> <span class="pl-smi">void</span> <span class="pl-en">init</span>() {
+            <span class="pl-smi">ServerSocketChannel</span> <span class="pl-s1">serverSocketChannel</span> = <span class="pl-c1">null</span>;
+    
+            <span class="pl-k">try</span> {
+                <span class="pl-c">// Channel 定义</span>
+                <span class="pl-s1">serverSocketChannel</span> = <span class="pl-smi">ServerSocketChannel</span>.<span class="pl-en">open</span>();
+                <span class="pl-s1">serverSocketChannel</span>.<span class="pl-en">configureBlocking</span>(<span class="pl-c1">false</span>);
+                <span class="pl-s1">serverSocketChannel</span>.<span class="pl-en">bind</span>(<span class="pl-k">new</span> <span class="pl-smi">InetSocketAddress</span>(<span class="pl-s1">port</span>));
+    
+                <span class="pl-c">// 创建选择器</span>
+                <span class="pl-s1">selector</span> = <span class="pl-smi">Selector</span>.<span class="pl-en">open</span>();
+    
+                <span class="pl-c">// 注册到 Selector ，监听 Accept 事件</span>
+                <span class="pl-s1">serverSocketChannel</span>.<span class="pl-en">register</span>(<span class="pl-s1">selector</span>, <span class="pl-smi">SelectionKey</span>.<span class="pl-c1">OP_ACCEPT</span>);
+    
+                <span class="pl-smi">System</span>.<span class="pl-s1">out</span>.<span class="pl-en">println</span>(<span class="pl-s">"Start server"</span>);
+            }<span class="pl-k">catch</span> (<span class="pl-smi">Exception</span> <span class="pl-s1">e</span>){
+                <span class="pl-s1">e</span>.<span class="pl-en">printStackTrace</span>();
+            }
+    
         }
-
-    }
-
-    public void accept(SelectionKey key) {
-        try{
-            // ServerSocketChannel 监听到了 Accept 事件后的处理过程，从通道中获取 SocketChannel
-            ServerSocketChannel serverSocketChannel = (ServerSocketChannel) key.channel();
-            SocketChannel socketChannel = serverSocketChannel.accept();
-            socketChannel.configureBlocking(false);
-
-            // 注册客户端 Channel 的读事件，因为注册的通道对象不一样了，是收到的 Socket 对象
-            socketChannel.register(selector, SelectionKey.OP_READ);
-
-            System.out.println("Start to process accepted socket.");
-
-            // 打印客户端地址
-            String clientInfo = socketChannel.socket().getInetAddress().getHostAddress();
-            int portInfo = socketChannel.socket().getPort();
-            System.out.println("Receive client info "+clientInfo + ",portInfo:"+portInfo);
-        }catch (Exception e) {
-            e.printStackTrace();
+    
+        <span class="pl-k">public</span> <span class="pl-smi">void</span> <span class="pl-en">accept</span>(<span class="pl-smi">SelectionKey</span> <span class="pl-s1">key</span>) {
+            <span class="pl-k">try</span>{
+                <span class="pl-c">// ServerSocketChannel 监听到了 Accept 事件后的处理过程，从通道中获取 SocketChannel</span>
+                <span class="pl-smi">ServerSocketChannel</span> <span class="pl-s1">serverSocketChannel</span> = (<span class="pl-smi">ServerSocketChannel</span>) <span class="pl-s1">key</span>.<span class="pl-en">channel</span>();
+                <span class="pl-smi">SocketChannel</span> <span class="pl-s1">socketChannel</span> = <span class="pl-s1">serverSocketChannel</span>.<span class="pl-en">accept</span>();
+                <span class="pl-s1">socketChannel</span>.<span class="pl-en">configureBlocking</span>(<span class="pl-c1">false</span>);
+    
+                <span class="pl-c">// 注册客户端 Channel 的读事件，因为注册的通道对象不一样了，是收到的 Socket 对象</span>
+                <span class="pl-s1">socketChannel</span>.<span class="pl-en">register</span>(<span class="pl-s1">selector</span>, <span class="pl-smi">SelectionKey</span>.<span class="pl-c1">OP_READ</span>);
+    
+                <span class="pl-smi">System</span>.<span class="pl-s1">out</span>.<span class="pl-en">println</span>(<span class="pl-s">"Start to process accepted socket."</span>);
+    
+                <span class="pl-c">// 打印客户端地址</span>
+                <span class="pl-smi">String</span> <span class="pl-s1">clientInfo</span> = <span class="pl-s1">socketChannel</span>.<span class="pl-en">socket</span>().<span class="pl-en">getInetAddress</span>().<span class="pl-en">getHostAddress</span>();
+                <span class="pl-smi">int</span> <span class="pl-s1">portInfo</span> = <span class="pl-s1">socketChannel</span>.<span class="pl-en">socket</span>().<span class="pl-en">getPort</span>();
+                <span class="pl-smi">System</span>.<span class="pl-s1">out</span>.<span class="pl-en">println</span>(<span class="pl-s">"Receive client info "</span>+<span class="pl-s1">clientInfo</span> + <span class="pl-s">",portInfo:"</span>+<span class="pl-s1">portInfo</span>);
+            }<span class="pl-k">catch</span> (<span class="pl-smi">Exception</span> <span class="pl-s1">e</span>) {
+                <span class="pl-s1">e</span>.<span class="pl-en">printStackTrace</span>();
+            }
         }
-    }
-
-    public void start() {
-        this.init();
-
-        // 轮询 Select 的事件
-        while (true) {
-            try {
-                int event = selector.select();
-
-                // 轮询到了 完成就绪事件，遍历并分发处理
-                if (event &gt;0) {
-                    Iterator&lt;SelectionKey&gt; selectionKeys = selector.selectedKeys().iterator();
-
-                    while(selectionKeys.hasNext()) {
-                        SelectionKey key = selectionKeys.next();
-                        selectionKeys.remove();
-
-                        if (key.isAcceptable()) {
-                            this.accept(key);
-                        } else {
-                            if (!key.isReadable()) {
-                                System.out.println("Key is not read able.");
-                                continue;
+    
+        <span class="pl-k">public</span> <span class="pl-smi">void</span> <span class="pl-en">start</span>() {
+            <span class="pl-smi">this</span>.<span class="pl-en">init</span>();
+    
+            <span class="pl-c">// 轮询 Select 的事件</span>
+            <span class="pl-k">while</span> (<span class="pl-c1">true</span>) {
+                <span class="pl-k">try</span> {
+                    <span class="pl-smi">int</span> <span class="pl-s1">event</span> = <span class="pl-s1">selector</span>.<span class="pl-en">select</span>();
+    
+                    <span class="pl-c">// 轮询到了 完成就绪事件，遍历并分发处理</span>
+                    <span class="pl-k">if</span> (<span class="pl-s1">event</span> &gt;<span class="pl-c1">0</span>) {
+                        <span class="pl-smi">Iterator</span>&lt;<span class="pl-smi">SelectionKey</span>&gt; <span class="pl-s1">selectionKeys</span> = <span class="pl-s1">selector</span>.<span class="pl-en">selectedKeys</span>().<span class="pl-en">iterator</span>();
+    
+                        <span class="pl-k">while</span>(<span class="pl-s1">selectionKeys</span>.<span class="pl-en">hasNext</span>()) {
+                            <span class="pl-smi">SelectionKey</span> <span class="pl-s1">key</span> = <span class="pl-s1">selectionKeys</span>.<span class="pl-en">next</span>();
+                            <span class="pl-s1">selectionKeys</span>.<span class="pl-en">remove</span>();
+    
+                            <span class="pl-k">if</span> (<span class="pl-s1">key</span>.<span class="pl-en">isAcceptable</span>()) {
+                                <span class="pl-smi">this</span>.<span class="pl-en">accept</span>(<span class="pl-s1">key</span>);
+                            } <span class="pl-k">else</span> {
+                                <span class="pl-k">if</span> (!<span class="pl-s1">key</span>.<span class="pl-en">isReadable</span>()) {
+                                    <span class="pl-smi">System</span>.<span class="pl-s1">out</span>.<span class="pl-en">println</span>(<span class="pl-s">"Key is not read able."</span>);
+                                    <span class="pl-k">continue</span>;
+                                }
+    
+                                <span class="pl-c">// 把请求数据的通道提交给线程池处理</span>
+                                <span class="pl-s1">service</span>.<span class="pl-en">submit</span>(<span class="pl-k">new</span> <span class="pl-smi">NioServerHandler</span>((<span class="pl-smi">SocketChannel</span>)<span class="pl-s1">key</span>.<span class="pl-en">channel</span>()));
+    
+                                <span class="pl-c">// 该 Client 请求提交给客户端后，key.cancel 可以解除监听</span>
+                                <span class="pl-s1">key</span>.<span class="pl-en">cancel</span>();
+                                <span class="pl-smi">System</span>.<span class="pl-s1">out</span>.<span class="pl-en">println</span>(<span class="pl-s">"Submit task and cancel."</span>);
                             }
-
-                            // 把请求数据的通道提交给线程池处理
-                            service.submit(new NioServerHandler((SocketChannel)key.channel()));
-
-                            // 该 Client 请求提交给客户端后，key.cancel 可以解除监听
-                            key.cancel();
-                            System.out.println("Submit task and cancel.");
                         }
                     }
+                } <span class="pl-k">catch</span> (<span class="pl-smi">Exception</span> <span class="pl-s1">e</span>) {
+                    <span class="pl-s1">e</span>.<span class="pl-en">printStackTrace</span>();
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
             }
         }
-    }
-
-    public static void main(String[] args) {
-        NioServer server = new NioServer(8800);
-        server.start();
-    }
-
-    /**
-     * 线程池任务：接收通道对象，处理数据，而不是接收 Key
-     */
-    private class NioServerHandler implements Runnable {
-
-        SocketChannel socketChannel;
-
-        public NioServerHandler(SocketChannel socketChannel) {
-            this.socketChannel = socketChannel;
+    
+        <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-smi">void</span> <span class="pl-en">main</span>(<span class="pl-smi">String</span>[] <span class="pl-s1">args</span>) {
+            <span class="pl-smi">NioServer</span> <span class="pl-s1">server</span> = <span class="pl-k">new</span> <span class="pl-smi">NioServer</span>(<span class="pl-c1">8800</span>);
+            <span class="pl-s1">server</span>.<span class="pl-en">start</span>();
         }
-
-        @Override
-        public void run() {
-            try {
-                ByteBuffer buffer = ByteBuffer.allocate(1024);
-                socketChannel.read(buffer);
-
-                buffer.flip();
-                buffer.clear();
-
-                // 响应数据
-                ByteBuffer outBuffer = ByteBuffer.wrap("ok".getBytes());
-                socketChannel.write(outBuffer);// 将消息回送给客户端
-                System.out.println("接收到 client request :"+ new String (buffer.array()));
-                System.out.println("response finished");
-            } catch (Exception e) {
-                e.printStackTrace();
+    
+        <span class="pl-c">/**</span>
+<span class="pl-c">         * 线程池任务：接收通道对象，处理数据，而不是接收 Key</span>
+<span class="pl-c">         */</span>
+        <span class="pl-k">private</span> <span class="pl-k">class</span> <span class="pl-smi">NioServerHandler</span> <span class="pl-k">implements</span> <span class="pl-smi">Runnable</span> {
+    
+            <span class="pl-smi">SocketChannel</span> <span class="pl-s1">socketChannel</span>;
+    
+            <span class="pl-k">public</span> <span class="pl-smi">NioServerHandler</span>(<span class="pl-smi">SocketChannel</span> <span class="pl-s1">socketChannel</span>) {
+                <span class="pl-smi">this</span>.<span class="pl-s1">socketChannel</span> = <span class="pl-s1">socketChannel</span>;
+            }
+    
+            <span class="pl-c1">@</span><span class="pl-c1">Override</span>
+            <span class="pl-k">public</span> <span class="pl-smi">void</span> <span class="pl-en">run</span>() {
+                <span class="pl-k">try</span> {
+                    <span class="pl-smi">ByteBuffer</span> <span class="pl-s1">buffer</span> = <span class="pl-smi">ByteBuffer</span>.<span class="pl-en">allocate</span>(<span class="pl-c1">1024</span>);
+                    <span class="pl-s1">socketChannel</span>.<span class="pl-en">read</span>(<span class="pl-s1">buffer</span>);
+    
+                    <span class="pl-s1">buffer</span>.<span class="pl-en">flip</span>();
+                    <span class="pl-s1">buffer</span>.<span class="pl-en">clear</span>();
+    
+                    <span class="pl-c">// 响应数据</span>
+                    <span class="pl-smi">ByteBuffer</span> <span class="pl-s1">outBuffer</span> = <span class="pl-smi">ByteBuffer</span>.<span class="pl-en">wrap</span>(<span class="pl-s">"ok"</span>.<span class="pl-en">getBytes</span>());
+                    <span class="pl-s1">socketChannel</span>.<span class="pl-en">write</span>(<span class="pl-s1">outBuffer</span>);<span class="pl-c">// 将消息回送给客户端</span>
+                    <span class="pl-smi">System</span>.<span class="pl-s1">out</span>.<span class="pl-en">println</span>(<span class="pl-s">"接收到 client request :"</span>+ <span class="pl-k">new</span> <span class="pl-smi">String</span> (<span class="pl-s1">buffer</span>.<span class="pl-en">array</span>()));
+                    <span class="pl-smi">System</span>.<span class="pl-s1">out</span>.<span class="pl-en">println</span>(<span class="pl-s">"response finished"</span>);
+                } <span class="pl-k">catch</span> (<span class="pl-smi">Exception</span> <span class="pl-s1">e</span>) {
+                    <span class="pl-s1">e</span>.<span class="pl-en">printStackTrace</span>();
+                }
             }
         }
-    }
-}
-
-
-public class NioClient {
-    private static final String host = "127.0.0.1";
-    private static final int port = 8800;
-    private Selector selector;
-
-    public static void main(String[] args){
-        for (int i=0;i&lt;1;i++) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    System.out.println("Client is started listened ");
-                    NioClient client = new NioClient();
-                    client.connect(host, port);
-                    client.listen();
-                    System.out.println("finished start");
-                }
-            }).start();
+    }</pre></div>
+<div class="highlight highlight-source-java"><pre class="notranslate">    <span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-smi">NioClient</span> {
+        <span class="pl-k">private</span> <span class="pl-k">static</span> <span class="pl-k">final</span> <span class="pl-smi">String</span> <span class="pl-s1">host</span> = <span class="pl-s">"127.0.0.1"</span>;
+        <span class="pl-k">private</span> <span class="pl-k">static</span> <span class="pl-k">final</span> <span class="pl-smi">int</span> <span class="pl-s1">port</span> = <span class="pl-c1">8800</span>;
+        <span class="pl-k">private</span> <span class="pl-smi">Selector</span> <span class="pl-s1">selector</span>;
+    
+        <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-smi">void</span> <span class="pl-en">main</span>(<span class="pl-smi">String</span>[] <span class="pl-s1">args</span>){
+            <span class="pl-k">for</span> (<span class="pl-smi">int</span> <span class="pl-s1">i</span>=<span class="pl-c1">0</span>;<span class="pl-s1">i</span>&lt;<span class="pl-c1">1</span>;<span class="pl-s1">i</span>++) {
+                <span class="pl-k">new</span> <span class="pl-smi">Thread</span>(<span class="pl-k">new</span> <span class="pl-smi">Runnable</span>() {
+                    <span class="pl-c1">@</span><span class="pl-c1">Override</span>
+                    <span class="pl-k">public</span> <span class="pl-smi">void</span> <span class="pl-en">run</span>() {
+                        <span class="pl-smi">System</span>.<span class="pl-s1">out</span>.<span class="pl-en">println</span>(<span class="pl-s">"Client is started listened "</span>);
+                        <span class="pl-smi">NioClient</span> <span class="pl-s1">client</span> = <span class="pl-k">new</span> <span class="pl-smi">NioClient</span>();
+                        <span class="pl-s1">client</span>.<span class="pl-en">connect</span>(<span class="pl-s1">host</span>, <span class="pl-s1">port</span>);
+                        <span class="pl-s1">client</span>.<span class="pl-en">listen</span>();
+                        <span class="pl-smi">System</span>.<span class="pl-s1">out</span>.<span class="pl-en">println</span>(<span class="pl-s">"finished start"</span>);
+                    }
+                }).<span class="pl-en">start</span>();
+            }
         }
-    }
-
-    public void connect(String host, int port) {
-        try {
-            SocketChannel sc = SocketChannel.open();
-            sc.configureBlocking(false);
-            this.selector = Selector.open();
-
-            // 一次注册多个事件，要用 | 来进行操作，而不是执行多次 register ，否则最后一次会覆盖前面的事件的
-            sc.register(selector, SelectionKey.OP_CONNECT|SelectionKey.OP_READ);
-            sc.connect(new InetSocketAddress(host, port));
-        } catch (IOException e) {
-            e.printStackTrace();
+    
+        <span class="pl-k">public</span> <span class="pl-smi">void</span> <span class="pl-en">connect</span>(<span class="pl-smi">String</span> <span class="pl-s1">host</span>, <span class="pl-smi">int</span> <span class="pl-s1">port</span>) {
+            <span class="pl-k">try</span> {
+                <span class="pl-smi">SocketChannel</span> <span class="pl-s1">sc</span> = <span class="pl-smi">SocketChannel</span>.<span class="pl-en">open</span>();
+                <span class="pl-s1">sc</span>.<span class="pl-en">configureBlocking</span>(<span class="pl-c1">false</span>);
+                <span class="pl-smi">this</span>.<span class="pl-s1">selector</span> = <span class="pl-smi">Selector</span>.<span class="pl-en">open</span>();
+    
+                <span class="pl-c">// 一次注册多个事件，要用 | 来进行操作，而不是执行多次 register ，否则最后一次会覆盖前面的事件的</span>
+                <span class="pl-s1">sc</span>.<span class="pl-en">register</span>(<span class="pl-s1">selector</span>, <span class="pl-smi">SelectionKey</span>.<span class="pl-c1">OP_CONNECT</span>|<span class="pl-smi">SelectionKey</span>.<span class="pl-c1">OP_READ</span>);
+                <span class="pl-s1">sc</span>.<span class="pl-en">connect</span>(<span class="pl-k">new</span> <span class="pl-smi">InetSocketAddress</span>(<span class="pl-s1">host</span>, <span class="pl-s1">port</span>));
+            } <span class="pl-k">catch</span> (<span class="pl-smi">IOException</span> <span class="pl-s1">e</span>) {
+                <span class="pl-s1">e</span>.<span class="pl-en">printStackTrace</span>();
+            }
         }
-    }
-
-    /**
-     * 轮询就绪的事件
-     */
-    public void listen() {
-        boolean isClose = false;
-        while (!isClose) {
-            try {
-                int events = selector.select();
-                if (events &gt; 0) {
-
-                    // 迭代器遍历
-                    Iterator&lt;SelectionKey&gt; selectionKeys = selector.selectedKeys().iterator();
-                    while (selectionKeys.hasNext()) {
-                        SelectionKey selectionKey = selectionKeys.next();
-                        selectionKeys.remove();
-
-                        //连接事件：连接成功后发送数据
-                        if (selectionKey.isConnectable()) {
-                            SocketChannel socketChannel = (SocketChannel) selectionKey.channel();
-                            if (socketChannel.isConnectionPending()) {
-                                socketChannel.finishConnect();
+    
+        <span class="pl-c">/**</span>
+<span class="pl-c">         * 轮询就绪的事件</span>
+<span class="pl-c">         */</span>
+        <span class="pl-k">public</span> <span class="pl-smi">void</span> <span class="pl-en">listen</span>() {
+            <span class="pl-smi">boolean</span> <span class="pl-s1">isClose</span> = <span class="pl-c1">false</span>;
+            <span class="pl-k">while</span> (!<span class="pl-s1">isClose</span>) {
+                <span class="pl-k">try</span> {
+                    <span class="pl-smi">int</span> <span class="pl-s1">events</span> = <span class="pl-s1">selector</span>.<span class="pl-en">select</span>();
+                    <span class="pl-k">if</span> (<span class="pl-s1">events</span> &gt; <span class="pl-c1">0</span>) {
+    
+                        <span class="pl-c">// 迭代器遍历</span>
+                        <span class="pl-smi">Iterator</span>&lt;<span class="pl-smi">SelectionKey</span>&gt; <span class="pl-s1">selectionKeys</span> = <span class="pl-s1">selector</span>.<span class="pl-en">selectedKeys</span>().<span class="pl-en">iterator</span>();
+                        <span class="pl-k">while</span> (<span class="pl-s1">selectionKeys</span>.<span class="pl-en">hasNext</span>()) {
+                            <span class="pl-smi">SelectionKey</span> <span class="pl-s1">selectionKey</span> = <span class="pl-s1">selectionKeys</span>.<span class="pl-en">next</span>();
+                            <span class="pl-s1">selectionKeys</span>.<span class="pl-en">remove</span>();
+    
+                            <span class="pl-c">//连接事件：连接成功后发送数据</span>
+                            <span class="pl-k">if</span> (<span class="pl-s1">selectionKey</span>.<span class="pl-en">isConnectable</span>()) {
+                                <span class="pl-smi">SocketChannel</span> <span class="pl-s1">socketChannel</span> = (<span class="pl-smi">SocketChannel</span>) <span class="pl-s1">selectionKey</span>.<span class="pl-en">channel</span>();
+                                <span class="pl-k">if</span> (<span class="pl-s1">socketChannel</span>.<span class="pl-en">isConnectionPending</span>()) {
+                                    <span class="pl-s1">socketChannel</span>.<span class="pl-en">finishConnect</span>();
+                                }
+    
+                                <span class="pl-c">// 发送数据给服务器端</span>
+                                <span class="pl-smi">String</span> <span class="pl-s1">data</span> = <span class="pl-s">"Hello this is "</span> + <span class="pl-smi">Thread</span>.<span class="pl-en">currentThread</span>().<span class="pl-en">getName</span>();
+                                <span class="pl-s1">socketChannel</span>.<span class="pl-en">write</span>(<span class="pl-smi">ByteBuffer</span>.<span class="pl-en">wrap</span>(<span class="pl-s1">data</span>.<span class="pl-en">getBytes</span>()));
+                                <span class="pl-smi">System</span>.<span class="pl-s1">out</span>.<span class="pl-en">println</span>(<span class="pl-s">"send data to server "</span>+<span class="pl-s1">data</span>);
+                            } <span class="pl-k">else</span> <span class="pl-k">if</span> (<span class="pl-s1">selectionKey</span>.<span class="pl-en">isReadable</span>()) {
+                                <span class="pl-c">// 监听到响应结果，读取响应结果</span>
+                                <span class="pl-smi">SocketChannel</span> <span class="pl-s1">sc</span> = (<span class="pl-smi">SocketChannel</span>) <span class="pl-s1">selectionKey</span>.<span class="pl-en">channel</span>();
+                                <span class="pl-smi">ByteBuffer</span> <span class="pl-s1">buffer</span> = <span class="pl-smi">ByteBuffer</span>.<span class="pl-en">allocate</span>(<span class="pl-c1">1024</span>);
+                                <span class="pl-s1">sc</span>.<span class="pl-en">read</span>(<span class="pl-s1">buffer</span>);
+                                <span class="pl-s1">buffer</span>.<span class="pl-en">flip</span>();
+                                <span class="pl-s1">buffer</span>.<span class="pl-en">clear</span>();
+                                <span class="pl-smi">System</span>.<span class="pl-s1">out</span>.<span class="pl-en">println</span>(<span class="pl-s">"收到服务端的数据："</span>+<span class="pl-k">new</span> <span class="pl-smi">String</span>(<span class="pl-s1">buffer</span>.<span class="pl-en">array</span>()));
+    
+                                <span class="pl-c">//  结束请求</span>
+                                <span class="pl-s1">sc</span>.<span class="pl-en">shutdownOutput</span>();
+                                <span class="pl-s1">sc</span>.<span class="pl-en">close</span>();
+                                <span class="pl-smi">System</span>.<span class="pl-s1">out</span>.<span class="pl-en">println</span>(<span class="pl-s">"sc connected {}"</span>+<span class="pl-s1">sc</span>.<span class="pl-en">isConnected</span>());
+                                <span class="pl-s1">isClose</span> = <span class="pl-c1">true</span>;
+                                <span class="pl-k">break</span>;
                             }
-
-                            // 发送数据给服务器端
-                            String data = "Hello this is " + Thread.currentThread().getName();
-                            socketChannel.write(ByteBuffer.wrap(data.getBytes()));
-                            System.out.println("send data to server "+data);
-                        } else if (selectionKey.isReadable()) {
-                            // 监听到响应结果，读取响应结果
-                            SocketChannel sc = (SocketChannel) selectionKey.channel();
-                            ByteBuffer buffer = ByteBuffer.allocate(1024);
-                            sc.read(buffer);
-                            buffer.flip();
-                            buffer.clear();
-                            System.out.println("收到服务端的数据："+new String(buffer.array()));
-
-                            //  结束请求
-                            sc.shutdownOutput();
-                            sc.close();
-                            System.out.println("sc connected {}"+sc.isConnected());
-                            isClose = true;
-                            break;
                         }
                     }
+                } <span class="pl-k">catch</span> (<span class="pl-smi">IOException</span> <span class="pl-s1">e</span>) {
+                    <span class="pl-s1">e</span>.<span class="pl-en">printStackTrace</span>();
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
             }
         }
-    }
-}
-</code></pre>
+    }</pre></div>
 <h3>具体回收细节</h3>
 <p>JVM将directbytebuffer引用变量回收后（成为null），随后ReferenceHandler线程检测并执行变量对应的直接内存所定义的回调函数（操作对象）。</p>
 <p>Cleaner:(本身自己就是一个虚引用对象)</p>
