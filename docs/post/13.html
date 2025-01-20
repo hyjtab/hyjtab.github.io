@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html data-color-mode="light" data-dark-theme="dark_dimmed" data-light-theme="light" lang="zh-CN">
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="content-type" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href='https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/Primer/21.0.7/primer.css' rel='stylesheet' />
+    <script src='https://blog.meekdai.com/Gmeek/plugins/GmeekBSZ.js'></script>
+    <link rel="icon" href="https://hyjtab.github.io/mango.svg"><script>
+        let theme = localStorage.getItem("meek_theme") || "light";
+        document.documentElement.setAttribute("data-color-mode", theme);
+    </script>
+<meta name="description" content="# JVM内存结构
+
+![Image](https://github.com/user-attachments/assets/542fa7e1-2750-4813-8030-0a871105c706)
+
+## 虚拟机参数
+
+-Xmx__ ：虚拟机堆内存大小
+
+-XX:PrintStringTableStatistics ：字符串表详细信息
+
+-XX:+PrintGCDetails：垃圾回收详细信息
+
+-XX:StringTableSize=___: 桶个数
+
+## 字节码
+
+ldc 加载变量（把新的字符串符号变为字符串对象）
+
+astore 存储到对应位置
+
+aload 从对应位置加载
+
+invokevirtual 调用虚函数
+
+new 新建类对象
+
+## 程序计数器寄存器
+
+## 虚拟机栈
+
+各个栈帧
+
+## 堆空间
+
+new出来的变量
+
+字符串常量池
+
+## 方法区
+
+1. 类信息
+  
+2. 运行时常量池
+  
+3. 方法字节码
+  
+4. 编译后代码
+  
+5. 类加载器
+  
+
+## 常量池（存在于.class文件中）
+
+就是一张为虚拟机指令提供的表，为字节码指令提供常量符号
+
+## 运行时常量池
+
+## StringTable
+
+优点：相同字符串只有一个实例
+
+字符串在用到的时候，才会加入StringTable实现上是一个hashTable，不能扩容。">
+<meta property="og:title" content="JVM学习">
+<meta property="og:description" content="# JVM内存结构
+
+![Image](https://github.com/user-attachments/assets/542fa7e1-2750-4813-8030-0a871105c706)
+
+## 虚拟机参数
+
+-Xmx__ ：虚拟机堆内存大小
+
+-XX:PrintStringTableStatistics ：字符串表详细信息
+
+-XX:+PrintGCDetails：垃圾回收详细信息
+
+-XX:StringTableSize=___: 桶个数
+
+## 字节码
+
+ldc 加载变量（把新的字符串符号变为字符串对象）
+
+astore 存储到对应位置
+
+aload 从对应位置加载
+
+invokevirtual 调用虚函数
+
+new 新建类对象
+
+## 程序计数器寄存器
+
+## 虚拟机栈
+
+各个栈帧
+
+## 堆空间
+
+new出来的变量
+
+字符串常量池
+
+## 方法区
+
+1. 类信息
+  
+2. 运行时常量池
+  
+3. 方法字节码
+  
+4. 编译后代码
+  
+5. 类加载器
+  
+
+## 常量池（存在于.class文件中）
+
+就是一张为虚拟机指令提供的表，为字节码指令提供常量符号
+
+## 运行时常量池
+
+## StringTable
+
+优点：相同字符串只有一个实例
+
+字符串在用到的时候，才会加入StringTable实现上是一个hashTable，不能扩容。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://hyjtab.github.io/post/13.html">
+<meta property="og:image" content="https://hyjtab.github.io/avatar.jpg">
+<title>JVM学习</title>
+
+
+
+</head>
+<style>
+body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;padding: 45px;font-size: 16px;font-family: sans-serif;line-height: 1.25;}
+#header{display:flex;padding-bottom:8px;border-bottom: 1px solid var(--borderColor-muted, var(--color-border-muted));margin-bottom: 16px;}
+#footer {margin-top:64px; text-align: center;font-size: small;}
+
+</style>
+
+<style>
+.postTitle{margin: auto 0;font-size:40px;font-weight:bold;}
+.title-right{display:flex;margin:auto 0 0 auto;}
+.title-right .circle{padding: 14px 16px;margin-right:8px;}
+#postBody{border-bottom: 1px solid var(--color-border-default);padding-bottom:36px;}
+#postBody hr{height:2px;}
+#cmButton{height:48px;margin-top:48px;}
+#comments{margin-top:64px;}
+.g-emoji{font-size:24px;}
+@media (max-width: 600px) {
+    body {padding: 8px;}
+    .postTitle{font-size:24px;}
+}
+.copy-feedback {
+    display: none;
+    position: absolute;
+    top: 10px;
+    right: 50px;
+    color: var(--color-fg-on-emphasis);
+    background-color: var(--color-fg-muted);
+    border-radius: 3px;
+    padding: 5px 8px;
+    font-size: 12px;
+}
+</style>
+
+
+
+
+<body>
+    <div id="header">
+<h1 class="postTitle">JVM学习</h1>
+<div class="title-right">
+    <a href="https://hyjtab.github.io" id="buttonHome" class="btn btn-invisible circle" title="首页">
+        <svg class="octicon" width="16" height="16">
+            <path id="pathHome" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+    
+    <a href="https://github.com/hyjtab/hyjtab.github.io/issues/13" target="_blank" class="btn btn-invisible circle" title="Issue">
+        <svg class="octicon" width="16" height="16">
+            <path id="pathIssue" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+    
+
+    <a class="btn btn-invisible circle" onclick="modeSwitch();" title="切换主题">
+        <svg class="octicon" width="16" height="16" >
+            <path id="themeSwitch" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+
+</div>
+</div>
+    <div id="content">
+<div class="markdown-body" id="postBody"><h1>JVM内存结构</h1>
+<p><a target="_blank" rel="noopener noreferrer" href="https://github.com/user-attachments/assets/542fa7e1-2750-4813-8030-0a871105c706"><img src="https://github.com/user-attachments/assets/542fa7e1-2750-4813-8030-0a871105c706" alt="Image" style="max-width: 100%;"></a></p>
+<h2>虚拟机参数</h2>
+<p>-Xmx__ ：虚拟机堆内存大小</p>
+<p>-XX:PrintStringTableStatistics ：字符串表详细信息</p>
+<p>-XX:+PrintGCDetails：垃圾回收详细信息</p>
+<p>-XX:StringTableSize=___: 桶个数</p>
+<h2>字节码</h2>
+<p>ldc 加载变量（把新的字符串符号变为字符串对象）</p>
+<p>astore 存储到对应位置</p>
+<p>aload 从对应位置加载</p>
+<p>invokevirtual 调用虚函数</p>
+<p>new 新建类对象</p>
+<h2>程序计数器寄存器</h2>
+<h2>虚拟机栈</h2>
+<p>各个栈帧</p>
+<h2>堆空间</h2>
+<p>new出来的变量</p>
+<p>字符串常量池</p>
+<h2>方法区</h2>
+<ol>
+<li>
+<p>类信息</p>
+</li>
+<li>
+<p>运行时常量池</p>
+</li>
+<li>
+<p>方法字节码</p>
+</li>
+<li>
+<p>编译后代码</p>
+</li>
+<li>
+<p>类加载器</p>
+</li>
+</ol>
+<h2>常量池（存在于.class文件中）</h2>
+<p>就是一张为虚拟机指令提供的表，为字节码指令提供常量符号</p>
+<h2>运行时常量池</h2>
+<h2>StringTable</h2>
+<p>优点：相同字符串只有一个实例</p>
+<p>字符串在用到的时候，才会加入StringTable实现上是一个hashTable，不能扩容。</p>
+<p>intern方法，可以主动将串池中还没有的字符串放到对象中，返回串池中的对象</p>
+<p>1.6中intern版本的返回值永远不会和原变量相同（新的字符串会复制后放入串池）</p>
+<p>1.7以后StringTable放到了堆空间</p>
+<p>StringTable也会进行垃圾回收</p>
+<p>StringTable桶的个数越多，入池操作执行越快</p>
+<p>大量数据时，最好先进行入池操作。</p>
+<h2>直接内存</h2>
+<p>更快，常见于NIO操作时没用于数据缓冲区</p>
+<p>读写性能高，回收成本也较高</p>
+<p>不受JVM内存回收管理</p>
+<h3>NIO</h3>
+<p>主要有三个部件构成</p>
+<h4>bytebuffer为主的缓冲区（本地的filebuffer）</h4>
+<h4>ServersocketChanel为主的通道</h4>
+<h4>Selector与SelectionKey</h4>
+<pre class="notranslate"><code class="notranslate">public class NioServer {
+    private int port ;
+    private Selector selector;
+    private ExecutorService service = Executors.newFixedThreadPool(5);
+    
+    public NioServer(int port) {
+        this.port = port;
+    }
+
+    public void init() {
+        ServerSocketChannel serverSocketChannel = null;
+
+        try {
+            // Channel 定义
+            serverSocketChannel = ServerSocketChannel.open();
+            serverSocketChannel.configureBlocking(false);
+            serverSocketChannel.bind(new InetSocketAddress(port));
+
+            // 创建选择器
+            selector = Selector.open();
+
+            // 注册到 Selector ，监听 Accept 事件
+            serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
+
+            System.out.println("Start server");
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
+    public void accept(SelectionKey key) {
+        try{
+            // ServerSocketChannel 监听到了 Accept 事件后的处理过程，从通道中获取 SocketChannel
+            ServerSocketChannel serverSocketChannel = (ServerSocketChannel) key.channel();
+            SocketChannel socketChannel = serverSocketChannel.accept();
+            socketChannel.configureBlocking(false);
+
+            // 注册客户端 Channel 的读事件，因为注册的通道对象不一样了，是收到的 Socket 对象
+            socketChannel.register(selector, SelectionKey.OP_READ);
+
+            System.out.println("Start to process accepted socket.");
+
+            // 打印客户端地址
+            String clientInfo = socketChannel.socket().getInetAddress().getHostAddress();
+            int portInfo = socketChannel.socket().getPort();
+            System.out.println("Receive client info "+clientInfo + ",portInfo:"+portInfo);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void start() {
+        this.init();
+
+        // 轮询 Select 的事件
+        while (true) {
+            try {
+                int event = selector.select();
+
+                // 轮询到了 完成就绪事件，遍历并分发处理
+                if (event &gt;0) {
+                    Iterator&lt;SelectionKey&gt; selectionKeys = selector.selectedKeys().iterator();
+
+                    while(selectionKeys.hasNext()) {
+                        SelectionKey key = selectionKeys.next();
+                        selectionKeys.remove();
+
+                        if (key.isAcceptable()) {
+                            this.accept(key);
+                        } else {
+                            if (!key.isReadable()) {
+                                System.out.println("Key is not read able.");
+                                continue;
+                            }
+
+                            // 把请求数据的通道提交给线程池处理
+                            service.submit(new NioServerHandler((SocketChannel)key.channel()));
+
+                            // 该 Client 请求提交给客户端后，key.cancel 可以解除监听
+                            key.cancel();
+                            System.out.println("Submit task and cancel.");
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        NioServer server = new NioServer(8800);
+        server.start();
+    }
+
+    /**
+     * 线程池任务：接收通道对象，处理数据，而不是接收 Key
+     */
+    private class NioServerHandler implements Runnable {
+
+        SocketChannel socketChannel;
+
+        public NioServerHandler(SocketChannel socketChannel) {
+            this.socketChannel = socketChannel;
+        }
+
+        @Override
+        public void run() {
+            try {
+                ByteBuffer buffer = ByteBuffer.allocate(1024);
+                socketChannel.read(buffer);
+
+                buffer.flip();
+                buffer.clear();
+
+                // 响应数据
+                ByteBuffer outBuffer = ByteBuffer.wrap("ok".getBytes());
+                socketChannel.write(outBuffer);// 将消息回送给客户端
+                System.out.println("接收到 client request :"+ new String (buffer.array()));
+                System.out.println("response finished");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}
+
+
+public class NioClient {
+    private static final String host = "127.0.0.1";
+    private static final int port = 8800;
+    private Selector selector;
+
+    public static void main(String[] args){
+        for (int i=0;i&lt;1;i++) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    System.out.println("Client is started listened ");
+                    NioClient client = new NioClient();
+                    client.connect(host, port);
+                    client.listen();
+                    System.out.println("finished start");
+                }
+            }).start();
+        }
+    }
+
+    public void connect(String host, int port) {
+        try {
+            SocketChannel sc = SocketChannel.open();
+            sc.configureBlocking(false);
+            this.selector = Selector.open();
+
+            // 一次注册多个事件，要用 | 来进行操作，而不是执行多次 register ，否则最后一次会覆盖前面的事件的
+            sc.register(selector, SelectionKey.OP_CONNECT|SelectionKey.OP_READ);
+            sc.connect(new InetSocketAddress(host, port));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 轮询就绪的事件
+     */
+    public void listen() {
+        boolean isClose = false;
+        while (!isClose) {
+            try {
+                int events = selector.select();
+                if (events &gt; 0) {
+
+                    // 迭代器遍历
+                    Iterator&lt;SelectionKey&gt; selectionKeys = selector.selectedKeys().iterator();
+                    while (selectionKeys.hasNext()) {
+                        SelectionKey selectionKey = selectionKeys.next();
+                        selectionKeys.remove();
+
+                        //连接事件：连接成功后发送数据
+                        if (selectionKey.isConnectable()) {
+                            SocketChannel socketChannel = (SocketChannel) selectionKey.channel();
+                            if (socketChannel.isConnectionPending()) {
+                                socketChannel.finishConnect();
+                            }
+
+                            // 发送数据给服务器端
+                            String data = "Hello this is " + Thread.currentThread().getName();
+                            socketChannel.write(ByteBuffer.wrap(data.getBytes()));
+                            System.out.println("send data to server "+data);
+                        } else if (selectionKey.isReadable()) {
+                            // 监听到响应结果，读取响应结果
+                            SocketChannel sc = (SocketChannel) selectionKey.channel();
+                            ByteBuffer buffer = ByteBuffer.allocate(1024);
+                            sc.read(buffer);
+                            buffer.flip();
+                            buffer.clear();
+                            System.out.println("收到服务端的数据："+new String(buffer.array()));
+
+                            //  结束请求
+                            sc.shutdownOutput();
+                            sc.close();
+                            System.out.println("sc connected {}"+sc.isConnected());
+                            isClose = true;
+                            break;
+                        }
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}
+</code></pre>
+<h3>具体回收细节</h3>
+<p>JVM将directbytebuffer引用变量回收后（成为null），随后ReferenceHandler线程检测并执行变量对应的直接内存所定义的回调函数（操作对象）。</p>
+<p>Cleaner:(本身自己就是一个虚引用对象)</p>
+<p>create</p>
+<p>register</p>
+<h3>虚引用对象</h3>
+<h3><strong>入队操作</strong></h3>
+<ul>
+<li>
+<p><strong>谁执行的？</strong> 入队操作是由 <strong>Java垃圾回收器（JVM GC）</strong> 执行的。</p>
+</li>
+<li>
+<p><strong>如何执行？</strong> 当垃圾回收器确定某个对象不再可达（即符合垃圾回收条件）时：</p>
+<ol>
+<li>如果这个对象有一个虚引用（<code class="notranslate">PhantomReference</code>）与之关联，并且这个虚引用被注册到了一个 <code class="notranslate">ReferenceQueue</code> 中；</li>
+<li>垃圾回收器会在回收该对象之前，将这个虚引用加入到其关联的 <code class="notranslate">ReferenceQueue</code> 中。</li>
+</ol>
+<p><strong>入队的目的是通知程序，该对象已经即将被回收。</strong></p>
+</li>
+</ul>
+<hr>
+<h3><strong>清除操作</strong></h3>
+<ul>
+<li>
+<p><strong>谁执行的？</strong> 清除操作是由 <strong>程序开发者（手动执行）</strong> 进行的。</p>
+</li>
+<li>
+<p><strong>如何执行？</strong> 虚引用本身并不会自动清除或者释放对象的资源，程序员需要手动处理。通常的流程是：</p>
+<ol>
+<li>程序通过轮询或其他方式从 <code class="notranslate">ReferenceQueue</code> 中取出虚引用；</li>
+<li>执行清除操作，例如释放该对象的资源、关闭文件句柄或网络连接等；</li>
+<li>完成后，明确地处理虚引用或者释放相关的资源。</li>
+</ol>
+</li>
+</ul></div>
+<div style="font-size:small;margin-top:8px;float:right;">日拱一卒，功不唐捐</div>
+
+<button class="btn btn-block" type="button" onclick="openComments()" id="cmButton">评论</button>
+<div class="comments" id="comments"></div>
+
+</div>
+    <div id="footer"><div id="footer1">Copyright © <span id="copyrightYear"></span> <a href="https://hyjtab.github.io">Tasfa1tals的博客</a></div>
+<div id="footer2">
+    <span id="runday"></span><span>Powered by <a href="https://meekdai.com/Gmeek.html" target="_blank">Gmeek</a></span>
+</div>
+
+<script>
+var now=new Date();
+document.getElementById("copyrightYear").innerHTML=now.getFullYear();
+
+if("10/25/2024"!=""){
+    var startSite=new Date("10/25/2024");
+    var diff=now.getTime()-startSite.getTime();
+    var diffDay=Math.floor(diff/(1000*60*60*24));
+    document.getElementById("runday").innerHTML="网站运行"+diffDay+"天"+" • ";
+}
+</script></div>
+</body>
+<script>
+var IconList={'sun': 'M8 10.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5zM8 12a4 4 0 100-8 4 4 0 000 8zM8 0a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0V.75A.75.75 0 018 0zm0 13a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5A.75.75 0 018 13zM2.343 2.343a.75.75 0 011.061 0l1.06 1.061a.75.75 0 01-1.06 1.06l-1.06-1.06a.75.75 0 010-1.06zm9.193 9.193a.75.75 0 011.06 0l1.061 1.06a.75.75 0 01-1.06 1.061l-1.061-1.06a.75.75 0 010-1.061zM16 8a.75.75 0 01-.75.75h-1.5a.75.75 0 010-1.5h1.5A.75.75 0 0116 8zM3 8a.75.75 0 01-.75.75H.75a.75.75 0 010-1.5h1.5A.75.75 0 013 8zm10.657-5.657a.75.75 0 010 1.061l-1.061 1.06a.75.75 0 11-1.06-1.06l1.06-1.06a.75.75 0 011.06 0zm-9.193 9.193a.75.75 0 010 1.06l-1.06 1.061a.75.75 0 11-1.061-1.06l1.06-1.061a.75.75 0 011.061 0z', 'moon': 'M9.598 1.591a.75.75 0 01.785-.175 7 7 0 11-8.967 8.967.75.75 0 01.961-.96 5.5 5.5 0 007.046-7.046.75.75 0 01.175-.786zm1.616 1.945a7 7 0 01-7.678 7.678 5.5 5.5 0 107.678-7.678z', 'sync': 'M1.705 8.005a.75.75 0 0 1 .834.656 5.5 5.5 0 0 0 9.592 2.97l-1.204-1.204a.25.25 0 0 1 .177-.427h3.646a.25.25 0 0 1 .25.25v3.646a.25.25 0 0 1-.427.177l-1.38-1.38A7.002 7.002 0 0 1 1.05 8.84a.75.75 0 0 1 .656-.834ZM8 2.5a5.487 5.487 0 0 0-4.131 1.869l1.204 1.204A.25.25 0 0 1 4.896 6H1.25A.25.25 0 0 1 1 5.75V2.104a.25.25 0 0 1 .427-.177l1.38 1.38A7.002 7.002 0 0 1 14.95 7.16a.75.75 0 0 1-1.49.178A5.5 5.5 0 0 0 8 2.5Z', 'home': 'M6.906.664a1.749 1.749 0 0 1 2.187 0l5.25 4.2c.415.332.657.835.657 1.367v7.019A1.75 1.75 0 0 1 13.25 15h-3.5a.75.75 0 0 1-.75-.75V9H7v5.25a.75.75 0 0 1-.75.75h-3.5A1.75 1.75 0 0 1 1 13.25V6.23c0-.531.242-1.034.657-1.366l5.25-4.2Zm1.25 1.171a.25.25 0 0 0-.312 0l-5.25 4.2a.25.25 0 0 0-.094.196v7.019c0 .138.112.25.25.25H5.5V8.25a.75.75 0 0 1 .75-.75h3.5a.75.75 0 0 1 .75.75v5.25h2.75a.25.25 0 0 0 .25-.25V6.23a.25.25 0 0 0-.094-.195Z', 'github': 'M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z', 'copy': 'M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z', 'check': 'M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z'};
+var utterancesLoad=0;
+
+let themeSettings={
+    "dark": ["dark","moon","#00f0ff","dark-blue"],
+    "light": ["light","sun","#ff5000","github-light"],
+    "auto": ["auto","sync","","preferred-color-scheme"]
+};
+function changeTheme(mode, icon, color, utheme){
+    document.documentElement.setAttribute("data-color-mode",mode);
+    document.getElementById("themeSwitch").setAttribute("d",value=IconList[icon]);
+    document.getElementById("themeSwitch").parentNode.style.color=color;
+    if(utterancesLoad==1){utterancesTheme(utheme);}
+}
+function modeSwitch(){
+    let currentMode=document.documentElement.getAttribute('data-color-mode');
+    let newMode = currentMode === "light" ? "dark" : currentMode === "dark" ? "auto" : "light";
+    localStorage.setItem("meek_theme", newMode);
+    if(themeSettings[newMode]){
+        changeTheme(...themeSettings[newMode]);
+    }
+}
+function utterancesTheme(theme){
+    const message={type:'set-theme',theme: theme};
+    const iframe=document.getElementsByClassName('utterances-frame')[0];
+    iframe.contentWindow.postMessage(message,'https://utteranc.es');
+}
+if(themeSettings[theme]){changeTheme(...themeSettings[theme]);}
+console.log("\n %c Gmeek last https://github.com/Meekdai/Gmeek \n","padding:5px 0;background:#02d81d;color:#fff");
+</script>
+
+<script>
+document.getElementById("pathHome").setAttribute("d",IconList["home"]);
+document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
+
+
+
+function openComments(){
+    cm=document.getElementById("comments");
+    cmButton=document.getElementById("cmButton");
+    cmButton.innerHTML="loading";
+    span=document.createElement("span");
+    span.setAttribute("class","AnimatedEllipsis");
+    cmButton.appendChild(span);
+
+    script=document.createElement("script");
+    script.setAttribute("src","https://utteranc.es/client.js");
+    script.setAttribute("repo","hyjtab/hyjtab.github.io");
+    script.setAttribute("issue-term","title");
+    
+    if(localStorage.getItem("meek_theme")=="dark"){script.setAttribute("theme","dark-blue");}
+    else if(localStorage.getItem("meek_theme")=="light") {script.setAttribute("theme","github-light");}
+    else{script.setAttribute("theme","preferred-color-scheme");}
+    
+    script.setAttribute("crossorigin","anonymous");
+    script.setAttribute("async","");
+    cm.appendChild(script);
+
+    int=self.setInterval("iFrameLoading()",200);
+}
+
+function iFrameLoading(){
+    var utterances=document.getElementsByClassName('utterances');
+    if(utterances.length==1){
+        if(utterances[0].style.height!=""){
+            utterancesLoad=1;
+            int=window.clearInterval(int);
+            document.getElementById("cmButton").style.display="none";
+            console.log("utterances Load OK");
+        }
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const createClipboardHTML = (codeContent, additionalClasses = '') => `
+        <pre class="notranslate"><code class="notranslate">${codeContent}</code></pre>
+        <div class="clipboard-container position-absolute right-0 top-0 ${additionalClasses}">
+            <clipboard-copy class="ClipboardButton btn m-2 p-0" role="button" style="display: inherit;">
+                <svg height="16" width="16" class="octicon octicon-copy m-2"><path d="${IconList["copy"]}"></path></svg>
+                <svg height="16" width="16" class="octicon octicon-check color-fg-success m-2 d-none"><path d="${IconList["check"]}"></path></svg>
+            </clipboard-copy>
+            <div class="copy-feedback">Copied!</div>
+        </div>
+    `;
+
+    const handleCodeElements = (selector = '') => {
+        document.querySelectorAll(selector).forEach(codeElement => {
+            const codeContent = codeElement.innerHTML;
+            const newStructure = document.createElement('div');
+            newStructure.className = 'snippet-clipboard-content position-relative overflow-auto';
+            newStructure.innerHTML = createClipboardHTML(codeContent);
+
+            const parentElement = codeElement.parentElement;
+            if (selector.includes('highlight')) {
+                parentElement.insertBefore(newStructure, codeElement.nextSibling);
+                parentElement.removeChild(codeElement);
+            } else {
+                parentElement.parentElement.replaceChild(newStructure, parentElement);
+            }
+        });
+    };
+
+    handleCodeElements('pre.notranslate > code.notranslate');
+    handleCodeElements('div.highlight > pre.notranslate');
+
+    let currentFeedback = null;
+    document.querySelectorAll('clipboard-copy').forEach(copyButton => {
+        copyButton.addEventListener('click', () => {
+            const codeContent = copyButton.closest('.snippet-clipboard-content').innerText;
+            const tempTextArea = document.createElement('textarea');
+            tempTextArea.value = codeContent;
+            document.body.appendChild(tempTextArea);
+            tempTextArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempTextArea);
+
+            const copyIcon = copyButton.querySelector('.octicon-copy');
+            const checkIcon = copyButton.querySelector('.octicon-check');
+            const copyFeedback = copyButton.nextElementSibling;
+
+            if (currentFeedback && currentFeedback !== copyFeedback) {currentFeedback.style.display = 'none';}
+            currentFeedback = copyFeedback;
+
+            copyIcon.classList.add('d-none');
+            checkIcon.classList.remove('d-none');
+            copyFeedback.style.display = 'block';
+            copyButton.style.borderColor = 'var(--color-success-fg)';
+
+            setTimeout(() => {
+                copyIcon.classList.remove('d-none');
+                checkIcon.classList.add('d-none');
+                copyFeedback.style.display = 'none';
+                copyButton.style.borderColor = '';
+            }, 2000);
+        });
+    });
+});
+
+</script>
+<script src='https://blog.meekdai.com/Gmeek/plugins/GmeekTOC.js'></script>
+
+</html>

@@ -1,5 +1,66 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>Tasfa1tals的博客</title><link>https://hyjtab.github.io</link><description>人们应当想象，西西弗是快乐的</description><copyright>Tasfa1tals的博客</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://hyjtab.github.io/avatar.jpg</url><title>avatar</title><link>https://hyjtab.github.io</link></image><lastBuildDate>Sun, 19 Jan 2025 10:47:18 +0000</lastBuildDate><managingEditor>Tasfa1tals的博客</managingEditor><ttl>60</ttl><webMaster>Tasfa1tals的博客</webMaster><item><title>Java 语法拾遗</title><link>https://hyjtab.github.io/post/12.html</link><description># String的不变性
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>Tasfa1tals的博客</title><link>https://hyjtab.github.io</link><description>人们应当想象，西西弗是快乐的</description><copyright>Tasfa1tals的博客</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://hyjtab.github.io/avatar.jpg</url><title>avatar</title><link>https://hyjtab.github.io</link></image><lastBuildDate>Mon, 20 Jan 2025 16:39:34 +0000</lastBuildDate><managingEditor>Tasfa1tals的博客</managingEditor><ttl>60</ttl><webMaster>Tasfa1tals的博客</webMaster><item><title>JVM学习</title><link>https://hyjtab.github.io/post/13.html</link><description># JVM内存结构
+
+![Image](https://github.com/user-attachments/assets/542fa7e1-2750-4813-8030-0a871105c706)
+
+## 虚拟机参数
+
+-Xmx__ ：虚拟机堆内存大小
+
+-XX:PrintStringTableStatistics ：字符串表详细信息
+
+-XX:+PrintGCDetails：垃圾回收详细信息
+
+-XX:StringTableSize=___: 桶个数
+
+## 字节码
+
+ldc 加载变量（把新的字符串符号变为字符串对象）
+
+astore 存储到对应位置
+
+aload 从对应位置加载
+
+invokevirtual 调用虚函数
+
+new 新建类对象
+
+## 程序计数器寄存器
+
+## 虚拟机栈
+
+各个栈帧
+
+## 堆空间
+
+new出来的变量
+
+字符串常量池
+
+## 方法区
+
+1. 类信息
+  
+2. 运行时常量池
+  
+3. 方法字节码
+  
+4. 编译后代码
+  
+5. 类加载器
+  
+
+## 常量池（存在于.class文件中）
+
+就是一张为虚拟机指令提供的表，为字节码指令提供常量符号
+
+## 运行时常量池
+
+## StringTable
+
+优点：相同字符串只有一个实例
+
+字符串在用到的时候，才会加入StringTable实现上是一个hashTable，不能扩容。</description><guid isPermaLink="true">https://hyjtab.github.io/post/13.html</guid><pubDate>Mon, 20 Jan 2025 16:39:07 +0000</pubDate></item><item><title>Java 语法拾遗</title><link>https://hyjtab.github.io/post/12.html</link><description># String的不变性
 相关题目：
 ```java
 String a = 'hello, ';
