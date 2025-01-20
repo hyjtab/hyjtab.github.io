@@ -127,6 +127,7 @@ while ((len = fis.read(buffer)) != -1) {//
 serialize接口作为表示接口，也需要这么做。
 
 ## hashmap
+hashmap长度永远为2的幂次，方便计算index，hashmap判断一致性，首先比对hash2，再比对equals。
 ### hashmap扩容机制：
 ①.判断键值对数组table[i]是否为空或为null，否则执行resize()进行扩容；
 ②.根据键值key计算hash值得到插入的数组索引i，如果table[i]==null，直接新建节点添加，转向⑥，如果table[i]不为空，转向③；

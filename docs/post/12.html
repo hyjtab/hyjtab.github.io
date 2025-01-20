@@ -235,6 +235,7 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 <p>自定义异常类需要声明serializeUID这个属性，并且其修饰符为stastic final long，作为唯一标识。</p>
 <p>serialize接口作为表示接口，也需要这么做。</p>
 <h2>hashmap</h2>
+<p>hashmap长度永远为2的幂次，方便计算index，hashmap判断一致性，首先比对hash2，再比对equals。</p>
 <h3>hashmap扩容机制：</h3>
 <p>①.判断键值对数组table[i]是否为空或为null，否则执行resize()进行扩容；<br>
 ②.根据键值key计算hash值得到插入的数组索引i，如果table[i]==null，直接新建节点添加，转向⑥，如果table[i]不为空，转向③；<br>
