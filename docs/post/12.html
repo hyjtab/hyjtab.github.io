@@ -233,7 +233,19 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
        }</pre></div>
 <h2>序列化</h2>
 <p>自定义异常类需要声明serializeUID这个属性，并且其修饰符为stastic final long，作为唯一标识。</p>
-<p>serialize接口作为表示接口，也需要这么做。</p></div>
+<p>serialize接口作为表示接口，也需要这么做。</p>
+<h2>hashmap</h2>
+<h3>hashmap扩容机制：</h3>
+<p>①.判断键值对数组table[i]是否为空或为null，否则执行resize()进行扩容；<br>
+②.根据键值key计算hash值得到插入的数组索引i，如果table[i]==null，直接新建节点添加，转向⑥，如果table[i]不为空，转向③；<br>
+③.判断table[i]的首个元素是否和key一样，如果相同直接覆盖value，否则转向④，这里的相同指的是hashCode以及equals；<br>
+④.判断table[i] 是否为treeNode，即table[i] 是否是红黑树，如果是红黑树，则直接在树中插入键值<br>
+对，否则转向⑤；<br>
+⑤.遍历table[i]，并记录遍历长度，如果遍历过程中发现key值相同的，则直接覆盖value，没有相同的key则在链表尾部插入结点，插入后判断该链表长度是否大等于8，大等于则考虑树化，如果数组的元素个数小于64，则只是将数组resize，大等于才树化该链表；<br>
+⑥.插入成功后，判断数组中的键值对数量size是否超过了阈值threshold，如果超过，进行扩容。</p>
+<h3>线程不安全</h3>
+<p>首先线程A需要阻塞在原hashmap扩容后移动的首个节点上，随后，线程B完成扩容操作，A恢复运行，继续尝试移动节点，此时他将把他认为的第一个节点，实际上的倒数第一个节点的next设为null，随后进行第二次移动，移动现在的倒数第二个节点，他认为的第二个节点，此时倒数第二个节点的next已经设为前面移动过的倒数第一个节点，随后进行移动，将他以为的第二个节点的next设为他以为的第一个节点，但实际上这步操作没有改变任何东西，其此步保存的原始next早就是他以为的第一个节点了，因此在进行一步循环，环就已经成了。</p>
+<p>还有一种自环，数据丢失的情况，其常常发生于扩容后重新hash确认的index不同的时候，且线程A阻塞在该节点时，该节点发生自环，其后数据都丢失。(参考链接)[https://juejin.cn/post/6844904149616705543]</p></div>
 <div style="font-size:small;margin-top:8px;float:right;">日拱一卒，功不唐捐</div>
 
 <button class="btn btn-block" type="button" onclick="openComments()" id="cmButton">评论</button>
