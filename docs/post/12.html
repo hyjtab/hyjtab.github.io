@@ -246,7 +246,11 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 ⑥.插入成功后，判断数组中的键值对数量size是否超过了阈值threshold，如果超过，进行扩容。</p>
 <h3>线程不安全</h3>
 <p>首先线程A需要阻塞在原hashmap扩容后移动的首个节点上，随后，线程B完成扩容操作，A恢复运行，继续尝试移动节点，此时他将把他认为的第一个节点，实际上的倒数第一个节点的next设为null，随后进行第二次移动，移动现在的倒数第二个节点，他认为的第二个节点，此时倒数第二个节点的next已经设为前面移动过的倒数第一个节点，随后进行移动，将他以为的第二个节点的next设为他以为的第一个节点，但实际上这步操作没有改变任何东西，其此步保存的原始next早就是他以为的第一个节点了，因此在进行一步循环，环就已经成了。</p>
-<p>还有一种自环，数据丢失的情况，其常常发生于扩容后重新hash确认的index不同的时候，且线程A阻塞在该节点时，该节点发生自环，其后数据都丢失。(参考链接)[https://juejin.cn/post/6844904149616705543]</p></div>
+<p>还有一种自环，数据丢失的情况，其常常发生于扩容后重新hash确认的index不同的时候，且线程A阻塞在该节点时，该节点发生自环，其后数据都丢失。(参考链接)[https://juejin.cn/post/6844904149616705543]</p>
+<h2>自增操作</h2>
+<pre class="notranslate"><code class="notranslate">x=x++
+</code></pre>
+<p>x先进行iload，再进行llinc，再赋值，自身不会改变。</p></div>
 <div style="font-size:small;margin-top:8px;float:right;">日拱一卒，功不唐捐</div>
 
 <button class="btn btn-block" type="button" onclick="openComments()" id="cmButton">评论</button>
