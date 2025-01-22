@@ -250,7 +250,12 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 <h2>自增操作</h2>
 <pre class="notranslate"><code class="notranslate">x=x++
 </code></pre>
-<p>x先进行iload，再进行llinc，再赋值，自身不会改变。</p></div>
+<p>x先进行iload，再进行llinc，再赋值，自身不会改变。</p>
+<h2>final关键字</h2>
+<p>final关键字修饰类时，不能继承，修饰成员变量时，变量值不能改变</p>
+<p><strong>tips:</strong> 局部内部类与匿名内部类只能使用final关键字的外部参数。这么做一方面是为了避免生命周期不同，另一方面是为了避免内外部数据不一致。</p>
+<p>若使用的外部变量不能在编译期间确定，jvm会默认将局部内部类与匿名内部类的默认构造方法上再增加该参数，通过构造器传参的方式来对拷贝进行初始化赋值。</p>
+<p>此外，除静态内部类外，其他形式的内部类都依赖于外部类来进行访问，如果需要继承一个外部类，其不能拥有无参的构造函数，必须至少有一个外部类变量作为参数和访问指针，详情请查看<a href="https://www.cnblogs.com/dolphin0520/p/3811445.html" rel="nofollow">此篇文章</a></p></div>
 <div style="font-size:small;margin-top:8px;float:right;">日拱一卒，功不唐捐</div>
 
 <button class="btn btn-block" type="button" onclick="openComments()" id="cmButton">评论</button>
