@@ -288,7 +288,9 @@ GC暂停时间
 <p>拷贝存活会STW</p>
 <pre class="notranslate"><code class="notranslate">-XX:MaxGCpauseMillis=ms(对老年代，优先回收价值较高的区域)
 </code></pre>
-<p>Full GC==&gt;尽力收集</p>
+<p>MinorGC==&gt;只对新生代做回收</p>
+<p>MajorGC==&gt;只对老年代做回收</p>
+<p>Full GC==&gt;新生代，老年代，永久代都回收，具有较长的STW时间</p>
 <h3>跨代引用</h3>
 <p>老年代引用新生代</p>
 <p>卡表（CMS）若出现上述引用，则成为脏卡，只需要扫描脏卡即可完成标记扫描</p>
