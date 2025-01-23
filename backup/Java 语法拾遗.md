@@ -155,3 +155,58 @@ final关键字修饰类时，不能继承，修饰成员变量时，变量值不
 若使用的外部变量不能在编译期间确定，jvm会默认将局部内部类与匿名内部类的默认构造方法上再增加该参数，通过构造器传参的方式来对拷贝进行初始化赋值。
 
 此外，除静态内部类外，其他形式的内部类都依赖于外部类来进行访问，如果需要继承一个外部类，其不能拥有无参的构造函数，必须至少有一个外部类变量作为参数和访问指针，详情请查看[此篇文章](https://www.cnblogs.com/dolphin0520/p/3811445.html)
+
+## 重写与遮蔽
+```
+public class Parents {
+    private static void _show(){
+        System.out.println("父类");
+    }
+    public static void show(){
+        _show();
+    }
+}
+
+public class Son extends Parents{
+    private static void _show(){
+        System.out.println("子类");
+    }
+    public static void show(){
+        _show();
+    }
+
+    public static void main(String[] args) {
+        Parents parents = new Son();
+        parents.show();
+    }
+}
+```
+有`static`和没有的结果是相反的，如果使用了`static`方法，则会调用`invokestatic`字节码指令，在编译时确定函数入口地址，编译时认为`parents`变量为`Parents`类型，而非`static`方法则会调用`invokevirtual`字节码指令，在运行时确定函数入口地址，运行时认为`parents`变量为`Son`类型，调用子类方法。
+```
+public class Parents {
+    public void _show(){
+        System.out.println("父类");
+    }
+    public void show(Parents parents){
+        parents._show();
+    }
+}
+public class Son extends Parents{
+    public void _show(){
+        System.out.println("子类");
+    }
+
+    public static void main(String[] args) {
+        Parents parents = new Son();
+        parents.show(parents);
+    }
+}
+```
+`_show`方法是否为私有，也会影响输出结果，这里就用到了多态的特性。如果父类方法被子类重写，则可以通过子类对象调用，一旦父类`_show`方法声明为私有，`parents._show();`在编译阶段就会被编译为`invokespecial`从而无法进行多态查找。
+```
+ * 1、修饰符： >= 父类（非私有方法的情况下编译器报错）
+ * 2、返回值： <= 父类
+ * 3、方法名： 必须一致
+ * 4、形式参数：必须一致 ， 传参时 <= 父类
+ * 5、抛出异常：<= 父类
+```

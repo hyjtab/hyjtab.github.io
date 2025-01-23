@@ -255,7 +255,58 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 <p>final关键字修饰类时，不能继承，修饰成员变量时，变量值不能改变</p>
 <p><strong>tips:</strong> 局部内部类与匿名内部类只能使用final关键字的外部参数。这么做一方面是为了避免生命周期不同，另一方面是为了避免内外部数据不一致。</p>
 <p>若使用的外部变量不能在编译期间确定，jvm会默认将局部内部类与匿名内部类的默认构造方法上再增加该参数，通过构造器传参的方式来对拷贝进行初始化赋值。</p>
-<p>此外，除静态内部类外，其他形式的内部类都依赖于外部类来进行访问，如果需要继承一个外部类，其不能拥有无参的构造函数，必须至少有一个外部类变量作为参数和访问指针，详情请查看<a href="https://www.cnblogs.com/dolphin0520/p/3811445.html" rel="nofollow">此篇文章</a></p></div>
+<p>此外，除静态内部类外，其他形式的内部类都依赖于外部类来进行访问，如果需要继承一个外部类，其不能拥有无参的构造函数，必须至少有一个外部类变量作为参数和访问指针，详情请查看<a href="https://www.cnblogs.com/dolphin0520/p/3811445.html" rel="nofollow">此篇文章</a></p>
+<h2>重写与遮蔽</h2>
+<pre class="notranslate"><code class="notranslate">public class Parents {
+    private static void _show(){
+        System.out.println("父类");
+    }
+    public static void show(){
+        _show();
+    }
+}
+
+public class Son extends Parents{
+    private static void _show(){
+        System.out.println("子类");
+    }
+    public static void show(){
+        _show();
+    }
+
+    public static void main(String[] args) {
+        Parents parents = new Son();
+        parents.show();
+    }
+}
+</code></pre>
+<p>有<code class="notranslate">static</code>和没有的结果是相反的，如果使用了<code class="notranslate">static</code>方法，则会调用<code class="notranslate">invokestatic</code>字节码指令，在编译时确定函数入口地址，编译时认为<code class="notranslate">parents</code>变量为<code class="notranslate">Parents</code>类型，而非<code class="notranslate">static</code>方法则会调用<code class="notranslate">invokevirtual</code>字节码指令，在运行时确定函数入口地址，运行时认为<code class="notranslate">parents</code>变量为<code class="notranslate">Son</code>类型，调用子类方法。</p>
+<pre class="notranslate"><code class="notranslate">public class Parents {
+    public void _show(){
+        System.out.println("父类");
+    }
+    public void show(Parents parents){
+        parents._show();
+    }
+}
+public class Son extends Parents{
+    public void _show(){
+        System.out.println("子类");
+    }
+
+    public static void main(String[] args) {
+        Parents parents = new Son();
+        parents.show(parents);
+    }
+}
+</code></pre>
+<p><code class="notranslate">_show</code>方法是否为私有，也会影响输出结果，这里就用到了多态的特性。如果父类方法被子类重写，则可以通过子类对象调用，一旦父类<code class="notranslate">_show</code>方法声明为私有，<code class="notranslate">parents._show();</code>在编译阶段就会被编译为<code class="notranslate">invokespecial</code>从而无法进行多态查找。</p>
+<pre class="notranslate"><code class="notranslate"> * 1、修饰符： &gt;= 父类（非私有方法的情况下编译器报错）
+ * 2、返回值： &lt;= 父类
+ * 3、方法名： 必须一致
+ * 4、形式参数：必须一致 ， 传参时 &lt;= 父类
+ * 5、抛出异常：&lt;= 父类
+</code></pre></div>
 <div style="font-size:small;margin-top:8px;float:right;">日拱一卒，功不唐捐</div>
 
 <button class="btn btn-block" type="button" onclick="openComments()" id="cmButton">评论</button>
