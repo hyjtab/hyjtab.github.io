@@ -1,5 +1,69 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>Tasfa1tals的博客</title><link>https://hyjtab.github.io</link><description>人们应当想象，西西弗是快乐的</description><copyright>Tasfa1tals的博客</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://hyjtab.github.io/avatar.jpg</url><title>avatar</title><link>https://hyjtab.github.io</link></image><lastBuildDate>Tue, 21 Jan 2025 15:53:57 +0000</lastBuildDate><managingEditor>Tasfa1tals的博客</managingEditor><ttl>60</ttl><webMaster>Tasfa1tals的博客</webMaster><item><title>垃圾回收</title><link>https://hyjtab.github.io/post/14.html</link><description># 分代垃圾回收
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>Tasfa1tals的博客</title><link>https://hyjtab.github.io</link><description>人们应当想象，西西弗是快乐的</description><copyright>Tasfa1tals的博客</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://hyjtab.github.io/avatar.jpg</url><title>avatar</title><link>https://hyjtab.github.io</link></image><lastBuildDate>Sun, 26 Jan 2025 16:35:49 +0000</lastBuildDate><managingEditor>Tasfa1tals的博客</managingEditor><ttl>60</ttl><webMaster>Tasfa1tals的博客</webMaster><item><title>SQL复习</title><link>https://hyjtab.github.io/post/15.html</link><description>## DDL 操作数据库，数据表
+```sql
+    show databases;
+    create database if not exists ''
+    drop database if exists ''
+    use ''
+    select database();//查看当前使用的数据库
+    
+    show tables;
+    desc ''//查询表的结构
+    create table '' (字段名1 数据类型1,字段名2 数据类型2,字段名2 数据类型2);
+    drop if exists '';
+    
+    
+    alter table '' rename to '';
+    alter table '' add 字段名 类型;
+    alter table '' modify 字段名 新类型 约束;
+    alter table '' change 字段 新字段 新类型;alter table '' drop 字段;
+```
+## DML 对表中的数据进行增删改查
+```sql
+    insert into 'table'(字段1，字段2) values (值1, 值2),(值1, 值2),...;
+    
+    update 'table' set 字段1=值1, 字段2=值2,...[where 条件];
+    
+    delete from 'table' [where 条件]
+```
+## DQL 对表中的数据进行查询
+```sql
+    select 字段【distinct(去重)】【as 别名】
+    ||聚合函数【count(统计非空数据 *) max min sum avg】(列名)
+    from 表名
+    where 条件【&lt;&gt;不等于 =等于 in(,,...) null 用is与is not like(_代表单个任意字符，%代表任意个字符)】 //不能执行聚合函数
+    group by 分组字段名
+    ///注意，分组之后只能查分组字段和聚合函数
+    having 分组后条件//可以执行聚合函数
+    order by 排序字段【ASC(默认) DESC(降序)】, 排序字段【ASC(默认) DESC(降序)】
+    limit 起始索引，查询条目数（MySQL方言）
+    //起始索引 = （当前页码-1）* 每页显示条数
+```
+## 约束
+```sql
+    auto_increment //数字类型，唯一约束
+    非空约束 NOT NULL
+    唯一约束 UNIQUE
+    主键约束 PRIMARY KEY
+    默认约束 DEFAULT
+    外键约束 FOREGIN KEY
+    constraint 【约束名称】 foreign key(从表字段) references 主表名(主表字段)
+    // 括号是必须的！！！
+    
+    alter table ’table‘ alter '字段' set DEFAULT 默认值
+    alter table ’table‘ alter '字段' drop DEFAULT 默认值
+```
+## DCL 对数据库进行权限控制
+
+## 数据库设计
+
+需求分析，逻辑分析（ER图），物理设计，维护设计
+
+一对多（多的一方建立外键）
+
+多对多（建立一个中间表(也可以添加业务字段)）
+
+一对一（任意一方设置唯一外键。</description><guid isPermaLink="true">https://hyjtab.github.io/post/15.html</guid><pubDate>Sun, 26 Jan 2025 16:35:25 +0000</pubDate></item><item><title>垃圾回收</title><link>https://hyjtab.github.io/post/14.html</link><description># 分代垃圾回收
 
 对象首先分配在伊甸园区域
 
