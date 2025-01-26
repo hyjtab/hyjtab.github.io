@@ -282,68 +282,67 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 多行多列 作为虚拟表
 </code></pre>
 <p><strong>练习的启发</strong></p>
-<pre class="notranslate"><code class="notranslate">    -- 2.查询员工编号，员工姓名，工资，职务名称，职务描述，部门名称，部门位置
-    SELECT
-        emp.id,
-        emp.ename,
-        emp.salary,
-        job.jname,
-        job.description,
-        dept.dname,
-        dept.loc
-    FROM
+<div class="highlight highlight-source-sql"><pre class="notranslate">    <span class="pl-c"><span class="pl-c">--</span> 2.查询员工编号，员工姓名，工资，职务名称，职务描述，部门名称，部门位置</span>
+    <span class="pl-k">SELECT</span>
+        <span class="pl-c1">emp</span>.<span class="pl-c1">id</span>,
+        <span class="pl-c1">emp</span>.<span class="pl-c1">ename</span>,
+        <span class="pl-c1">emp</span>.<span class="pl-c1">salary</span>,
+        <span class="pl-c1">job</span>.<span class="pl-c1">jname</span>,
+        <span class="pl-c1">job</span>.<span class="pl-c1">description</span>,
+        <span class="pl-c1">dept</span>.<span class="pl-c1">dname</span>,
+        <span class="pl-c1">dept</span>.<span class="pl-c1">loc</span>
+    <span class="pl-k">FROM</span>
         emp,
         job,
         dept
-    WHERE
-        emp.job_id = job.id
-    AND emp.dept_id = dept.id;
+    <span class="pl-k">WHERE</span>
+        <span class="pl-c1">emp</span>.<span class="pl-c1">job_id</span> <span class="pl-k">=</span> <span class="pl-c1">job</span>.<span class="pl-c1">id</span>
+    <span class="pl-k">AND</span> <span class="pl-c1">emp</span>.<span class="pl-c1">dept_id</span> <span class="pl-k">=</span> <span class="pl-c1">dept</span>.<span class="pl-c1">id</span>;
     
     
-    SELECT
-        t.id,
-        t.ename,
-        t.salary,
-        t.jname,
-        t.description,
-        dept.dname,
-        dept.loc
-    FROM
+    <span class="pl-k">SELECT</span>
+        <span class="pl-c1">t</span>.<span class="pl-c1">id</span>,
+        <span class="pl-c1">t</span>.<span class="pl-c1">ename</span>,
+        <span class="pl-c1">t</span>.<span class="pl-c1">salary</span>,
+        <span class="pl-c1">t</span>.<span class="pl-c1">jname</span>,
+        <span class="pl-c1">t</span>.<span class="pl-c1">description</span>,
+        <span class="pl-c1">dept</span>.<span class="pl-c1">dname</span>,
+        <span class="pl-c1">dept</span>.<span class="pl-c1">loc</span>
+    <span class="pl-k">FROM</span>
         (
-            SELECT
-                emp.id,
-                emp.ename,
-                emp.salary,
-                job.jname,
-                job.description,
-                emp.dept_id -- 必须要添加
-            FROM
+            <span class="pl-k">SELECT</span>
+                <span class="pl-c1">emp</span>.<span class="pl-c1">id</span>,
+                <span class="pl-c1">emp</span>.<span class="pl-c1">ename</span>,
+                <span class="pl-c1">emp</span>.<span class="pl-c1">salary</span>,
+                <span class="pl-c1">job</span>.<span class="pl-c1">jname</span>,
+                <span class="pl-c1">job</span>.<span class="pl-c1">description</span>,
+                <span class="pl-c1">emp</span>.<span class="pl-c1">dept_id</span> <span class="pl-c"><span class="pl-c">--</span> 必须要添加</span>
+            <span class="pl-k">FROM</span>
                 emp
-            LEFT JOIN job ON emp.job_id = job.id
+            <span class="pl-k">LEFT JOIN</span> job <span class="pl-k">ON</span> <span class="pl-c1">emp</span>.<span class="pl-c1">job_id</span> <span class="pl-k">=</span> <span class="pl-c1">job</span>.<span class="pl-c1">id</span>
     ) t
-    LEFT JOIN dept ON t.dept_id = dept.id;
+    <span class="pl-k">LEFT JOIN</span> dept <span class="pl-k">ON</span> <span class="pl-c1">t</span>.<span class="pl-c1">dept_id</span> <span class="pl-k">=</span> <span class="pl-c1">dept</span>.<span class="pl-c1">id</span>;
     
-    SELECT t.id, t.ename, t.salary, t.jname, t.description, dept.dname, dept.loc 
-    FROM (
-        SELECT emp.id, emp.ename, emp.salary, job.jname, job.description, emp.dept_id 
-        FROM emp 
-        LEFT JOIN job ON emp.job_id = job.id
+    <span class="pl-k">SELECT</span> <span class="pl-c1">t</span>.<span class="pl-c1">id</span>, <span class="pl-c1">t</span>.<span class="pl-c1">ename</span>, <span class="pl-c1">t</span>.<span class="pl-c1">salary</span>, <span class="pl-c1">t</span>.<span class="pl-c1">jname</span>, <span class="pl-c1">t</span>.<span class="pl-c1">description</span>, <span class="pl-c1">dept</span>.<span class="pl-c1">dname</span>, <span class="pl-c1">dept</span>.<span class="pl-c1">loc</span> 
+    <span class="pl-k">FROM</span> (
+        <span class="pl-k">SELECT</span> <span class="pl-c1">emp</span>.<span class="pl-c1">id</span>, <span class="pl-c1">emp</span>.<span class="pl-c1">ename</span>, <span class="pl-c1">emp</span>.<span class="pl-c1">salary</span>, <span class="pl-c1">job</span>.<span class="pl-c1">jname</span>, <span class="pl-c1">job</span>.<span class="pl-c1">description</span>, <span class="pl-c1">emp</span>.<span class="pl-c1">dept_id</span> 
+        <span class="pl-k">FROM</span> emp 
+        <span class="pl-k">LEFT JOIN</span> job <span class="pl-k">ON</span> <span class="pl-c1">emp</span>.<span class="pl-c1">job_id</span> <span class="pl-k">=</span> <span class="pl-c1">job</span>.<span class="pl-c1">id</span>
     ) t 
-    LEFT JOIN dept ON t.dept_id = dept.id;
+    <span class="pl-k">LEFT JOIN</span> dept <span class="pl-k">ON</span> <span class="pl-c1">t</span>.<span class="pl-c1">dept_id</span> <span class="pl-k">=</span> <span class="pl-c1">dept</span>.<span class="pl-c1">id</span>;
     
-    -- 5.查询出部门编号、部门名称、部门位置、部门人数
-    SELECT t.dept_id, t.dname, t.loc, count(*) from
-    (SELECT
-        emp.id,
-        emp.dept_id,
-        dept.dname,
-        dept.loc
-    FROM
+    <span class="pl-c"><span class="pl-c">--</span> 5.查询出部门编号、部门名称、部门位置、部门人数</span>
+    <span class="pl-k">SELECT</span> <span class="pl-c1">t</span>.<span class="pl-c1">dept_id</span>, <span class="pl-c1">t</span>.<span class="pl-c1">dname</span>, <span class="pl-c1">t</span>.<span class="pl-c1">loc</span>, <span class="pl-c1">count</span>(<span class="pl-k">*</span>) <span class="pl-k">from</span>
+    (<span class="pl-k">SELECT</span>
+        <span class="pl-c1">emp</span>.<span class="pl-c1">id</span>,
+        <span class="pl-c1">emp</span>.<span class="pl-c1">dept_id</span>,
+        <span class="pl-c1">dept</span>.<span class="pl-c1">dname</span>,
+        <span class="pl-c1">dept</span>.<span class="pl-c1">loc</span>
+    <span class="pl-k">FROM</span>
         emp,dept
-    WHERE
-        emp.dept_id = dept.id) t
-    GROUP BY t.dept_id;
-</code></pre>
+    <span class="pl-k">WHERE</span>
+        <span class="pl-c1">emp</span>.<span class="pl-c1">dept_id</span> <span class="pl-k">=</span> <span class="pl-c1">dept</span>.<span class="pl-c1">id</span>) t
+    <span class="pl-k">GROUP BY</span> <span class="pl-c1">t</span>.<span class="pl-c1">dept_id</span>;</pre></div>
 <h2>事务四大特征</h2>
 <pre class="notranslate"><code class="notranslate">    Begin;
     Rollback;
