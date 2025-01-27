@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>Tasfa1tals的博客</title><link>https://hyjtab.github.io</link><description>人们应当想象，西西弗是快乐的</description><copyright>Tasfa1tals的博客</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://hyjtab.github.io/avatar.jpg</url><title>avatar</title><link>https://hyjtab.github.io</link></image><lastBuildDate>Sun, 26 Jan 2025 16:35:49 +0000</lastBuildDate><managingEditor>Tasfa1tals的博客</managingEditor><ttl>60</ttl><webMaster>Tasfa1tals的博客</webMaster><item><title>SQL复习</title><link>https://hyjtab.github.io/post/15.html</link><description>## DDL 操作数据库，数据表
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>Tasfa1tals的博客</title><link>https://hyjtab.github.io</link><description>人们应当想象，西西弗是快乐的</description><copyright>Tasfa1tals的博客</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://hyjtab.github.io/avatar.jpg</url><title>avatar</title><link>https://hyjtab.github.io</link></image><lastBuildDate>Mon, 27 Jan 2025 06:47:23 +0000</lastBuildDate><managingEditor>Tasfa1tals的博客</managingEditor><ttl>60</ttl><webMaster>Tasfa1tals的博客</webMaster><item><title>SQL复习</title><link>https://hyjtab.github.io/post/15.html</link><description>## DDL 操作数据库，数据表
 ```sql
     show databases;
     create database if not exists ''
@@ -18,7 +18,7 @@
     alter table '' modify 字段名 新类型 约束;
     alter table '' change 字段 新字段 新类型;alter table '' drop 字段;
 ```
-## DML 对表中的数据进行增删改查
+## DML 对表中的数据进行增删改
 ```sql
     insert into 'table'(字段1，字段2) values (值1, 值2),(值1, 值2),...;
     

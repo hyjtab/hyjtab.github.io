@@ -17,7 +17,7 @@
     alter table '' modify 字段名 新类型 约束;
     alter table '' change 字段 新字段 新类型;alter table '' drop 字段;
 ```
-## DML 对表中的数据进行增删改查
+## DML 对表中的数据进行增删改
 ```sql
     insert into 'table'(字段1，字段2) values (值1, 值2),(值1, 值2),...;
     
