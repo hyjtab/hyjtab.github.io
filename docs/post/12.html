@@ -167,6 +167,10 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 <h1>synchronized方法块</h1>
 <p>synchronized方法块的优点在于，能够更加精确的控制锁的范围，同时支持非this锁的特性，也使得不同方法的异步执行成为可能，提升了程序的并行性。</p>
 <p>synchronized方法的默认同步监视器为this，而synchronized静态方法为当前类的class对象。</p>
+<h1>抽象类</h1>
+<p>抽象类不一定要有抽象函数，但有抽象函数的类一定是抽象类。抽象类的非抽象子类必须实现抽象类的所有抽象方法。抽象类不能拥有自己的实例。</p>
+<h1>接口</h1>
+<p>接口中定义的所有变量或者方法，都会自动添加上 public 关键字，接口中定义的变量会在编译的时候自动加上 public static final 修饰符，没有使用 private、default 或者 static 关键字修饰的方法是隐式抽象的，静态方法无法由（实现了该接口的）类的对象调用，它只能通过接口名来调用。</p>
 <h1>枚举类</h1>
 <div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-k">class</span> <span class="pl-smi">Season</span>{
     <span class="pl-k">private</span> <span class="pl-k">final</span> <span class="pl-smi">String</span> <span class="pl-c1">SEASONNAME</span>;<span class="pl-c">//季节的名称</span>
