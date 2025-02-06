@@ -63,15 +63,7 @@ new出来的变量
 
 ## 常量池（存在于.class文件中）
 
-就是一张为虚拟机指令提供的表，为字节码指令提供常量符号
-
-## 运行时常量池
-
-## StringTable
-
-优点：相同字符串只有一个实例
-
-字符串在用到的时候，才会加入StringTable实现上是一个hashTable，不能扩容。">
+就是一张为虚拟机指令提供的表，为字节码指令提供常量符号。">
 <meta property="og:title" content="JVM学习">
 <meta property="og:description" content="# JVM内存结构
 
@@ -126,15 +118,7 @@ new出来的变量
 
 ## 常量池（存在于.class文件中）
 
-就是一张为虚拟机指令提供的表，为字节码指令提供常量符号
-
-## 运行时常量池
-
-## StringTable
-
-优点：相同字符串只有一个实例
-
-字符串在用到的时候，才会加入StringTable实现上是一个hashTable，不能扩容。">
+就是一张为虚拟机指令提供的表，为字节码指令提供常量符号。">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://hyjtab.github.io/post/13.html">
 <meta property="og:image" content="https://hyjtab.github.io/avatar.jpg">
@@ -243,8 +227,9 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 </li>
 </ol>
 <h2>常量池（存在于.class文件中）</h2>
-<p>就是一张为虚拟机指令提供的表，为字节码指令提供常量符号</p>
+<p>就是一张为虚拟机指令提供的表，为字节码指令提供常量符号。</p>
 <h2>运行时常量池</h2>
+<p>存储的是class文件中常量池的内容，属于方法区的一部分。当常量较小时，常量会和代码存放在一起，当超过一定限度后，就会存储在运行时常量池中。常量池存放类中涉及的所有常量，包括方法引用常量，成员变量，函数常量，类型常量和类常量等。</p>
 <h2>StringTable</h2>
 <p>优点：相同字符串只有一个实例</p>
 <p>字符串在用到的时候，才会加入StringTable实现上是一个hashTable，不能扩容。</p>
