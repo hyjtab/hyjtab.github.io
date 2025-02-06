@@ -269,7 +269,47 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 <h2>线程上下文类加载器</h2>
 <p>jdbc的Driver接口类在启动路径下，然而其具体实现类在用户路径下，而启动启动类加载器加载类时，规定要求必须能够完成其对应实现类的加载，因此在他的启动类加载器中直接调用了应用程序加载器加载对应实现类完成类加载，打破了双亲委派。</p>
 <p><strong>SPI</strong></p>
-<p>约定如下，在jar包的META-INF/services包下，以接口全限定名为文件，文件内容是类名称。在实现了SPI机制的接口中，可以通过ServiceLoader对所有包进行扫描，获取所有对应的实现类，逐个加载。</p></div>
+<p>约定如下，在jar包的META-INF/services包下，以接口全限定名为文件，文件内容是类名称。在实现了SPI机制的接口中，可以通过ServiceLoader对所有包进行扫描，获取所有对应的实现类，逐个加载。</p>
+<h1>JMM</h1>
+<p>JMM定义了一套在多线程读写共享数据是，对数据的可见性、有序性和原子性的规则和保障</p>
+<p>可见性的应用，有时jvm会使用高速缓存来简化跨线程数据的通信，这样就会导致读取到过期数据，但执行synchronized块会取消这种缓存机制</p>
+<h1>自增操作机制</h1>
+<p>a++和++a的区别在于限制性iload还是先执行iinc</p>
+<h1>finally机制</h1>
+<p>finally其实就是把自身的代码复制到异常表的<strong>每一个监控部分的return操作之前</strong>，并且在尾部创建一个type为any的异常表表项（any可以对应所有的throwable对象），并在该表项对应的finally块所有代码的最后添加一个athrow操作，从而显示那个错误。</p>
+<p>注意finally中有return的话会吞噬掉异常或错误。</p>
+<p>在正常的返回流程中会有一个这样的操作：</p>
+<pre class="notranslate"><code class="notranslate">    bipush 10 //10放入栈顶
+    istore_0 //10放入slot
+</code></pre>
+<p>这么做的例子恰好是为了避免后处理带来的影响，以固定返回值。</p>
+<h1>synchronized代码块解锁原理</h1>
+<p>使用异常表实现（ftom to target type）来控制异常发生时执行什么代码。其中from to限定type</p>
+<h1>重量级锁</h1>
+<p>monitor区：监视器（每个对象都有，只有被sychronized块包裹时才有效）</p>
+<p>Owner：锁持有者</p>
+<p>EntryList：等待队列</p>
+<p>WaitSet：主动wait，不被唤醒不回去竞争</p>
+<p>volatile只能保证可见性，不能保证原子性，适用于一写多读</p>
+<p>synchronized也能防止从主存中直接读取</p>
+<p>优化</p>
+<p>锁自旋，先不阻塞，而是不断尝试获得锁，这个尝试的过程就是自旋，减少阻塞到唤醒的进程上下文切换。 自旋的操作是自适应的，jvm调控。</p>
+<h1>可见性问题</h1>
+<p>解决指令重排，为flag加上volatile</p>
+<p>doublecheck懒汉式单例模式，需要加上volatile关键字才安全。</p>
+<p>happensbefore规则</p>
+<h1>乐观锁</h1>
+<p>结合CAS和volatile可以实现无锁并发，适用于竞争不激烈，多核CPU的场景下。CAS没有阻塞，而是不断地反复重试。</p>
+<p>CAS（compare and swap）底层依赖一个unsafe类，在多核情况下有意义。</p>
+<h1>轻量级锁</h1>
+<p>每个线程的栈帧都会保存一个锁记录的结构（数据结构为栈），内部可以存储对象的Mark Word</p>
+<p>线程1访问同步块A，查看Mark Word记录为01无所状态，把Mark Word复制到线程1的锁记录结构中，并使用CAS修改Mark Word为线程1锁记录的地址，修改成功即加锁成功，更新锁标记为00，随后执行同步块A。此时继续执行同步块B，把Mark Word复制到锁记录，因为是同一个对象，因此对象Mark Word修改为锁记录地址的操作会失败，检查发现是自己的锁记录地址，触发锁重入。执行B，完成之后，弹出锁记录栈顶的Mark Word。同步块A执行完，再次弹出Mark Word，解锁时将锁记录中的Mark Word归还，修改所标记为01。</p>
+<p>如果CAS非锁重入情况下操作失败，则会触发锁膨胀。 将锁标记使用CAS改为10，并将线程1锁记录地址改为重量级锁指针，并触发阻塞进入EntryList，原持有轻量级锁的线程解锁时会失败，随后根据重量级所指针找到Monitor对象。</p>
+<h1>偏向锁</h1>
+<p>第一次使用CAS将对象头的Mark Word变为线程ID，之后如果发现还是自己的线程ID，则表示不用重新CAS，但撤销偏向锁升级为轻量级锁时，需要触发STW。</p>
+<p>访问对象的hashCode也会撤销偏向锁。</p>
+<p>多个无竞争线程交替访问资源可以触发重偏向。重偏向和撤销偏向都是批量进行的，以类为单位。</p>
+<p>如果撤销偏向到达某个阈值。整个类的所有对象都会变为不可偏向的。</p></div>
 <div style="font-size:small;margin-top:8px;float:right;">日拱一卒，功不唐捐</div>
 
 <button class="btn btn-block" type="button" onclick="openComments()" id="cmButton">评论</button>
