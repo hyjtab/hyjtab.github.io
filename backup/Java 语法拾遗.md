@@ -213,3 +213,42 @@ public class Son extends Parents{
  * 4、形式参数：必须一致 ， 传参时 <= 父类
  * 5、抛出异常：<= 父类
 ```
+
+## Java动态代理
+动态代理让我们能够不编写实现类就能够创建接口实例。其本质就是让jvm在运行期间动态创建class字节码并加载的过程。
+
+其实现方式可以分为以下几步：
+定义一个InvocationHandler实例，重写invoke方法
+
+通过Proxy.newProxyInstance创建接口实例，需要三个参数，接口类的ClassLoader，接口数组，以及InvocationHandler实例。
+
+将返回的Obj强转为接口。
+```
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+
+public class Main {
+    public static void main(String[] args) {
+        InvocationHandler handler = new InvocationHandler() {
+            @Override
+            public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+                System.out.println(method);
+                if (method.getName().equals("morning")) {
+                    System.out.println("Good morning, " + args[0]);
+                }
+                return null;
+            }
+        };
+        Hello hello = (Hello) Proxy.newProxyInstance(
+            Hello.class.getClassLoader(), // 传入ClassLoader
+            new Class[] { Hello.class }, // 传入要实现的接口
+            handler); // 传入处理调用方法的InvocationHandler
+        hello.morning("Bob");
+    }
+}
+
+interface Hello {
+    void morning(String name);
+}
+```
