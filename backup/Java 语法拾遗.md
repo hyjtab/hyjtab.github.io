@@ -103,7 +103,7 @@ public enum Week {
 }
 ```
 用枚举类实现单例模式：
-```
+```java
 public enum Singleton {
      INSTANCE;
      public void businessMethod() {
@@ -145,7 +145,7 @@ hashmap长度永远为2的幂次，方便计算index，hashmap判断一致性，
 还有一种自环，数据丢失的情况，其常常发生于扩容后重新hash确认的index不同的时候，且线程A阻塞在该节点时，该节点发生自环，其后数据都丢失。(参考链接)[https://juejin.cn/post/6844904149616705543]
 
 ## 自增操作
-```
+```java
 x=x++
 ```
 x先进行iload，再进行llinc，再赋值，自身不会改变。
@@ -160,7 +160,7 @@ final关键字修饰类时，不能继承，修饰成员变量时，变量值不
 此外，除静态内部类外，其他形式的内部类都依赖于外部类来进行访问，如果需要继承一个外部类，其不能拥有无参的构造函数，必须至少有一个外部类变量作为参数和访问指针，详情请查看[此篇文章](https://www.cnblogs.com/dolphin0520/p/3811445.html)
 
 ## 重写与遮蔽
-```
+```java
 public class Parents {
     private static void _show(){
         System.out.println("父类");
@@ -185,7 +185,7 @@ public class Son extends Parents{
 }
 ```
 有`static`和没有的结果是相反的，如果使用了`static`方法，则会调用`invokestatic`字节码指令，在编译时确定函数入口地址，编译时认为`parents`变量为`Parents`类型，而非`static`方法则会调用`invokevirtual`字节码指令，在运行时确定函数入口地址，运行时认为`parents`变量为`Son`类型，调用子类方法。
-```
+```java
 public class Parents {
     public void _show(){
         System.out.println("父类");
@@ -223,7 +223,7 @@ public class Son extends Parents{
 通过Proxy.newProxyInstance创建接口实例，需要三个参数，接口类的ClassLoader，接口数组，以及InvocationHandler实例。
 
 将返回的Obj强转为接口。
-```
+```java
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -252,3 +252,14 @@ interface Hello {
     void morning(String name);
 }
 ```
+
+从 UserServiceProxy 的代码中我们可以发现：
+
+UserServiceProxy 继承了 Proxy 类，并且实现了被代理的所有接口，以及equals、hashCode、toString等方法
+
+由于 UserServiceProxy 继承了 Proxy 类，所以每个代理类都会关联一个 InvocationHandler 方法调用处理器
+类和所有方法都被 public final 修饰，所以代理类只可被使用，不可以再被继承
+
+每个方法都有一个 Method 对象来描述，Method 对象在static静态代码块中创建，以 m + 数字 的格式命名
+
+调用方法的时候通过 super.h.invoke(this, m1, (Object[])null); 调用，其中的 super.h.invoke 实际上是在创建代理的时候传递给 Proxy.newProxyInstance 的 LogHandler 对象，它继承 InvocationHandler 类，负责实际的调用处理逻辑

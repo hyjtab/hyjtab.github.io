@@ -219,13 +219,12 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
     }
 }</pre></div>
 <p>用枚举类实现单例模式：</p>
-<pre class="notranslate"><code class="notranslate">public enum Singleton {
-     INSTANCE;
-     public void businessMethod() {
-          System.out.println("我是一个单例！");
+<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-k">public</span> <span class="pl-k">enum</span> <span class="pl-smi">Singleton</span> {
+     <span class="pl-c1">INSTANCE</span>;
+     <span class="pl-k">public</span> <span class="pl-smi">void</span> <span class="pl-en">businessMethod</span>() {
+          <span class="pl-smi">System</span>.<span class="pl-s1">out</span>.<span class="pl-en">println</span>(<span class="pl-s">"我是一个单例！"</span>);
      }
-}
-</code></pre>
+}</pre></div>
 <h1>注解相关</h1>
 <p>有元注解和自定义注解</p>
 <h2>注解的继承</h2>
@@ -252,8 +251,7 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 <p>首先线程A需要阻塞在原hashmap扩容后移动的首个节点上，随后，线程B完成扩容操作，A恢复运行，继续尝试移动节点，此时他将把他认为的第一个节点，实际上的倒数第一个节点的next设为null，随后进行第二次移动，移动现在的倒数第二个节点，他认为的第二个节点，此时倒数第二个节点的next已经设为前面移动过的倒数第一个节点，随后进行移动，将他以为的第二个节点的next设为他以为的第一个节点，但实际上这步操作没有改变任何东西，其此步保存的原始next早就是他以为的第一个节点了，因此在进行一步循环，环就已经成了。</p>
 <p>还有一种自环，数据丢失的情况，其常常发生于扩容后重新hash确认的index不同的时候，且线程A阻塞在该节点时，该节点发生自环，其后数据都丢失。(参考链接)[https://juejin.cn/post/6844904149616705543]</p>
 <h2>自增操作</h2>
-<pre class="notranslate"><code class="notranslate">x=x++
-</code></pre>
+<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-s1">x</span>=<span class="pl-s1">x</span>++</pre></div>
 <p>x先进行iload，再进行llinc，再赋值，自身不会改变。</p>
 <h2>final关键字</h2>
 <p>final关键字修饰类时，不能继承，修饰成员变量时，变量值不能改变</p>
@@ -261,49 +259,47 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 <p>若使用的外部变量不能在编译期间确定，jvm会默认将局部内部类与匿名内部类的默认构造方法上再增加该参数，通过构造器传参的方式来对拷贝进行初始化赋值。</p>
 <p>此外，除静态内部类外，其他形式的内部类都依赖于外部类来进行访问，如果需要继承一个外部类，其不能拥有无参的构造函数，必须至少有一个外部类变量作为参数和访问指针，详情请查看<a href="https://www.cnblogs.com/dolphin0520/p/3811445.html" rel="nofollow">此篇文章</a></p>
 <h2>重写与遮蔽</h2>
-<pre class="notranslate"><code class="notranslate">public class Parents {
-    private static void _show(){
-        System.out.println("父类");
+<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-smi">Parents</span> {
+    <span class="pl-k">private</span> <span class="pl-k">static</span> <span class="pl-smi">void</span> <span class="pl-en">_show</span>(){
+        <span class="pl-smi">System</span>.<span class="pl-s1">out</span>.<span class="pl-en">println</span>(<span class="pl-s">"父类"</span>);
     }
-    public static void show(){
-        _show();
+    <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-smi">void</span> <span class="pl-en">show</span>(){
+        <span class="pl-en">_show</span>();
     }
 }
 
-public class Son extends Parents{
-    private static void _show(){
-        System.out.println("子类");
+<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-smi">Son</span> <span class="pl-k">extends</span> <span class="pl-smi">Parents</span>{
+    <span class="pl-k">private</span> <span class="pl-k">static</span> <span class="pl-smi">void</span> <span class="pl-en">_show</span>(){
+        <span class="pl-smi">System</span>.<span class="pl-s1">out</span>.<span class="pl-en">println</span>(<span class="pl-s">"子类"</span>);
     }
-    public static void show(){
-        _show();
+    <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-smi">void</span> <span class="pl-en">show</span>(){
+        <span class="pl-en">_show</span>();
     }
 
-    public static void main(String[] args) {
-        Parents parents = new Son();
-        parents.show();
+    <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-smi">void</span> <span class="pl-en">main</span>(<span class="pl-smi">String</span>[] <span class="pl-s1">args</span>) {
+        <span class="pl-smi">Parents</span> <span class="pl-s1">parents</span> = <span class="pl-k">new</span> <span class="pl-smi">Son</span>();
+        <span class="pl-s1">parents</span>.<span class="pl-en">show</span>();
     }
-}
-</code></pre>
+}</pre></div>
 <p>有<code class="notranslate">static</code>和没有的结果是相反的，如果使用了<code class="notranslate">static</code>方法，则会调用<code class="notranslate">invokestatic</code>字节码指令，在编译时确定函数入口地址，编译时认为<code class="notranslate">parents</code>变量为<code class="notranslate">Parents</code>类型，而非<code class="notranslate">static</code>方法则会调用<code class="notranslate">invokevirtual</code>字节码指令，在运行时确定函数入口地址，运行时认为<code class="notranslate">parents</code>变量为<code class="notranslate">Son</code>类型，调用子类方法。</p>
-<pre class="notranslate"><code class="notranslate">public class Parents {
-    public void _show(){
-        System.out.println("父类");
+<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-smi">Parents</span> {
+    <span class="pl-k">public</span> <span class="pl-smi">void</span> <span class="pl-en">_show</span>(){
+        <span class="pl-smi">System</span>.<span class="pl-s1">out</span>.<span class="pl-en">println</span>(<span class="pl-s">"父类"</span>);
     }
-    public void show(Parents parents){
-        parents._show();
+    <span class="pl-k">public</span> <span class="pl-smi">void</span> <span class="pl-en">show</span>(<span class="pl-smi">Parents</span> <span class="pl-s1">parents</span>){
+        <span class="pl-s1">parents</span>.<span class="pl-en">_show</span>();
     }
 }
-public class Son extends Parents{
-    public void _show(){
-        System.out.println("子类");
+<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-smi">Son</span> <span class="pl-k">extends</span> <span class="pl-smi">Parents</span>{
+    <span class="pl-k">public</span> <span class="pl-smi">void</span> <span class="pl-en">_show</span>(){
+        <span class="pl-smi">System</span>.<span class="pl-s1">out</span>.<span class="pl-en">println</span>(<span class="pl-s">"子类"</span>);
     }
 
-    public static void main(String[] args) {
-        Parents parents = new Son();
-        parents.show(parents);
+    <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-smi">void</span> <span class="pl-en">main</span>(<span class="pl-smi">String</span>[] <span class="pl-s1">args</span>) {
+        <span class="pl-smi">Parents</span> <span class="pl-s1">parents</span> = <span class="pl-k">new</span> <span class="pl-smi">Son</span>();
+        <span class="pl-s1">parents</span>.<span class="pl-en">show</span>(<span class="pl-s1">parents</span>);
     }
-}
-</code></pre>
+}</pre></div>
 <p><code class="notranslate">_show</code>方法是否为私有，也会影响输出结果，这里就用到了多态的特性。如果父类方法被子类重写，则可以通过子类对象调用，一旦父类<code class="notranslate">_show</code>方法声明为私有，<code class="notranslate">parents._show();</code>在编译阶段就会被编译为<code class="notranslate">invokespecial</code>从而无法进行多态查找。</p>
 <pre class="notranslate"><code class="notranslate"> * 1、修饰符： &gt;= 父类（非私有方法的情况下编译器报错）
  * 2、返回值： &lt;= 父类
@@ -317,34 +313,39 @@ public class Son extends Parents{
 定义一个InvocationHandler实例，重写invoke方法</p>
 <p>通过Proxy.newProxyInstance创建接口实例，需要三个参数，接口类的ClassLoader，接口数组，以及InvocationHandler实例。</p>
 <p>将返回的Obj强转为接口。</p>
-<pre class="notranslate"><code class="notranslate">import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
+<div class="highlight highlight-source-java"><pre class="notranslate"><span class="pl-k">import</span> <span class="pl-s1">java</span>.<span class="pl-s1">lang</span>.<span class="pl-s1">reflect</span>.<span class="pl-s1">InvocationHandler</span>;
+<span class="pl-k">import</span> <span class="pl-s1">java</span>.<span class="pl-s1">lang</span>.<span class="pl-s1">reflect</span>.<span class="pl-s1">Method</span>;
+<span class="pl-k">import</span> <span class="pl-s1">java</span>.<span class="pl-s1">lang</span>.<span class="pl-s1">reflect</span>.<span class="pl-s1">Proxy</span>;
 
-public class Main {
-    public static void main(String[] args) {
-        InvocationHandler handler = new InvocationHandler() {
-            @Override
-            public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-                System.out.println(method);
-                if (method.getName().equals("morning")) {
-                    System.out.println("Good morning, " + args[0]);
+<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-smi">Main</span> {
+    <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-smi">void</span> <span class="pl-en">main</span>(<span class="pl-smi">String</span>[] <span class="pl-s1">args</span>) {
+        <span class="pl-smi">InvocationHandler</span> <span class="pl-s1">handler</span> = <span class="pl-k">new</span> <span class="pl-smi">InvocationHandler</span>() {
+            <span class="pl-c1">@</span><span class="pl-c1">Override</span>
+            <span class="pl-k">public</span> <span class="pl-smi">Object</span> <span class="pl-en">invoke</span>(<span class="pl-smi">Object</span> <span class="pl-s1">proxy</span>, <span class="pl-smi">Method</span> <span class="pl-s1">method</span>, <span class="pl-smi">Object</span>[] <span class="pl-s1">args</span>) <span class="pl-k">throws</span> <span class="pl-smi">Throwable</span> {
+                <span class="pl-smi">System</span>.<span class="pl-s1">out</span>.<span class="pl-en">println</span>(<span class="pl-s1">method</span>);
+                <span class="pl-k">if</span> (<span class="pl-s1">method</span>.<span class="pl-en">getName</span>().<span class="pl-en">equals</span>(<span class="pl-s">"morning"</span>)) {
+                    <span class="pl-smi">System</span>.<span class="pl-s1">out</span>.<span class="pl-en">println</span>(<span class="pl-s">"Good morning, "</span> + <span class="pl-s1">args</span>[<span class="pl-c1">0</span>]);
                 }
-                return null;
+                <span class="pl-k">return</span> <span class="pl-c1">null</span>;
             }
         };
-        Hello hello = (Hello) Proxy.newProxyInstance(
-            Hello.class.getClassLoader(), // 传入ClassLoader
-            new Class[] { Hello.class }, // 传入要实现的接口
-            handler); // 传入处理调用方法的InvocationHandler
-        hello.morning("Bob");
+        <span class="pl-smi">Hello</span> <span class="pl-s1">hello</span> = (<span class="pl-smi">Hello</span>) <span class="pl-smi">Proxy</span>.<span class="pl-en">newProxyInstance</span>(
+            <span class="pl-smi">Hello</span>.<span class="pl-k">class</span>.<span class="pl-en">getClassLoader</span>(), <span class="pl-c">// 传入ClassLoader</span>
+            <span class="pl-k">new</span> <span class="pl-smi">Class</span>[] { <span class="pl-smi">Hello</span>.<span class="pl-k">class</span> }, <span class="pl-c">// 传入要实现的接口</span>
+            <span class="pl-s1">handler</span>); <span class="pl-c">// 传入处理调用方法的InvocationHandler</span>
+        <span class="pl-s1">hello</span>.<span class="pl-en">morning</span>(<span class="pl-s">"Bob"</span>);
     }
 }
 
-interface Hello {
-    void morning(String name);
-}
-</code></pre></div>
+<span class="pl-k">interface</span> <span class="pl-smi">Hello</span> {
+    <span class="pl-smi">void</span> <span class="pl-en">morning</span>(<span class="pl-smi">String</span> <span class="pl-s1">name</span>);
+}</pre></div>
+<p>从 UserServiceProxy 的代码中我们可以发现：</p>
+<p>UserServiceProxy 继承了 Proxy 类，并且实现了被代理的所有接口，以及equals、hashCode、toString等方法</p>
+<p>由于 UserServiceProxy 继承了 Proxy 类，所以每个代理类都会关联一个 InvocationHandler 方法调用处理器<br>
+类和所有方法都被 public final 修饰，所以代理类只可被使用，不可以再被继承</p>
+<p>每个方法都有一个 Method 对象来描述，Method 对象在static静态代码块中创建，以 m + 数字 的格式命名</p>
+<p>调用方法的时候通过 super.h.invoke(this, m1, (Object[])null); 调用，其中的 super.h.invoke 实际上是在创建代理的时候传递给 Proxy.newProxyInstance 的 LogHandler 对象，它继承 InvocationHandler 类，负责实际的调用处理逻辑</p></div>
 <div style="font-size:small;margin-top:8px;float:right;">日拱一卒，功不唐捐</div>
 
 <button class="btn btn-block" type="button" onclick="openComments()" id="cmButton">评论</button>
