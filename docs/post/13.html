@@ -460,6 +460,8 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
             }
         }
     }</pre></div>
+<p>NIO的底层实现其实使用了零拷贝技术，将原来从磁盘到内核再到用户空间，再经由用户空间转移到内核socket再到网卡的四次拷贝，变为不需要CPU介入的两次拷贝，其中由文件到socket的拷贝被省略，只是将缓冲区的文件描述符和长度写到socket当中，这样就能够利用两次DMA来直接进行非阻塞IO了。</p>
+<p><a target="_blank" rel="noopener noreferrer" href="https://github.com/user-attachments/assets/70a5a6db-fa5e-4132-964b-79ca70f35736"><img src="https://github.com/user-attachments/assets/70a5a6db-fa5e-4132-964b-79ca70f35736" alt="Image" style="max-width: 100%;"></a></p>
 <h3>具体回收细节</h3>
 <p>JVM将directbytebuffer引用变量回收后（成为null），随后ReferenceHandler线程检测并执行变量对应的直接内存所定义的回调函数（操作对象）。</p>
 <p>Cleaner:(本身自己就是一个虚引用对象)</p>

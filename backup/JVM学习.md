@@ -308,7 +308,9 @@ StringTable桶的个数越多，入池操作执行越快
         }
     }
 ```
-    
+NIO的底层实现其实使用了零拷贝技术，将原来从磁盘到内核再到用户空间，再经由用户空间转移到内核socket再到网卡的四次拷贝，变为不需要CPU介入的两次拷贝，其中由文件到socket的拷贝被省略，只是将缓冲区的文件描述符和长度写到socket当中，这样就能够利用两次DMA来直接进行非阻塞IO了。
+
+![Image](https://github.com/user-attachments/assets/70a5a6db-fa5e-4132-964b-79ca70f35736)
 
 ### 具体回收细节
 
