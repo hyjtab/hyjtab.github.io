@@ -1,125 +1,266 @@
-# 类加载
+## 三个思想
 
-## 类文件结构
+### IoC
 
-javap 反编译
+控制反转，Bean的创建权力反转给第三方
+
+### DI
+
+依赖注入，Bean之间的关系由第三方负责设置
+```xml
+    <?xml version="1.0" encoding="UTF-8"?>
+    <beans xmlns="http://www.springframework.org/schema/beans"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <!--xmlns意思是命名空间，默认是spring空间，xsi是核心命名空间，xsi:schemaLocation配置的是命名空间以及对应解析方法-->
+        <bean id="userService" class="org.example.service.impl.UserServiceImpl">
+            <property name="userDAO" ref="userDao"></property><!--name指定了注入方法，ref指定了注入方法参数-->
+        </bean>
+        <bean id="userDao" class="org.example.dao.impl.UserDaoImpl"></bean>
+        <bean id="simpledatefromatter" class="spdf的全限定类名">
+            <constructor-arg name="形参变量名" value="格式字符串"></constructor-arg>
+        </bean>
+        <bean id="Date" class="Date的全限定类名" factory-bean="simpledatefromatter" factory-method="parse">
+            <constructor-arg name="形参变量名" value="格式字符串"></constructor-arg>
+        </bean>
+    </beans>
 ```
-    ClassFile {
-        u4     magic; //Class 文件的标志
-        u2     minor_version;//Class 的小版本号
-        u2     major_version;//Class 的大版本号
-        u2     constant_pool_count;//常量池的数量cp_info constant_pool[constant_pool_count-1];//常量池
-        u2      access_flags;//Class 的访问标记
-        u2      this_class;//当前类
-        u2      super_class;//父类
-        u2      interfaces_count;//接口数量
-        u2     interfaces[interfaces_count];//一个类可以实现多个接口
-        u2     fields_count;//字段数量
-        field_info  fields[fields_count];//一个类可以有多个字段
-        u2      methods_count;//方法数量
-        method_info methods[methods_count];//一个类可以有个多个方法
-        u2     attributes_count;//此类的属性表中的属性数
-        attribute_info attributes[attributes_count];//属性表集合
+### AOP
+
+面向切面编程，利用proxy对功能进行横向抽取。
+
+## BeanFactory与ApplicationContext
+
+BeanFactory是Spring的早期接口，Bean工厂；ApplicationContext是高级接口，是Spring容器
+
+ApplicationContext在BeanFactory上扩展了功能 ，并封装了BeanFactory的底层方法
+
+BeanFactory的主要功能是创建Bean，ApplicatonContext不仅继承了BeanFactory，而且内部还维护者BeanFactory的引用，ApplicationContext与BeanFactory既有继承又有融合的关系。
+
+BeanFactory在getbean时创建Bean，ApplicationContext则在容器创建时就对bean进行初始化。
+
+## Spring应用配置
+
+![Image](https://github.com/user-attachments/assets/0d98d4a2-87ab-46a8-a25f-15daff47f8f4)
+
+name
+
+id没有name时默认是类全限定名，有name时默认是第一个别名，用于创建指定的bean对象，alias标签可以单独起别名
+
+### scope
+
+singgleton默认，在容器创建时就对bean进行初始化，置于单例池中。prototype则会在getbean时创建Bean，也不会放在Spring容器单例池。
+
+### destroy-method
+
+必须显式销毁容器才能够执行，不显式销毁，虽然不执行destroy-method，但是bean对象也会销毁。
+
+### init-method
+
+在执行构造方法后调用，除此方法外，还可以实现InitializingBean接口中的afterPropertiesSet方法，来完成Bean的初始化操作，此种方式的调用在init-method之前，属性设置之后。
+
+### autowire
+
+自动在bean中装配，
+
+1. byname方式匹配的是实现类set方法set之后的名字，其首字母小写对应的bean对象id。
+  
+2. byType方式匹配的是实现类set方法set之后的名字，其首字母小写对应的bean对象类型。
+  
+
+## Bean的实例化
+
+有参构造使用constructor-arg标签。constructor-arg标签用于指明产生bean对象方法的参数。
+
+### 静态工厂实例化
+
+写一个工厂对象，对象包含一个静态方法，在配置时指定factory-method，即可在容器创建时创建工厂所实现的bean实例。
+
+1. 可以在bean创建之前进行一些其它的业务逻辑操作
+  
+2. 可以引入不知名构造函数的对象的初始化。
+  
+
+### 实例工厂实例化
+
+需要配置工厂对象，再配置新的bean，指定factory-bean和factory-method，以获得对性的bean对象。
+
+### 实现FactoryBean规范延迟实例化
+
+实现FactoryBean接口，在容器创建时会将工厂类放置于单例池中，在getbean时才调用getObject方法放置于factoryBeanObjectCache的缓存中，再次get则会从缓存中取得。
+
+## 注入序列化数据
+
+注入调用的是setter方法，如果需要注入一个序列数据则需要在property标签中写子标签`<list><value>xxx</value></list>`或者`<list><bean class>xxx</value></list>`或者`<list><ref>xxx</ref></list>`
+
+如果是map，则`<list><entry key[-ref]="" value[-ref]=""></entry></list>`,ref是否需要取决于键值对是否为引用类型。
+
+如果是properties，则是`<props><prop key="">xxx</prop></props>`
+
+## bean实例化的基本流程
+
+![Image](https://github.com/user-attachments/assets/b9fc4a54-27b0-47e7-b187-8643eb9fa4c4)
+
+## Spring的后处理器
+
+Bean工厂后处理器-BeanFactoryPostProcessor
+
+这是一个接口规范，在beanDefinitionMap填充完毕之后调用，其参数是一个ConfigurableListablebeanFactory类型参数，可以通过该参数对指定的Bean进行修改。
+
+该参数其实经过过泛型，本质是其子类对象，可以通过其子类对象的方法对Map进行修改。当然更加推荐的方式是实现后处理器的子接口BeanDefinitionRegistryPostProcessor
+
+注意这些后处理器都需要在xml中进行配置。
+
+Bean后处理器-BeanPostProcessor
+
+创建Bean之后，缓存到sigletonObjects单例池之前调用，需要实现的是BeanPostProcesser接口，其内部有两个default方法。具体而言是在Bean的实例化之后，InitializingBean接口和init-method方法之前。
+
+## Bean生命周期
+
+从Bean实例化之后，到Bean成为一个完整对象放入单例池中的整个过程。可以大体分为三个阶段
+
+### Bean的实例化阶段
+
+创建对象，根据xml进行ifelse判断
+
+### Bean的初始化阶段
+
+进行属性填充，执行Aware接口方法，BeanPostProcessor，InitialzingBean接口方法，Init-method方法等
+
+### Bean的完成阶段
+
+存到单例池singletonObjects中
+
+### 属性填充
+
+在Beandefinition中会封装xml中配置的bean信息，包括属性填充信息propertyValues中。注入单项引用属性时，从容器中getBean获取后通过set方法反射设置进去，如果容器中没有，则先创建被注入对象的Bean实例后，再进行注入操作。
+
+## 三级缓存
+
+注入双向对象引用属性时，涉及了循环引用问题，利用三级缓存来解决。
+
+在DefaultListableBeanFactory上的四级父类DefaultSingleton提供三个map
+```
+    sigletonObjects//最终成品的Map private final
+    earlySingletonObjects//创建的半成品，早期单例池，已经被别人引用
+    singletonFactories<String,ObjectFactory<T>>//单例Bean的工厂池，对象未被引用，bean还未创建完毕,三级缓存，存储的是对应的ObjectFactory对象，getObject时返回早期单例
+```
+当被别人引用时，对象从三级缓存演变到二级缓存中
+
+## Aware接口
+
+实现框架提供的Aware接口，让框架自动注入底层功能API对象，常用的有ServletContextAware、BeanFactoryAware、BeanNameAware、ApplicationContextAware这四种
+
+![Image](https://github.com/user-attachments/assets/bad085dd-a756-42d2-ac35-a2935a3b067b)
+
+从xml到beanDefinitionMap需要借助xmlReader
+
+## 基于xml的Spring应用
+
+Spring支持el表达式，需要使用如下标签配置获得对应的properties变量
+
+    <context:property-placeholder location="classpath:"/>
+    ${}就可以引用
+
+### 不需要自定义命名空间
+
+    导入MyBatis整合的Spring的相关坐标
+    编写Mapper和Mapper.xml
+    配置SqlSessionFactoryBean和MapperScannerConfigurer（前者向容器提供SqlSessionFactory，后者将Mapper对象存储到Spring容器中）（注意第一个需要配置数据源属性（数据库连接池），第二个需要配置一个）
+    编写测试代码
+
+原理：
+
+SqlSessionFactoryBean类在执行InitializingBean接口方法时已经创造了SqlSessionFactory，在getObject时，直接返回提前创建的SqlSessionFactory对象
+
+MapperScannerConfigurer类实现了BeanFactory的后处理器，其中ClassPathMapperScanner会修改自动注入状态，注入SqlSessionFactory对象，扫描所有接口，然后将该接口包装成一个FactoryBean，然后在getObject方法中调用Mybatis的动态代理，以此获得对象
+
+### 需要自定义命名空间
+
+第三方需要自定义命名空间，并且能够被Spring框架解析，需要在包的META_INF下创建一个spring.hadlers，其中包含命名空间以及对应的NameSpaceHandler解析器，每个解析器偶需要实现NamespaceHandler接口，其中有init和parse方法，先执行init方法注册多个标签的解析器，再执行parse方法进行解析。若有多个标签，每一个标签都要实现BeanDefinitionParser的接口，从而Spring就能够在调用parse方法解析时，调用对应的标签Parser解析器的解析方法，在这个最终的解析方法中可能会有两种操作，一个是直接向BeanDefinitionMap中注册bean对象，另一个是注册BeanPostProcessor从而对其他bean执行操作。
+
+该文件夹下还要有一个spring.schemas文件，该文件需要配置网址类型的xsd实际映射到的jar包内的本地约束xsd文件路径。约束文件能够指定可配置标签类型。
+```
+    //parser方法
+    BeanDefinition beanDefinition = new RootBeanDefinition();
+    beanDfinition.setBeanClassName("class全限定名")
+    parserContext.getRegistry().registerBeanDefinition("name",beanDefinition);
+    return beanDefinitio;
+```
+## 基于注解的Spring配置
+```
+bean-->@Component(value="id")
+```
+同样需要在applicationContext.xml中配置
+```
+    <contex:component-scan base-package="扫描基本包"/>
+```
+value为空时，默认为类名首字母小写。
+```
+    @scope("sibngleton")
+    @Lasy(true)
+    @PostConstruct--->加在函数上
+    @PreDestroy--->加在函数上
+```
+@Component的语义化衍生注解
+```
+    @Repository
+    @Service
+    @Controller
+```
+### 依赖注入注解
+```
+    @Value()          使用在字段或者方法上，诸如普通数据
+    @Autowired        使用在字段或方法上，根据类型注入引用数据，如果有多个同一类型的bean，尝试根据名字与变量名进行二次匹配，用在方法上时，根据形参的类型和名字进行匹配，如果形参是Colection，则可以装配对应泛型类型所有的实例。在@Bean方法的形参上可以省略Autowired注解。
+    @Qualifier()      使用在属性字段或者方法上，结合@Autowired，根据名称注入，在@Bean方法的形参上可以省略Autowired注解。
+    @Resource(name="")使用在字段或者方法上，根据类型或名称进行注入
+    方法都是指set方法
+```
+### 非自定义Bean的注解开发
+```
+    @Bean("beanname")
+    public type foo(@Value("${something}")ele x){
+        type t = xxx.getfoo(x);
+        return t;
     }
+    Bean注解的默认名字为方法名，其所在的类必须要加上一个Component注解。
 ```
-## 方法调用
+### Bean配置类的开发
 ```
-    invokevirtual 是最耗时的
-    <cinit> ，此方法用于初始化类变量
-    <init>，此方法用于初始化实例成员变量
-    创建一个类实例的三条字节码指令：
-    new
-    dup
-    invokespecial #3
-```    
-    调用静态方法时，使用类直接调用更加迅速，使用实例调用会产生两条不必要的虚拟机指令
-
-## 多态
-
-（实验时禁用指针压缩）
-
-使用HSDB工具查看
+    @Configuration//标注当前类是一个配置类+@Component
+    @ComponentScan("basepackage名字")替代组件扫描配置
+    @PropertySource("配置文件路径")替代标签配置扫描
+    @Import(类名.class)替代import标签
+    Class Config(){}
+    
+    
+    //然后在主方法中使用这句话加载核心配置类
+    ApplicationContext ApplicationContext = new AnnotationConfigApplicationContext(Config.class);
 ```
-    java -cp .lib/sa-jdi.jar sun.jvm.hotspot.HSDB
-    (在安装目录执行)
+### 其他标签
 ```
-虚方法表在链接时确立，记录了此类所有方法的实际入口地址
-
-当执行invokevirtual时，先通过栈帧的引用找到对象，分析对象头，找到对象实际Class,随后找到Class的vtable，查找虚方法表得到方法具体地址，随后执行方法的字节码。
-
-## 异常
-
-异常表：[from,to) target(跳转位置)type(异常类型)
-
-第一句将是一个astore指令，将异常对象存入局部变量表上。
-
-finally会在catch监测范围外的每一个try或catch块后复制一段finally块内内容，return语句之前，并且会自动生成若干个异常表项，对应于每个try或catch中的内容，target位于最后，type为any。any异常对象与Exception对象不共享槽位。
-
-自动生成的athrow字节码指令会扔出any对象。而在finally里面有return的话，会吞掉异常，仿佛没有发生任何异常一样。
-
-finally中的返回不会进行暂存操作，而try和catch中的返回会进行暂存操作。
-
-synchronized块保证加锁解锁正常，也同样采用了异常表和anyh对象，保证monitorexit能够在任何情况下都可以解锁成功。
-
-## 泛型擦除
-
-实际上code中的泛型信息在编译为字节码之后就丢失了，对于此部分可以说，泛型仅针对编译阶段。而局部变量类型表中，泛型信息不会被擦除，但局部变量的反射 无法通过反射得到。
-
-## 语法糖
-
-switch string会变成hashcode，并用equals进行比较，确认情况后，再增加一个switch，根据情况结果实现功能，而枚举类会生成一个合成类，实现是一个数组，并附上对应的整数值，，foreach循环会自动调用iterator结构，压制异常。
-
-## 类加载阶段
-
-#### 加载
-
-内部采用C++的instanceKlass描述java类
+    @Primary()提升注册优先级
+    @ProFile()标注当前Bean从属于哪个环境
+    使用命令行参数或者System.setProperty("spring.profile.active","环境名")
 ```
-    _java_mirror 是java的类镜像，把klass暴露给java使用
-    _supper父类
-    _fileds成员变量
-    _methods方法
-    _constants常量池
-    _class_loader类加载器
-    _vtable虚方法表
-    _itable接口方法表
-```
-加载和链接可能是交替运行的。
+### xml配置注解组件扫描原理
 
-#### 链接
+还未执行BeanFactoryProcessor时，就通过ComponentScanBeanDefinitionPaser，利用ClassPathBeanDefinitionScanner扫描器的doScan方法扫描并利用配置的conetxt自定义命名空间的解析器的注册函数注册到BeanDefinitionMap中了。
 
-1.验证：检查字节码格式
+### 配置类注解组件扫描原理
 
-2.准备：为static变量准备
+首先注册多个Spring内部bean，再通过其中的bean对象ConfigurationClassPostProcessor，随后在BeanDefinitionRegistryPostProcesso中利用ClassPathBeanDefinitionScanner扫描器的doScan方法扫描各个bean，并，在BeanPostProcessor中进行注入操作
 
-static变量在JDK7之前存储与instanceKlass末尾，从JDK7开始，存储于_java_mirror末尾
+### 利用注解调用Mybatis
 
-static变量分配空间和赋值是两个步骤，分配空间在准备阶段完成，复制在初始化阶段完成，final变量非引用类型在准备阶段即可完成赋值，其余类型变量均在初始化阶段完成赋值。
+首先配置DataSource类，再配置SqlSessionFactoryBean，返回一个可以调用mybatis的动态代理的BeanFactory，最后在配置类上用注解@MapperScan("基本包")
 
-#### 解析
+原理上，注解方式比xml方式会多一步，在注册后处理器调用时注册MapperScannnerConfigurer，也就是xml方式的入口
 
-将常量池中的符号引用（无意义）解析为直接引用（实际地址）
+### 补充：@Import可以导入三种类
 
-#### 初始化
-```
-    <cinit>()v方法
-```
-类初始化是懒惰的，main方法所在的类，首次访问类的静态变量或静态方法时，子类初始化时，子类访问父类的静态变量是，Class.forName以及new时会初始化
+普通的配置类
 
-然而访问类的static final不会触发初始化，类对象class不会触发初始化，创建该类的数组不会初始化，类加载器的loadClass方法不会初始化，Class .forName的参数2为false时不会初始化。
+实现ImportSelector接口的类，接口对应的方法需要返回一个需要被注册到Spring容器中的**所有Bean的全限定名**的String数组。函数参数能够通过getAnnotationAttributes获取到使用import导入此接口实现类的母类上的其它的注解元信息的Map
 
-## 类加载器
-
-启动类加载器jre/lib，扩展类加载器jre/lib/ext，应用程序加载器，用户自定义加载器
-
-## 双亲委派模式
-
-调用类加载器的loadClass方法时，查找类的规则，从应用开始逐级向上，到最顶时开始加载，最后回到最底层
-
-## 线程上下文类加载器
-
-jdbc的Driver接口类在启动路径下，然而其具体实现类在用户路径下，而启动启动类加载器加载类时，规定要求必须能够完成其对应实现类的加载，因此在他的启动类加载器中直接调用了应用程序加载器加载对应实现类完成类加载，打破了双亲委派。
-
-**SPI**
-
-约定如下，在jar包的META-INF/services包下，以接口全限定名为文件，文件内容是类名称。在实现了SPI机制的接口中，可以通过ServiceLoader对所有包进行扫描，获取所有对应的实现类，逐个加载。
+实现ImportBeanDefinitionRegistrar接口的类，此函数用来直接注册BeanDefinition。

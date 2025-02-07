@@ -1,52 +1,34 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>Tasfa1tals的博客</title><link>https://hyjtab.github.io</link><description>人们应当想象，西西弗是快乐的</description><copyright>Tasfa1tals的博客</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://hyjtab.github.io/avatar.jpg</url><title>avatar</title><link>https://hyjtab.github.io</link></image><lastBuildDate>Thu, 06 Feb 2025 13:42:51 +0000</lastBuildDate><managingEditor>Tasfa1tals的博客</managingEditor><ttl>60</ttl><webMaster>Tasfa1tals的博客</webMaster><item><title>Spring框架学习</title><link>https://hyjtab.github.io/post/17.html</link><description># 类加载
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>Tasfa1tals的博客</title><link>https://hyjtab.github.io</link><description>人们应当想象，西西弗是快乐的</description><copyright>Tasfa1tals的博客</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://hyjtab.github.io/avatar.jpg</url><title>avatar</title><link>https://hyjtab.github.io</link></image><lastBuildDate>Fri, 07 Feb 2025 16:49:33 +0000</lastBuildDate><managingEditor>Tasfa1tals的博客</managingEditor><ttl>60</ttl><webMaster>Tasfa1tals的博客</webMaster><item><title>Spring框架学习</title><link>https://hyjtab.github.io/post/17.html</link><description>## 三个思想
 
-## 类文件结构
+### IoC
 
-javap 反编译
+控制反转，Bean的创建权力反转给第三方
+
+### DI
+
+依赖注入，Bean之间的关系由第三方负责设置
+```xml
+    &lt;?xml version='1.0' encoding='UTF-8'?&gt;
+    &lt;beans xmlns='http://www.springframework.org/schema/beans'
+           xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+           xsi:schemaLocation='http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd'&gt;
+    &lt;!--xmlns意思是命名空间，默认是spring空间，xsi是核心命名空间，xsi:schemaLocation配置的是命名空间以及对应解析方法--&gt;
+        &lt;bean id='userService' class='org.example.service.impl.UserServiceImpl'&gt;
+            &lt;property name='userDAO' ref='userDao'&gt;&lt;/property&gt;&lt;!--name指定了注入方法，ref指定了注入方法参数--&gt;
+        &lt;/bean&gt;
+        &lt;bean id='userDao' class='org.example.dao.impl.UserDaoImpl'&gt;&lt;/bean&gt;
+        &lt;bean id='simpledatefromatter' class='spdf的全限定类名'&gt;
+            &lt;constructor-arg name='形参变量名' value='格式字符串'&gt;&lt;/constructor-arg&gt;
+        &lt;/bean&gt;
+        &lt;bean id='Date' class='Date的全限定类名' factory-bean='simpledatefromatter' factory-method='parse'&gt;
+            &lt;constructor-arg name='形参变量名' value='格式字符串'&gt;&lt;/constructor-arg&gt;
+        &lt;/bean&gt;
+    &lt;/beans&gt;
 ```
-    ClassFile {
-        u4     magic; //Class 文件的标志
-        u2     minor_version;//Class 的小版本号
-        u2     major_version;//Class 的大版本号
-        u2     constant_pool_count;//常量池的数量cp_info constant_pool[constant_pool_count-1];//常量池
-        u2      access_flags;//Class 的访问标记
-        u2      this_class;//当前类
-        u2      super_class;//父类
-        u2      interfaces_count;//接口数量
-        u2     interfaces[interfaces_count];//一个类可以实现多个接口
-        u2     fields_count;//字段数量
-        field_info  fields[fields_count];//一个类可以有多个字段
-        u2      methods_count;//方法数量
-        method_info methods[methods_count];//一个类可以有个多个方法
-        u2     attributes_count;//此类的属性表中的属性数
-        attribute_info attributes[attributes_count];//属性表集合
-    }
-```
-## 方法调用
-```
-    invokevirtual 是最耗时的
-    &lt;cinit&gt; ，此方法用于初始化类变量
-    &lt;init&gt;，此方法用于初始化实例成员变量
-    创建一个类实例的三条字节码指令：
-    new
-    dup
-    invokespecial #3
-```    
-    调用静态方法时，使用类直接调用更加迅速，使用实例调用会产生两条不必要的虚拟机指令
+### AOP
 
-## 多态
-
-（实验时禁用指针压缩）
-
-使用HSDB工具查看
-```
-    java -cp .lib/sa-jdi.jar sun.jvm.hotspot.HSDB
-    (在安装目录执行)
-```
-虚方法表在链接时确立，记录了此类所有方法的实际入口地址
-
-当执行invokevirtual时，先通过栈帧的引用找到对象，分析对象头，找到对象实际Class,随后找到Class的vtable，查找虚方法表得到方法具体地址，随后执行方法的字节码。</description><guid isPermaLink="true">https://hyjtab.github.io/post/17.html</guid><pubDate>Wed, 05 Feb 2025 17:18:25 +0000</pubDate></item><item><title>类加载机制</title><link>https://hyjtab.github.io/post/16.html</link><description># 类加载
+面向切面编程，利用proxy对功能进行横向抽取。</description><guid isPermaLink="true">https://hyjtab.github.io/post/17.html</guid><pubDate>Wed, 05 Feb 2025 17:18:25 +0000</pubDate></item><item><title>类加载机制</title><link>https://hyjtab.github.io/post/16.html</link><description># 类加载
 
 ## 类文件结构
 
