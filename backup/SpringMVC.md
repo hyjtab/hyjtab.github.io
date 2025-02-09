@@ -46,15 +46,15 @@ ViewResolver:视图解析器（解析视图）InternalResourceViewResolver
 
 ## 请求处理
 
-@GetMapping,@PostMapping,@RequestMapping放在类上时，对整个类的所有方法起效。
+`@GetMapping,@PostMapping,@RequestMapping`放在类上时，对整个类的所有方法起效。
 
-@RequestParam("参数名") 形参这样可以实现类似自动注入的效果
+`@RequestParam("参数名")` 形参这样可以实现类似自动注入的效果
 
-当有多个同名参数时，形参如果是数组类型，Spring可以自动装入同名形参数组，但是如果是List或者map，则必须要加上注解@RequestParam来告诉spring不要创建Collection而是单纯装入。
+当有多个同名参数时，形参如果是数组类型，Spring可以自动装入同名形参数组，但是如果是List或者map，则必须要加上注解`@RequestParam`来告诉spring不要创建Collection而是单纯装入。
 
 还有一个参数required和defaultValue，前者要求参数不为空，后者设置默认值，注意当参数为基本类型时，无论如何设置均不能缺少。
 
-如果想要获取所有请求体内容，则需要使用注解@RequestBody
+如果想要获取所有请求体内容，则需要使用注解`@RequestBody`
 
 自己在mvc配置文件中配置字符串转换器，Spring便可以自动转换请求体为转换器对象
 ```xml
@@ -80,7 +80,7 @@ ViewResolver:视图解析器（解析视图）InternalResourceViewResolver
 3. 用HTTP响应状态码表示结果，三部分状态码，状态信息，响应数据，code,message,data
   
 
-如果需要实现http://localhost/user/100中获取100，则需要在请求处理注解的路径中用`{}` 包住想要解析的变量，并在对应的形参处使用@PathVariable("变量名")来确定一一对应关系。如果有多个`{}` 围住的，则可以多个@PathVariable("变量名")来读取。
+如果需要实现 ` http://localhost/user/100 ` 中获取100，则需要在请求处理注解的路径中用`{}` 包住想要解析的变量，并在对应的形参处使用@PathVariable("变量名")来确定一一对应关系。如果有多个`{}` 围住的，则可以多个@PathVariable("变量名")来读取。
 
 ## 文件上传
 

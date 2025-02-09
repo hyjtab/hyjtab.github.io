@@ -151,11 +151,11 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 <p><a target="_blank" rel="noopener noreferrer" href="https://github.com/user-attachments/assets/59b898fa-9c75-498f-b4de-6c113129726f"><img src="https://github.com/user-attachments/assets/59b898fa-9c75-498f-b4de-6c113129726f" alt="Image" style="max-width: 100%;"></a></p>
 <p>默认情况下，DispatcherServelet启动时就会调用initStratagies方法将默认配置DispatcherServlet.properties中多个映射器适配器和解析器注册到其自身List成员变量中，若Spring容器配置了HandlerMapping等，则不会加载默认的对应种类的多个映射器。</p>
 <h2>请求处理</h2>
-<p><a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/GetMapping/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/GetMapping">@GetMapping</a>,@PostMapping,<a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/RequestMapping/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/RequestMapping">@RequestMapping</a>放在类上时，对整个类的所有方法起效。</p>
-<p><a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/RequestParam/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/RequestParam">@RequestParam</a>("参数名") 形参这样可以实现类似自动注入的效果</p>
-<p>当有多个同名参数时，形参如果是数组类型，Spring可以自动装入同名形参数组，但是如果是List或者map，则必须要加上注解<a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/RequestParam/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/RequestParam">@RequestParam</a>来告诉spring不要创建Collection而是单纯装入。</p>
+<p><code class="notranslate">@GetMapping,@PostMapping,@RequestMapping</code>放在类上时，对整个类的所有方法起效。</p>
+<p><code class="notranslate">@RequestParam("参数名")</code> 形参这样可以实现类似自动注入的效果</p>
+<p>当有多个同名参数时，形参如果是数组类型，Spring可以自动装入同名形参数组，但是如果是List或者map，则必须要加上注解<code class="notranslate">@RequestParam</code>来告诉spring不要创建Collection而是单纯装入。</p>
 <p>还有一个参数required和defaultValue，前者要求参数不为空，后者设置默认值，注意当参数为基本类型时，无论如何设置均不能缺少。</p>
-<p>如果想要获取所有请求体内容，则需要使用注解@RequestBody</p>
+<p>如果想要获取所有请求体内容，则需要使用注解<code class="notranslate">@RequestBody</code></p>
 <p>自己在mvc配置文件中配置字符串转换器，Spring便可以自动转换请求体为转换器对象</p>
 <div class="highlight highlight-text-xml"><pre class="notranslate">    &lt;<span class="pl-ent">bean</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>org.springframework.web.servlet.mvc.method.annotation.RequestMppingHandlerAdapter<span class="pl-pds">"</span></span>&gt;
         &lt;<span class="pl-ent">property</span> <span class="pl-e">name</span>=<span class="pl-s"><span class="pl-pds">"</span>mesasageConverters<span class="pl-pds">"</span></span>&gt;
@@ -179,7 +179,7 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 <p>用HTTP响应状态码表示结果，三部分状态码，状态信息，响应数据，code,message,data</p>
 </li>
 </ol>
-<p>如果需要实现<a href="http://localhost/user/100%E4%B8%AD%E8%8E%B7%E5%8F%96100%EF%BC%8C%E5%88%99%E9%9C%80%E8%A6%81%E5%9C%A8%E8%AF%B7%E6%B1%82%E5%A4%84%E7%90%86%E6%B3%A8%E8%A7%A3%E7%9A%84%E8%B7%AF%E5%BE%84%E4%B8%AD%E7%94%A8%60%7B%7D%60" rel="nofollow">http://localhost/user/100中获取100，则需要在请求处理注解的路径中用`{}`</a> 包住想要解析的变量，并在对应的形参处使用@PathVariable("变量名")来确定一一对应关系。如果有多个<code class="notranslate">{}</code> 围住的，则可以多个@PathVariable("变量名")来读取。</p>
+<p>如果需要实现 <code class="notranslate">http://localhost/user/100</code> 中获取100，则需要在请求处理注解的路径中用<code class="notranslate">{}</code> 包住想要解析的变量，并在对应的形参处使用@PathVariable("变量名")来确定一一对应关系。如果有多个<code class="notranslate">{}</code> 围住的，则可以多个@PathVariable("变量名")来读取。</p>
 <h2>文件上传</h2>
 <p>表单提交必须是POST</p>
 <p>表单enctype属性必须是mutipart/form-data</p>
