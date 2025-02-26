@@ -179,7 +179,7 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 <p>用HTTP响应状态码表示结果，三部分状态码，状态信息，响应数据，code,message,data</p>
 </li>
 </ol>
-<p>如果需要实现 <code class="notranslate">http://localhost/user/100</code> 中获取100，则需要在请求处理注解的路径中用<code class="notranslate">{}</code> 包住想要解析的变量，并在对应的形参处使用@PathVariable("变量名")来确定一一对应关系。如果有多个<code class="notranslate">{}</code> 围住的，则可以多个@PathVariable("变量名")来读取。</p>
+<p>如果需要实现 <code class="notranslate">http://localhost/user/100</code> 中获取100，则需要在请求处理注解的路径中用<code class="notranslate">{}</code> 包住想要解析的变量，并在对应的形参处使用<a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/PathVariable/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/PathVariable">@PathVariable</a>("变量名")来确定一一对应关系。如果有多个<code class="notranslate">{}</code> 围住的，则可以多个<a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/PathVariable/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/PathVariable">@PathVariable</a>("变量名")来读取。</p>
 <h2>文件上传</h2>
 <p>表单提交必须是POST</p>
 <p>表单enctype属性必须是mutipart/form-data</p>
